@@ -532,78 +532,6 @@ await setDoc(userRef, {
 </script>
 
 
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    updateDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// Configuration Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-  authDomain: "wirelessoverride.firebaseapp.com",
-  projectId: "wirelessoverride",
-  storageBucket: "wirelessoverride.firebasestorage.app",
-  messagingSenderId: "674723237901",
-  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-};
-
-
-  // Initialisation Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // Attendre que l'utilisateur soit connecté
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const confirmerBtn = document.getElementById("confirmer");
-
-      confirmerBtn.addEventListener("click", async () => {
-        const faction = document.getElementById("faction").value;
-        const fonction = document.getElementById("fonction").value;
-        const genre = document.getElementById("genre").value;
-        const nomPersonnage = document.getElementById("nomPersonnage").value.trim();
-
-        // Validation des champs
-        if (!faction || !fonction || !genre || !nomPersonnage) {
-          alert("Veuillez remplir tous les champs.");
-          return;
-        }
-
-        try {
-          const userRef = doc(db, "players", user.uid);
-          await updateDoc(userRef, {
-            faction: faction,
-            fonction: fonction,
-            genre: genre,
-            nomPersonnage: nomPersonnage,
-            characterSelected: true
-          });
-
-          // Redirection vers le tableau de bord
-          window.location.href = "dashboard.html";
-        } catch (error) {
-          console.error("Erreur lors de l'enregistrement du personnage :", error);
-          alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
-        }
-      });
-    } else {
-      // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
-      window.location.href = "../index.html";
-    }
-  });
-</script>
 <script>
 
     <form id="character-selection-form">
@@ -641,37 +569,35 @@ const firebaseConfig = {
   <button type="submit" id="confirmer">Confirmer</button>
 </form>
 </script>
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getAuth,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    updateDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // Configuration Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-    authDomain: "wirelessoverride.firebaseapp.com",
-    projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.firebasestorage.app",
-    messagingSenderId: "674723237901",
-    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+      authDomain: "wirelessoverride.firebaseapp.com",
+      projectId: "wirelessoverride",
+      storageBucket: "wirelessoverride.appspot.com",
+      messagingSenderId: "674723237901",
+      appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+    };
 
-  // Initialisation Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  // Attendre que l'utilisateur soit connecté
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "../index.html";
+        return;
+      }
+
       const form = document.getElementById("character-selection-form");
+      if (!form) {
+        console.error("Formulaire non trouvé !");
+        return;
+      }
 
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -681,34 +607,30 @@ const firebaseConfig = {
         const genre = document.getElementById("genre").value;
         const nomPersonnage = document.getElementById("nomPersonnage").value.trim();
 
-        // Validation des champs
         if (!faction || !fonction || !genre || !nomPersonnage) {
-          alert("Veuillez remplir tous les champs.");
+          alert("Veuillez remplir tous les champs !");
           return;
         }
 
         try {
           const userRef = doc(db, "players", user.uid);
           await updateDoc(userRef, {
-            faction: faction,
-            fonction: fonction,
-            genre: genre,
-            nomPersonnage: nomPersonnage,
+            faction,
+            fonction,
+            genre,
+            nomPersonnage,
             characterSelected: true
           });
 
-          // Redirection vers le tableau de bord
           window.location.href = "dashboard.html";
         } catch (error) {
-          console.error("Erreur lors de l'enregistrement du personnage :", error);
-          alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
+          console.error("Erreur lors de l'enregistrement :", error);
+          alert("Une erreur est survenue pendant l'enregistrement.");
         }
       });
-    } else {
-      // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
-      window.location.href = "../index.html";
-    }
-  });
-</script>
+    });
+  </script>
+
+
 </body>
 </html>
