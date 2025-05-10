@@ -264,23 +264,25 @@
       <input type="password" id="password" required />
       <button type="submit">S'inscrire</button>
     </form>
-    <p class="existing-user">Vous avez déjà un compte ? <a id="open-login">Connectez-vous ici</a>.</p>
+    <p class="existing-user">
+  Vous avez déjà un compte ? <a href="#" id="open-login">Connectez-vous ici</a>.
+</p>
   </section>
 
   <!-- Modal Login -->
  <div class="modal" id="loginModal">
-    <div class="modal-content">
-      <button class="close-btn" id="close-login-modal">&times;</button>
-      <h2>Connexion</h2>
-      <form id="login-form">
-        <label for="login-email">Email :</label>
-        <input type="email" id="login-email" required />
-        <label for="login-password">Mot de passe :</label>
-        <input type="password" id="login-password" required />
-        <button type="submit">Se connecter</button>
-      </form>
-    </div>
+  <div class="modal-content">
+    <button class="close-btn" id="close-login-modal">&times;</button>
+    <h2>Connexion</h2>
+    <form id="modal-login-form">
+      <label for="modal-username">Nom d'utilisateur :</label>
+      <input type="text" id="modal-username" required />
+      <label for="modal-password">Mot de passe :</label>
+      <input type="password" id="modal-password" required />
+      <button type="submit">Se connecter</button>
+    </form>
   </div>
+</div>
   
 
   <script type="module">
@@ -289,12 +291,12 @@
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "TA_CLE_API",
-      authDomain: "TON_AUTH_DOMAIN",
-      projectId: "TON_PROJECT_ID",
-      storageBucket: "TON_STORAGE_BUCKET",
-      messagingSenderId: "TON_SENDER_ID",
-      appId: "TON_APP_ID"
+      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+      authDomain: "wirelessoverride.firebaseapp.com",
+      projectId: "wirelessoverride",
+      storageBucket: "wirelessoverride.firebasestorage.app",
+      messagingSenderId: "674723237901",
+      appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -316,8 +318,10 @@
     });
 
     // 🎯 Connexion
-    document.getElementById('login-form').addEventListener('submit', (e) => {
+   document.getElementById('open-login').addEventListener('click', (e) => {
       e.preventDefault();
+       loginModal.classList.add('show');
+       
       const email = document.getElementById('login-email').value;
       const password = document.getElementById('login-password').value;
 
@@ -330,18 +334,29 @@
         });
     });
 
-    // 🪄 Gestion de la modale
-    const loginModal = document.getElementById('loginModal');
-    document.getElementById('open-login').addEventListener('click', () => {
-      loginModal.classList.add('show');
-    });
-    document.getElementById('close-login-modal').addEventListener('click', () => {
-      loginModal.classList.remove('show');
-    });
-  </script>
 
 
 
+const loginModal = document.getElementById('loginModal');
+const openLoginLink = document.getElementById('open-login');
+const closeLoginBtn = document.getElementById('close-login-modal');
+
+openLoginLink.addEventListener('click', (e) => {
+  e.preventDefault(); // Évite de suivre le lien
+  loginModal.classList.add('show'); // Affiche la modale
+});
+
+closeLoginBtn.addEventListener('click', () => {
+  loginModal.classList.remove('show'); // Ferme la modale
+});
+
+// Optionnel : Fermer si on clique hors de la modale
+window.addEventListener('click', (event) => {
+  if (event.target === loginModal) {
+    loginModal.classList.remove('show');
+  }
+});
+</script>
 
 
   <footer>
