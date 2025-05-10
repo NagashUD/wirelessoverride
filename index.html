@@ -401,7 +401,36 @@ const db = getFirestore(app);
 }
 
 </script>
+<script>
+    document.getElementById("signup-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("signup-email").value;
+    const password = document.getElementById("signup-password").value;
 
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = "selection_personnage.html";
+      })
+      .catch(error => {
+        alert("Erreur : " + error.message);
+      });
+  });
+
+  // Connexion
+  document.getElementById("modal-login-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = "dashboard.html";
+      })
+      .catch(error => {
+        alert("Erreur : " + error.message);
+      });
+  });
+</script>
 
 </body>
 </html>
