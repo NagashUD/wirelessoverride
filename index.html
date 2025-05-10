@@ -249,215 +249,104 @@
     <div class="language-selector">
       <button id="lang-toggle">ENG/FRA</button>
     </div>
-    <button class="login-btn" id="open-login-modal">Se connecter</button>
+
   </header>
 
-  <section id="signup">
+
+   <section id="signup">
     <h2>Rejoignez l'aventure</h2>
-    <p>Créez votre compte pour commencer à jouer !</p>
     <form id="signup-form">
-  <label for="signup-email">Email :</label>
-  <input type="email" id="signup-email" required />
-  
-  <label for="signup-password">Mot de passe :</label>
-  <input type="password" id="signup-password" required />
-  
-  <button type="submit">S'inscrire</button>
-</form>
-    <p class="existing-user">Vous avez déjà un compte ? <a href="#login">Connectez-vous ici</a>.</p>
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" required />
+      <label for="email">Email :</label>
+      <input type="email" id="email" required />
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" required />
+      <button type="submit">S'inscrire</button>
+    </form>
+    <p class="existing-user">Vous avez déjà un compte ? <a id="open-login">Connectez-vous ici</a>.</p>
   </section>
 
   <!-- Modal Login -->
-  <div class="modal" id="loginModal">
+ <div class="modal" id="loginModal">
     <div class="modal-content">
       <button class="close-btn" id="close-login-modal">&times;</button>
       <h2>Connexion</h2>
-   <form id="modal-login-form">
-  <label for="login-email">Email :</label>
-  <input type="email" id="login-email" required />
-  
-  <label for="login-password">Mot de passe :</label>
-  <input type="password" id="login-password" required />
-  
-  <button type="submit">Se connecter</button>
-</form>
+      <form id="login-form">
+        <label for="login-email">Email :</label>
+        <input type="email" id="login-email" required />
+        <label for="login-password">Mot de passe :</label>
+        <input type="password" id="login-password" required />
+        <button type="submit">Se connecter</button>
+      </form>
     </div>
   </div>
+  
+
+  <script type="module">
+    // 🔐 Ton config Firebase ici
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "TA_CLE_API",
+      authDomain: "TON_AUTH_DOMAIN",
+      projectId: "TON_PROJECT_ID",
+      storageBucket: "TON_STORAGE_BUCKET",
+      messagingSenderId: "TON_SENDER_ID",
+      appId: "TON_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // 🎯 Inscription
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "selection_personnage.html";
+        })
+        .catch((error) => {
+          alert("Erreur d'inscription : " + error.message);
+        });
+    });
+
+    // 🎯 Connexion
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          alert("Erreur de connexion : " + error.message);
+        });
+    });
+
+    // 🪄 Gestion de la modale
+    const loginModal = document.getElementById('loginModal');
+    document.getElementById('open-login').addEventListener('click', () => {
+      loginModal.classList.add('show');
+    });
+    document.getElementById('close-login-modal').addEventListener('click', () => {
+      loginModal.classList.remove('show');
+    });
+  </script>
+
+
+
+
 
   <footer>
     &copy; 2025 Wireless: Override. Tous droits réservés.
   </footer>
-
-  <script>
-    const modal = document.getElementById('loginModal');
-    const openBtn = document.getElementById('open-login-modal');
-    const closeBtn = document.getElementById('close-login-modal');
-
-    openBtn.addEventListener('click', () => {
-      modal.style.display = 'flex';
-    });
-
-    closeBtn.addEventListener('click', () => {
-      modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  </script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-    authDomain: "wirelessoverride.firebaseapp.com",
-    projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.firebasestorage.app",
-    messagingSenderId: "674723237901",
-    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-  };
-
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  </script>
-
-  <script>
-
-    function signUp(email, password) {
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log('Utilisateur inscrit', user);
-      // Sauvegarde des données initiales dans Firestore
-      const userDoc = doc(db, 'users', user.uid);
-       window.location.href = "selection_personnage.html";
-      setDoc(userDoc, {
-        email: user.email,
-        items: [], // Liste d'items vide pour le début
-        level: 1
-        
-      });
-        document.getElementById("signup-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Rediriger après inscription réussie
-        window.location.href = "selection_personnage.html";
-      })
-      .catch((error) => {
-        alert("Erreur à l'inscription : " + error.message);
-      });
-  });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(errorCode, errorMessage);
-    });
-}
-  </script>
-
-  <script>
-
-    function login(email, password) {
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log('Utilisateur connecté', user);
-      // Rediriger vers la page de sélection de personnage après la connexion
-      window.location.href = 'selection_personnage.html';
-        document.getElementById("modal-login-form").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("modal-username").value;
-    const password = document.getElementById("modal-password").value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Rediriger après connexion réussie
-        window.location.href = "dashboard.html";
-      })
-      .catch((error) => {
-        alert("Erreur à la connexion : " + error.message);
-      });
-    });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(errorCode, errorMessage);
-    });
-}
-
-  </script>
-
-<script>
-
-  function addItemToUser(userId, item) {
-  const userDoc = doc(db, 'users', userId);
-  setDoc(userDoc, {
-    items: [...user.items, item], // Ajouter un nouvel item au tableau
-    level: user.level
-  }, { merge: true });
-}
-
-</script>
-
-<script>
-
-  async function getUserData(userId) {
-  const userDoc = doc(db, 'users', userId);
-  const docSnap = await getDoc(userDoc);
-
-  if (docSnap.exists()) {
-    const userData = docSnap.data();
-    console.log(userData); // Contient items, level, etc.
-  } else {
-    console.log('Aucune donnée trouvée pour cet utilisateur');
-  }
-}
-
-</script>
-<script>
-    document.getElementById("signup-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("signup-email").value;
-    const password = document.getElementById("signup-password").value;
-
-    auth.createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        window.location.href = "selection_personnage.html";
-      })
-      .catch(error => {
-        alert("Erreur : " + error.message);
-      });
-  });
-
-  // Connexion
-  document.getElementById("modal-login-form").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-
-    auth.signInWithEmailAndPassword(email, password)
-      .then(() => {
-        window.location.href = "dashboard.html";
-      })
-      .catch(error => {
-        alert("Erreur : " + error.message);
-      });
-  });
-</script>
 
 </body>
 </html>
