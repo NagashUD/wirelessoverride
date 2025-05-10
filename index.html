@@ -295,90 +295,109 @@
 </div>
   
 
-  <script type="module">
-    // 🔐 Ton config Firebase ici
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+ <script type="module">
+  // === Importation des modules Firebase ===
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendEmailVerification
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    setDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-      authDomain: "wirelessoverride.firebaseapp.com",
-      projectId: "wirelessoverride",
-      storageBucket: "wirelessoverride.firebasestorage.app",
-      messagingSenderId: "674723237901",
-      appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-    };
+  // === Configuration Firebase ===
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.firebasestorage.app",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  // === Initialisation ===
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-   // ===== INSCRIPTION =====
-document.getElementById("signup-form").addEventListener("submit", function (e) {
-  e.preventDefault();
+  // === Vérification de l'état de l'utilisateur ===
+  onAuthStateChanged(auth, async (user) => {
+    if (user && user.emailVerified) {
+      const userRef = doc(db, "players", user.uid);
+      const docSnap = await getDoc(userRef);
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+      if (!docSnap.exists() || !docSnap.data().characterSelected) {
+        window.location.href = "player_dashboard/selection_personnage.html";
+      } else {
+        window.location.href = "player_dashboard/dashboard.html";
+      }
+    }
+  });
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+  // === INSCRIPTION ===
+  document.getElementById("signup-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      sendEmailVerification(user)
-        .then(() => {
-          alert("Inscription réussie ! Un email de vérification vous a été envoyé.");
-          window.location.href = "player_dashboard/selection_personnage.html";
-        })
-        .catch((error) => {
-          console.error("Erreur d'envoi de l'e-mail de vérification:", error);
-        });
-    })
-    .catch((error) => {
+      // Créer un document vide pour le joueur
+      await setDoc(doc(db, "players", user.uid), {
+        characterSelected: false
+      });
+
+      await sendEmailVerification(user);
+      alert("Inscription réussie ! Un email de vérification vous a été envoyé.");
+      window.location.href = "player_dashboard/selection_personnage.html";
+
+    } catch (error) {
       alert("Erreur : " + error.message);
-    });
-});
+    }
+  });
 
-// ===== CONNEXION =====
-document.getElementById("modal-login-form").addEventListener("submit", function (e) {
-  e.preventDefault();
+  // === CONNEXION ===
+  document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-  const email = document.getElementById("modal-username").value;
-  const password = document.getElementById("modal-password").value;
+    const email = document.getElementById("modal-username").value;
+    const password = document.getElementById("modal-password").value;
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        window.location.href = "player_dashboard/dashboard.html";
+        const userRef = doc(db, "players", user.uid);
+        const docSnap = await getDoc(userRef);
+
+        if (!docSnap.exists() || !docSnap.data().characterSelected) {
+          window.location.href = "player_dashboard/selection_personnage.html";
+        } else {
+          window.location.href = "player_dashboard/dashboard.html";
+        }
+
       } else {
         alert("Veuillez vérifier votre adresse email avant de vous connecter.");
       }
-    })
-    .catch((error) => {
+
+    } catch (error) {
       alert("Erreur de connexion : " + error.message);
-    });
-});
+    }
+  });
 
-// ===== MODAL POPUP (Connexion) =====
-document.getElementById("open-login").addEventListener("click", function (e) {
-  e.preventDefault();
-  document.getElementById("loginModal").style.display = "block";
-});
-
-document.getElementById("close-login-modal").addEventListener("click", function () {
-  document.getElementById("loginModal").style.display = "none";
-});
-
-window.onclick = function (event) {
-  const modal = document.getElementById("loginModal");
-  if (event.target === modal) {
-    modal.style.display = "none";
-  }
-};
-
-
-
- const loginModal = document.getElementById('loginModal');
+  // === GESTION DU MODAL LOGIN ===
+  const loginModal = document.getElementById('loginModal');
   const openLoginLink = document.getElementById('open-login');
   const closeLoginBtn = document.getElementById('close-login-modal');
 
@@ -396,6 +415,7 @@ window.onclick = function (event) {
       loginModal.classList.remove('show');
     }
   });
+
 </script>
 
 
