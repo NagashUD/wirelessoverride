@@ -310,10 +310,14 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
-  <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js";
-
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
@@ -337,11 +341,27 @@
       console.log('Utilisateur inscrit', user);
       // Sauvegarde des données initiales dans Firestore
       const userDoc = doc(db, 'users', user.uid);
+       window.location.href = "selection_personnage.html";
       setDoc(userDoc, {
         email: user.email,
         items: [], // Liste d'items vide pour le début
         level: 1
+        
       });
+        document.getElementById("signup-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Rediriger après inscription réussie
+        window.location.href = "selection_personnage.html";
+      })
+      .catch((error) => {
+        alert("Erreur à l'inscription : " + error.message);
+      });
+  });
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -360,6 +380,20 @@
       console.log('Utilisateur connecté', user);
       // Rediriger vers la page de sélection de personnage après la connexion
       window.location.href = 'selection_personnage.html';
+        document.getElementById("modal-login-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = document.getElementById("modal-username").value;
+    const password = document.getElementById("modal-password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Rediriger après connexion réussie
+        window.location.href = "dashboard.html";
+      })
+      .catch((error) => {
+        alert("Erreur à la connexion : " + error.message);
+      });
+    });
     })
     .catch((error) => {
       const errorCode = error.code;
