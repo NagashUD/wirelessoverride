@@ -18,7 +18,8 @@
       font-family: 'Orbitron', sans-serif;
       background: url('images/background.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: #ffffff;
+       color: #00ffff; /* bleu néon par défaut */
+       text-shadow: 0 0 5px #00ffff;
       min-height: 100vh;
       line-height: 1.6;
     }
@@ -107,8 +108,8 @@
     }
 
     section h2 {
-      color: #00ffff;
-      text-shadow: 0 0 10px #00ffff;
+      color:  #ff00ff;
+       text-shadow: 0 0 10px #ff00ff, 0 0 15px #ff66ff, 0 0 30px #ff00ff;
       margin-bottom: 20px;
       text-align: center;
     }
@@ -255,14 +256,14 @@
     <h2>Rejoignez l'aventure</h2>
     <p>Créez votre compte pour commencer à jouer !</p>
     <form id="signup-form">
-      <label for="username">Nom d'utilisateur :</label>
-      <input type="text" id="username" required />
-      <label for="password">Mot de passe :</label>
-      <input type="password" id="password" required />
-      <label for="email">Email :</label>
-      <input type="email" id="email" required />
-      <button type="submit">S'inscrire</button>
-    </form>
+  <label for="signup-email">Email :</label>
+  <input type="email" id="signup-email" required />
+  
+  <label for="signup-password">Mot de passe :</label>
+  <input type="password" id="signup-password" required />
+  
+  <button type="submit">S'inscrire</button>
+</form>
     <p class="existing-user">Vous avez déjà un compte ? <a href="#login">Connectez-vous ici</a>.</p>
   </section>
 
@@ -271,13 +272,15 @@
     <div class="modal-content">
       <button class="close-btn" id="close-login-modal">&times;</button>
       <h2>Connexion</h2>
-      <form id="modal-login-form">
-        <label for="modal-username">Nom d'utilisateur :</label>
-        <input type="text" id="modal-username" required />
-        <label for="modal-password">Mot de passe :</label>
-        <input type="password" id="modal-password" required />
-        <button type="submit">Se connecter</button>
-      </form>
+   <form id="modal-login-form">
+  <label for="login-email">Email :</label>
+  <input type="email" id="login-email" required />
+  
+  <label for="login-password">Mot de passe :</label>
+  <input type="password" id="login-password" required />
+  
+  <button type="submit">Se connecter</button>
+</form>
     </div>
   </div>
 
@@ -304,5 +307,101 @@
       }
     });
   </script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+
+  <script>
+import { initializeApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
+
+// Config Firebase
+const firebaseConfig = {
+  apiKey: 'AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28',
+  authDomain: 'wirelessoverride.firebaseapp.com',
+  projectId: 'wirelessoverride',
+  storageBucket: 'wirelessoverride.firebasestorage.app',
+  messagingSenderId: '674723237901',
+  appId: 'YOUR_APP_ID'
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore(app);
+
+
+  </script>
+
+  <script>
+
+    function signUp(email, password) {
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log('Utilisateur inscrit', user);
+      // Sauvegarde des données initiales dans Firestore
+      const userDoc = doc(db, 'users', user.uid);
+      setDoc(userDoc, {
+        email: user.email,
+        items: [], // Liste d'items vide pour le début
+        level: 1
+      });
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, errorMessage);
+    });
+}
+  </script>
+
+  <script>
+
+    function login(email, password) {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log('Utilisateur connecté', user);
+      // Rediriger vers la page de sélection de personnage après la connexion
+      window.location.href = 'selection_personnage.html';
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorCode, errorMessage);
+    });
+}
+
+  </script>
+
+<script>
+
+  function addItemToUser(userId, item) {
+  const userDoc = doc(db, 'users', userId);
+  setDoc(userDoc, {
+    items: [...user.items, item], // Ajouter un nouvel item au tableau
+    level: user.level
+  }, { merge: true });
+}
+
+</script>
+
+<script>
+
+  async function getUserData(userId) {
+  const userDoc = doc(db, 'users', userId);
+  const docSnap = await getDoc(userDoc);
+
+  if (docSnap.exists()) {
+    const userData = docSnap.data();
+    console.log(userData); // Contient items, level, etc.
+  } else {
+    console.log('Aucune donnée trouvée pour cet utilisateur');
+  }
+}
+
+</script>
+
+
 </body>
 </html>
