@@ -326,7 +326,7 @@ document.getElementById("signup-form").addEventListener("submit", function (e) {
       sendEmailVerification(user)
         .then(() => {
           alert("Inscription réussie ! Un email de vérification vous a été envoyé.");
-          window.location.href = "selection_personnage.html";
+          window.location.href = "player_dashboard/selection_personnage.html";
         })
         .catch((error) => {
           console.error("Erreur d'envoi de l'e-mail de vérification:", error);
@@ -349,7 +349,7 @@ document.getElementById("modal-login-form").addEventListener("submit", function 
       const user = userCredential.user;
 
       if (user.emailVerified) {
-        window.location.href = "dashboard.html";
+        window.location.href = "player_dashboard/dashboard.html";
       } else {
         alert("Veuillez vérifier votre adresse email avant de vous connecter.");
       }

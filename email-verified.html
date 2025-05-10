@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vérification réussie</title>
+  <script>
+    // Redirection après 2 secondes
+    setTimeout(() => {
+      window.location.href = "player_dashboard/dashboard.html";
+    }, 3000);
+  </script>
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: url('images/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+       color: #ff00ff; /* bleu néon par défaut */
+         text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff66ff, 0 0 30px #ff00ff;
+      min-height: 100vh;
+      line-height: 1.6;
+        display: flex;
+      justify-content: center;
+      align-items: center;
+       text-align: center;
+    }
+        body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 20, 0.6);
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Email vérifié avec succès !</h1>
+    <p>Redirection vers le dashboard...</p>
+  </div>
+</body>
+</html>
