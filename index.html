@@ -310,25 +310,21 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 
-  <script>
-import { initializeApp } from 'firebase/app';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js";
 
-// Config Firebase
-const firebaseConfig = {
-  apiKey: 'AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28',
-  authDomain: 'wirelessoverride.firebaseapp.com',
-  projectId: 'wirelessoverride',
-  storageBucket: 'wirelessoverride.firebasestorage.app',
-  messagingSenderId: '674723237901',
-  appId: 'YOUR_APP_ID'
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.firebasestorage.app",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore(app);
-
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   </script>
 
