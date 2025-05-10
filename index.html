@@ -212,6 +212,9 @@
       width: 90%;
       max-width: 400px;
     }
+.modal.show {
+  display: block;
+}
 
     .modal-content h2 {
       margin-bottom: 20px;
@@ -270,7 +273,7 @@
   </section>
 
   <!-- Modal Login -->
- <div class="modal" id="loginModal">
+<div class="modal" id="loginModal">
   <div class="modal-content">
     <button class="close-btn" id="close-login-modal">&times;</button>
     <h2>Connexion</h2>
@@ -337,25 +340,24 @@
 
 
 
-const loginModal = document.getElementById('loginModal');
-const openLoginLink = document.getElementById('open-login');
-const closeLoginBtn = document.getElementById('close-login-modal');
+ const loginModal = document.getElementById('loginModal');
+  const openLoginLink = document.getElementById('open-login');
+  const closeLoginBtn = document.getElementById('close-login-modal');
 
-openLoginLink.addEventListener('click', (e) => {
-  e.preventDefault(); // Évite de suivre le lien
-  loginModal.classList.add('show'); // Affiche la modale
-});
+  openLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginModal.classList.add('show');
+  });
 
-closeLoginBtn.addEventListener('click', () => {
-  loginModal.classList.remove('show'); // Ferme la modale
-});
-
-// Optionnel : Fermer si on clique hors de la modale
-window.addEventListener('click', (event) => {
-  if (event.target === loginModal) {
+  closeLoginBtn.addEventListener('click', () => {
     loginModal.classList.remove('show');
-  }
-});
+  });
+
+  window.addEventListener('click', (event) => {
+    if (event.target === loginModal) {
+      loginModal.classList.remove('show');
+    }
+  });
 </script>
 
 
