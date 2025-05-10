@@ -532,6 +532,115 @@ await setDoc(userRef, {
 </script>
 
 
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    updateDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// Configuration Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+  authDomain: "wirelessoverride.firebaseapp.com",
+  projectId: "wirelessoverride",
+  storageBucket: "wirelessoverride.firebasestorage.app",
+  messagingSenderId: "674723237901",
+  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+};
+
+
+  // Initialisation Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Attendre que l'utilisateur soit connecté
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const confirmerBtn = document.getElementById("confirmer");
+
+      confirmerBtn.addEventListener("click", async () => {
+        const faction = document.getElementById("faction").value;
+        const fonction = document.getElementById("fonction").value;
+        const genre = document.getElementById("genre").value;
+        const nomPersonnage = document.getElementById("nomPersonnage").value.trim();
+
+        // Validation des champs
+        if (!faction || !fonction || !genre || !nomPersonnage) {
+          alert("Veuillez remplir tous les champs.");
+          return;
+        }
+
+        try {
+          const userRef = doc(db, "players", user.uid);
+          await updateDoc(userRef, {
+            faction: faction,
+            fonction: fonction,
+            genre: genre,
+            nomPersonnage: nomPersonnage,
+            characterSelected: true
+          });
+
+          // Redirection vers le tableau de bord
+          window.location.href = "dashboard.html";
+        } catch (error) {
+          console.error("Erreur lors de l'enregistrement du personnage :", error);
+          alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
+        }
+      });
+    } else {
+      // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+      window.location.href = "../index.html";
+    }
+  });
+</script>
+<script>
+
+    <form id="character-selection-form">
+  <label for="faction">Faction :</label>
+  <select id="faction" required>
+    <option value="">--Choisir une faction--</option>
+    <option value="SYNRAX">SYNRAX</option>
+    <option value="CORVEX INDUSTRIES">CORVEX INDUSTRIES</option>
+    <option value="FERALS">FERALS</option>
+    <option value="AEGIS">AEGIS</option>
+    <option value="NOIR">NOIR</option>
+    <option value="NEURORAGE">NEURORAGE</option>
+  </select>
+
+  <label for="fonction">Fonction :</label>
+  <select id="fonction" required>
+    <option value="">--Choisir une fonction--</option>
+    <option value="Soldat">Soldat</option>
+    <option value="Ingénieur">Ingénieur</option>
+    <option value="Hacker">Hacker</option>
+    <option value="Médecin">Médecin</option>
+    <option value="Éclaireur">Éclaireur</option>
+  </select>
+
+  <label for="genre">Genre :</label>
+  <select id="genre" required>
+    <option value="">--Choisir un genre--</option>
+    <option value="Homme">Homme</option>
+    <option value="Femme">Femme</option>
+  </select>
+
+  <label for="nomPersonnage">Nom du personnage :</label>
+  <input type="text" id="nomPersonnage" required />
+
+  <button type="submit" id="confirmer">Confirmer</button>
+</form>
+</script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import {
@@ -562,9 +671,11 @@ await setDoc(userRef, {
   // Attendre que l'utilisateur soit connecté
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const confirmerBtn = document.getElementById("confirmer");
+      const form = document.getElementById("character-selection-form");
 
-      confirmerBtn.addEventListener("click", async () => {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
         const faction = document.getElementById("faction").value;
         const fonction = document.getElementById("fonction").value;
         const genre = document.getElementById("genre").value;
