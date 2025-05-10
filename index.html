@@ -320,7 +320,7 @@
 
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
-          window.location.href = "selection_personnage.html";
+          window.location.href = "player_dashboard/selection_personnage.html";
         })
         .catch((error) => {
           alert("Erreur d'inscription : " + error.message);
@@ -337,7 +337,7 @@
 
       signInWithEmailAndPassword(auth, email, password)
         .then(() => {
-          window.location.href = "dashboard.html";
+          window.location.href = "player_dashboard/dashboard.html";
         })
         .catch((error) => {
           alert("Erreur de connexion : " + error.message);
