@@ -211,7 +211,17 @@
       box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
       width: 90%;
       max-width: 400px;
+      padding: 20px;
+  border: 1px solid #444;
+ 
+
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
     }
+
 .modal.show {
   display: block;
 }
@@ -220,6 +230,9 @@
       margin-bottom: 20px;
       text-align: center;
       color: #00ffff;
+      animation: pulseNeon 2s infinite;
+  border: 2px solid #0ff;
+  border-radius: 12px;
     }
 
     .close-btn {
@@ -236,7 +249,35 @@
         width: 95%;
       }
     }
+  @keyframes pulseNeon {
+  0% {
+    box-shadow:
+      0 0 4px #0ff,
+      0 0 8px #0ff,
+      0 0 16px #0ff,
+      0 0 32px #0ff;
+  }
+  50% {
+    box-shadow:
+      0 0 6px #0ff,
+      0 0 12px #0ff,
+      0 0 24px #0ff,
+      0 0 48px #0ff;
+  }
+  100% {
+    box-shadow:
+      0 0 4px #0ff,
+      0 0 8px #0ff,
+      0 0 16px #0ff,
+      0 0 32px #0ff;
+  }
+}
 
+.neon-border {
+  animation: pulseNeon 2s infinite;
+  border: 2px solid #0ff;
+  border-radius: 12px;
+}
 
 
   </style>
