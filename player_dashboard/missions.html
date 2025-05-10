@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Missions</title>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+body {
+    background: url('images/missions.jpg') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #ff00ff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+.container {
+    width: 80%;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.mission-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.mission-item {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.mission-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    
+}
+
+button {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #ff00ff;
+    color: #fff;
+    width: 180px;
+    height: 40px;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 15px;
+    box-shadow: 0 0 10px #ff00ff88;
+      font-size: 16px;
+  box-sizing: border-box;
+  padding: 0; 
+}
+
+button:hover {
+    background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+    transform: scale(1.05);
+}
+
+.special-section {
+    margin-top: 50px;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid #ff00ff;
+    border-radius: 10px;
+}
+
+.timer-box {
+    font-size: 1.3rem;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#mission-timer {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 8px #00ffff;
+    margin-top: 10px;
+}
+
+.special-missions h2 {
+    margin-bottom: 20px;
+    color: #ff00ff;
+    text-shadow: 0 0 6px #ff00ff;
+}
+
+.missions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.mission-card {
+    background-color: rgba(10, 10, 10, 0.9);
+    border: 2px solid #ff00ff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 0 12px #ff00ff88;
+}
+
+.mission-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.mission-details {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+    text-align: left;
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+.mission-details li {
+    margin-bottom: 5px;
+}
+
+.mission-details strong {
+    color: #ff00ff;
+}
+.forbidden {
+    color: #ff4444;
+}
+
+
+   .mission-card.forbidden {
+      opacity: 0.6;
+      border-color: red;
+    }
+ @keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px #ff6ee3, 0 0 16px #6ecbff;
+  }
+  50% {
+    box-shadow: 0 0 16px #ff6ee3, 0 0 32px #6ecbff;
+  }
+  100% {
+    box-shadow: 0 0 8px #ff6ee3, 0 0 16px #6ecbff;
+  }
+}
+
+.glow-pulse {
+  animation: pulseGlow 2s infinite;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+.special-missions .missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+.mission-card {
+  background: #0d0d0d;
+  border: 1px solid #2e2e2e;
+  padding: 1rem;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.mission-card:hover {
+  transform: scale(1.02);
+}
+</style>
+
+<body>
+  <section id="mission-section" class="container">
+    <h2>Missions Disponibles</h2>
+    <div id="missions-container" class="mission-list"></div>
+  </section>
+
+  <section>
+    <div class="special-section">
+
+    <div class="timer-box">
+        <h3>Prochaine rotation de missions dans :</h3>
+        <div id="mission-timer">00:59:42</div>
+    </div>
+</section>
+
+  <script>
+    const userFactionId = "Neurorage";
+    const userFunction = "Soldat";
+
+    const missions = [
+      {
+        id: 1,
+        title: "Pirater un relais militaire",
+        factionId: "Neurorage",
+        requiredFunction: "Hacker",
+        duration: "30 minutes",
+        skills: ["cyberpiratage", "discrétion"],
+        reward: "800 crédits + 1 datapack rare",
+        image: "images/hacker_mission.jpg",
+        description: "Mission d'extraction de données classifiées."
+      },
+      {
+        id: 2,
+        title: "Assaut de convoi",
+        factionId: "Neurorage",
+        requiredFunction: "Soldat",
+        duration: "6 heures",
+        skills: ["tactique", "brutalité"],
+        reward: "500 crédits + 2 équipements",
+        image: "images/missions/convoy.jpg",
+        description: "Neutraliser un convoi d'ennemis en territoire hostile."
+      }
+    ];
+
+    const container = document.getElementById("missions-container");
+
+    missions.forEach(m => {
+      if (m.factionId !== userFactionId) return; // filtrage par clan
+
+      const isFunctionMismatch = m.requiredFunction !== userFunction;
+
+      const missionCard = document.createElement("div");
+      missionCard.classList.add("mission-card");
+      if (isFunctionMismatch) missionCard.classList.add("forbidden");
+
+      missionCard.innerHTML = `
+        <img src="${m.image}" alt="${m.title}">
+        <h3>${m.title}</h3>
+        <p>${m.description}</p>
+        <ul class="mission-details">
+          <li><strong>⏳ Durée :</strong> ${m.duration}</li>
+          <li><strong>🧠 Compétences :</strong> ${m.skills.join(", ")}</li>
+          <li><strong>🧬 Fonction :</strong> ${m.requiredFunction}</li>
+          <li><strong>💰 Récompense :</strong> ${m.reward}</li>
+        </ul>
+        <button onclick='joinMission(${JSON.stringify(m)})'>
+          Accepter
+        </button>
+      `;
+
+      container.appendChild(missionCard);
+    });
+
+    function joinMission(mission) {
+      const mismatch = mission.requiredFunction !== userFunction;
+      if (mismatch) {
+        const confirmRisk = confirm(
+          `⚠️ Vous n'êtes pas ${mission.requiredFunction}. Voulez-vous quand même tenter cette mission ?`
+        );
+        if (!confirmRisk) return;
+      }
+
+      alert(`✔️ Mission sélectionnée : ${mission.title}`);
+      // traitement de mission ici
+    }
+  </script>
+<script>
+    let countdown = 3600; // 1 heure pour l'exemple (en secondes)
+
+    function updateTimer() {
+        const hours = String(Math.floor(countdown / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((countdown % 3600) / 60)).padStart(2, '0');
+        const seconds = String(countdown % 60).padStart(2, '0');
+
+        const timerDisplay = document.getElementById("mission-timer");
+        timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+
+        if (countdown > 0) {
+            countdown--;
+        } else {
+            clearInterval(timerInterval); // Stoppe le timer
+            timerDisplay.textContent = "✔️ Missions spéciales débloquées !";
+
+            // Débloque les missions spéciales
+            unlockSpecialMissions();
+        }
+    }
+
+    function unlockSpecialMissions() {
+        const specialSection = document.querySelector(".special-missions");
+        specialSection.classList.add("unlocked"); // Ajoute une classe CSS si besoin
+        specialSection.querySelectorAll("button").forEach(btn => {
+            btn.disabled = false; // Active les boutons
+        });
+    }
+
+    // Lancement du timer
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer(); // Appel initial
+</script>
+<div class="special-missions">
+  <h2>Missions Spéciales</h2>
+  <div class="missions-grid">
+    <div class="mission-card glow-pulse">
+      <img src="images/hacker_mission.jpg" alt="Mission Hacker">
+      <h3>Pirater un relais militaire</h3>
+      <p>Mission réservée aux Hackers de la faction Nécro-Tek.</p>
+      <button onclick="joinMission('piratage')">Accepter</button>
+    </div>
+
+    <div class="mission-card glow-pulse">
+      <img src="images/merc_mission.jpg" alt="Mission Mercenaire">
+      <h3>Protection de convoi</h3>
+      <p>Mission dédiée aux Mercenaires de la faction Sable Pourpre.</p>
+      <button onclick="joinMission('protection')">Accepter</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

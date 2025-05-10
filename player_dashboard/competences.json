@@ -1,0 +1,55 @@
+{
+  "classes": [
+    {
+      "nom": "Soldat",
+      "competences": [
+        { "nom": "Tir balistique", "effet": "Bonus précision avec armes à feu classiques" },
+        { "nom": "Armes lourdes", "effet": "Utilisation d’armes lourdes (lance-grenades, tourelles...)" },
+        { "nom": "Armes énergétiques", "effet": "Dégâts améliorés avec armes laser/plasma" },
+        { "nom": "Endurance physique", "effet": "Résistance accrue en combat, +10% PV" },
+        { "nom": "Tactique de terrain", "effet": "Bonus d’initiative et de placement en escouade" },
+        { "nom": "Intimidation", "effet": "Peut désorganiser ou faire fuir certains ennemis" }
+      ]
+    },
+    {
+      "nom": "Ingénieur",
+      "competences": [
+        { "nom": "Maintenance avancée", "effet": "Répare équipements, drones, robots" },
+        { "nom": "Démontage / récupération", "effet": "Récupère composants sur objets détruits" },
+        { "nom": "Construction modulaire", "effet": "Crée abris, tourelles, petits bots" },
+        { "nom": "Customisation tech", "effet": "Ajoute mods techniques à armes ou implants" },
+        { "nom": "Analyse technique", "effet": "Détecte failles, pièges ou faibles structures" }
+      ]
+    },
+    {
+      "nom": "Hacker",
+      "competences": [
+        { "nom": "Intrusion réseau", "effet": "Pirate systèmes (portes, caméras, alarmes...)" },
+        { "nom": "Combat cybernétique", "effet": "Hack en temps réel pendant le combat" },
+        { "nom": "Cryptographie", "effet": "Déchiffre données sécurisées" },
+        { "nom": "Drone remote", "effet": "Prise de contrôle à distance de drones" },
+        { "nom": "Contre-mesures", "effet": "Protection contre hacks adverses" }
+      ]
+    },
+    {
+      "nom": "Médecin",
+      "competences": [
+        { "nom": "Soins d'urgence", "effet": "Stabilise un allié ou lui rend des PV en combat" },
+        { "nom": "Biotech", "effet": "Soins via implants ou nanobots" },
+        { "nom": "Connaissance chimique", "effet": "Prépare stimulants, poisons ou antidotes" },
+        { "nom": "Implants médicaux", "effet": "Pose implants médicaux sécurisés" },
+        { "nom": "Anatomie", "effet": "Bonus contre cibles vivantes (points faibles connus)" }
+      ]
+    },
+    {
+      "nom": "Éclaireur",
+      "competences": [
+        { "nom": "Camouflage actif", "effet": "Furtivité, invisibilité partielle ou camouflage" },
+        { "nom": "Analyse environnementale", "effet": "Détecte ressources, pièges, ennemis" },
+        { "nom": "Marquage cible", "effet": "Donne bonus d’équipe sur une cible désignée" },
+        { "nom": "Mobilité augmentée", "effet": "Sprint, parkour, esquives rapides" },
+        { "nom": "Vision augmentée", "effet": "Capteurs thermiques, vibrations, électromagnétique" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "metal_scrap",
+    "name": {
+      "fr": "Ferraille",
+      "en": "Metal scrap"
+    },
+    "rarity": "common",
+    "use": ["craft", "trade"]
+  },
+  {
+    "id": "circuit_board",
+    "name": {
+      "fr": "Carte électronique",
+      "en": "Circuit board"
+    },
+    "rarity": "rare",
+    "use": ["craft"]
+  },
+  {
+    "id": "battery_pack",
+    "name": {
+      "fr": "Batterie",
+      "en": "Battery pack"
+    },
+    "rarity": "uncommon",
+    "use": ["craft", "energy"]
+  },
+  {
+    "id": "solar_panel",
+    "name": {
+      "fr": "Panneau solaire",
+      "en": "Solar panel"
+    },
+    "rarity": "rare",
+    "use": ["upgrade"]
+  }
+]

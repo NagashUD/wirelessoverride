@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wireless: Override</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Styles initiaux (inchangés, conservés comme tu les avais) */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: url('images/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #ffffff;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 20, 0.6);
+      z-index: -1;
+    }
+
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+      position: relative;
+    }
+
+    .logo h1 {
+      font-size: 4rem;
+      color: #ff00ff;
+      text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff66ff, 0 0 30px #ff00ff;
+      margin-bottom: 20px;
+    }
+
+    .game-description {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.2rem;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 15px 25px;
+      border-radius: 10px;
+      backdrop-filter: blur(5px);
+    }
+    form button {
+  display: block;
+  margin: 0 auto;
+}
+    .language-selector {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #fff;
+      font-family: 'Arial', sans-serif;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .language-selector:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 10px 2px rgba(255, 0, 150, 0.7);
+      transform: scale(1.05);
+    }
+
+    .language-selector button {
+      font-size: 14px;
+       font-family: 'Orbitron', sans-serif;
+      color: white;
+      background: transparent;
+      border: none;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .language-selector button:hover {
+      color: #ff0096;
+      text-shadow: 0 0 10px #ff0096, 0 0 20px #ff0096, 0 0 30px #ff0096;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      background: rgba(20, 20, 30, 0.6);
+      border-radius: 15px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+    }
+
+    section h2 {
+      color: #00ffff;
+      text-shadow: 0 0 10px #00ffff;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #ffffff;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #111;
+      color: #00ffff;
+      font-size: 1rem;
+      box-shadow: 0 0 10px #00ffff33;
+    }
+
+    button {
+      background-color: #ff00ff;
+      color: #ffffff;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s;
+      box-shadow: 0 0 10px #ff00ff88;
+    }
+
+    button:hover {
+      background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+    }
+
+    .existing-user {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .existing-user a {
+      color: #00ffff;
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      background: rgba(0, 0, 0, 0.4);
+      font-size: 0.9rem;
+    }
+
+    /* === Nouveau bouton en haut à droite === */
+    .login-btn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background-color: #ff00ff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #ff00ff88;
+    }
+
+    .login-btn:hover {
+      background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+    }
+
+    /* === Modal === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      backdrop-filter: blur(8px);
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: rgba(20, 20, 30, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #00ffff;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 1.5rem;
+      float: right;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        width: 95%;
+      }
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>Wireless: Override</h1>
+    </div>
+    <p class="game-description">
+      Un monde où la guerre cybernétique fait rage entre factions en quête de pouvoir et de ressources. Rejoignez une faction, relevez des défis, et laissez votre empreinte dans l'univers de l'Override.
+    </p>
+    <div class="language-selector">
+      <button id="lang-toggle">ENG/FRA</button>
+    </div>
+    <button class="login-btn" id="open-login-modal">Se connecter</button>
+  </header>
+
+  <section id="signup">
+    <h2>Rejoignez l'aventure</h2>
+    <p>Créez votre compte pour commencer à jouer !</p>
+    <form id="signup-form">
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" required />
+      <label for="password">Mot de passe :</label>
+      <input type="password" id="password" required />
+      <label for="email">Email :</label>
+      <input type="email" id="email" required />
+      <button type="submit">S'inscrire</button>
+    </form>
+    <p class="existing-user">Vous avez déjà un compte ? <a href="#login">Connectez-vous ici</a>.</p>
+  </section>
+
+  <!-- Modal Login -->
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="close-btn" id="close-login-modal">&times;</button>
+      <h2>Connexion</h2>
+      <form id="modal-login-form">
+        <label for="modal-username">Nom d'utilisateur :</label>
+        <input type="text" id="modal-username" required />
+        <label for="modal-password">Mot de passe :</label>
+        <input type="password" id="modal-password" required />
+        <button type="submit">Se connecter</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Wireless: Override. Tous droits réservés.
+  </footer>
+
+  <script>
+    const modal = document.getElementById('loginModal');
+    const openBtn = document.getElementById('open-login-modal');
+    const closeBtn = document.getElementById('close-login-modal');
+
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

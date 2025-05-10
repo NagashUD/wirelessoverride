@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Gestion du Clan - Membre</title>
+    <style>
+     
+
+        body {
+    background: url('images/clan.jpg') no-repeat fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #00ffff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+
+     /* Conteneur principal */
+     .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #ff00ff; /* rose néon */
+        text-shadow: 0 0 10px #ff00ff;
+        margin-bottom: 2rem;
+    }
+        .section {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        font-size: 2.5rem;
+        color: #ff00ff; /* rose néon */
+        text-shadow: 0 0 10px #ff00ff;
+        margin-bottom: 2rem;
+        }
+
+        label {
+        display: block;
+        margin-top: 1.5rem;
+        color: #ff00ff;
+        font-weight: bold;
+        text-shadow: 0 0 6px #ff00ff;
+    }
+
+        input[type="text"],
+        select,
+        textarea {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        background-color: #1a1a1a;
+        color: #00ffff;
+        border: 2px solid #ff00ff;
+        border-radius: 8px;
+        font-size: 1rem;
+        box-shadow: 0 0 10px #00ffff;
+        text-shadow: 0 0 4px #00ffff;
+    }
+
+
+         button {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #ff00ff;
+            color: #fff;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            padding: 12px 25px;
+            border: none;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 0 10px #ff00ff88;
+            width: 170px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 0; 
+ 
+        }
+
+        button:hover {
+            background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+
+    
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gestion du Clan - Membre</h1>
+
+        <!-- Requête au chef -->
+        <section class="section">
+            <h2>Faire une requête au chef</h2>
+            <form action="#" method="POST">
+                <label for="requeteType">Type de requête :</label>
+                <select id="requeteType" name="requeteType">
+                    <option value="argent">Demande d'argent</option>
+                    <option value="munitions">Demande de munitions</option>
+                    <option value="autre">Autre</option>
+                </select>
+
+                <label for="requeteJustification">Justification :</label>
+                <textarea id="requeteJustification" name="requeteJustification" rows="4" placeholder="Expliquez votre besoin..."></textarea>
+
+                <button type="submit">Envoyer la demande</button>
+            </form>
+        </section>
+
+        <!-- Historique des actions -->
+        <section class="section">
+            <h2>Historique des actions</h2>
+            <ul>
+                <li>Demande d'argent de [Nom du joueur] - Acceptée</li>
+                <li>Invité [Nom du joueur] dans le clan</li>
+                <!-- Autres actions à venir -->
+            </ul>
+        </section>
+    </div>
+
+</body>
+</html>

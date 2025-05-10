@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title data-key="title">Base du Joueur</title>
+  <style>
+    :root {
+      --bg: #0a0f14;
+      --panel: rgba(28, 31, 38, 0.8);
+      --accent: #00ffff;
+      --text: #e0eaf0;
+      --subtle: #7a8ca0;
+      --shadow: #00ffff55;
+      --pink: #ff00ff;
+    }
+    
+
+    body {
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: url('images/base.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--accent);
+      line-height: 1.6;
+      text-shadow: 0 0 5px var(--accent);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    h1, h2 {
+      color: var(--pink);
+      text-shadow: 0 0 10px var(--pink);
+      letter-spacing: 1px;
+      margin-top: 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-areas: 
+        "logs banque"
+        "amelio amelio";
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .logs, .banque, .ameliorations {
+      background: var(--panel);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px var(--shadow);
+      border: 2px solid var(--pink);
+      backdrop-filter: blur(6px);
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li::marker {
+      color: var(--pink);
+    }
+
+    em {
+      color: var(--subtle);
+      font-style: italic;
+    }
+
+    strong {
+      color: var(--accent);
+    }
+
+    p, li {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <h1 data-key="title">Base</h1>
+  <div class="container">
+    <div class="logs">
+      <h2 data-key="history_title">Historique des actions</h2>
+      <ul>
+        <li>[2025-05-06] <span data-key="upgrade_bed">Amélioration : Lit High-Tech installé</span></li>
+        <li>[2025-05-05] <span data-key="rent_payment">Paiement de 100 crédits pour le loyer</span></li>
+        <li>[2025-05-04] <span data-key="resource_gain">Collecte de ressources : +250 crédits</span></li>
+      </ul>
+    </div>
+
+    <div class="banque">
+      <h2 data-key="bank_title">Banque</h2>
+      <p><strong data-key="balance">Solde actuel :</strong> 1 250 crédits</p>
+      <p><strong data-key="savings">Épargne :</strong> 500 crédits</p>
+      <p><strong data-key="debt">Dette :</strong> 0 crédit</p>
+    </div>
+
+    <div class="ameliorations">
+      <h2 data-key="upgrade_title">Améliorer la base</h2>
+      <ul>
+        <li data-key="upgrade_bed_desc">Lit High-Tech – Accélère la récupération d’endurance</li>
+        <li data-key="upgrade_med_desc">Station de soins – Soins passifs +10%</li>
+        <li data-key="upgrade_net_desc">Réseau sécurisé – Réduit les risques de piratage</li>
+      </ul>
+      <p><em data-key="upgrade_soon">D'autres options d'amélioration seront disponibles prochainement.</em></p>
+    </div>
+  </div>
+
+  <script>
+    const userLang = "fr"; // à rendre dynamique plus tard
+
+    fetch("langues.json")
+      .then(res => res.json())
+      .then(data => {
+        document.querySelectorAll("[data-key]").forEach(el => {
+          const key = el.getAttribute("data-key");
+          if (data[userLang] && data[userLang][key]) {
+            el.textContent = data[userLang][key];
+          }
+        });
+      });
+  </script>
+</body>
+</html>

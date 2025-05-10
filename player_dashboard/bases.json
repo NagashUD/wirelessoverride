@@ -1,0 +1,35 @@
+[
+  {
+    "id": "squat",
+    "name": {
+      "fr": "Squat abandonné",
+      "en": "Abandoned squat"
+    },
+    "vehicle_slots": 1,
+    "max_energy": 100,
+    "modules": ["bed", "radio"],
+    "player_capacity": 1
+  },
+  {
+    "id": "entrepot",
+    "name": {
+      "fr": "Entrepôt sécurisé",
+      "en": "Secured warehouse"
+    },
+    "vehicle_slots": 2,
+    "max_energy": 300,
+    "modules": ["camera", "drone", "solar_panel"],
+    "player_capacity": 2
+  },
+  {
+    "id": "bunker",
+    "name": {
+      "fr": "Bunker blindé",
+      "en": "Armored bunker"
+    },
+    "vehicle_slots": 4,
+    "max_energy": 600,
+    "modules": ["sentry_ai", "offensive_drone", "turret", "stockpile"],
+    "player_capacity": 3
+  }
+]

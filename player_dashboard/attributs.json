@@ -1,0 +1,39 @@
+{
+  "attributs": [
+    {
+      "nom": "Force",
+      "description": "Capacité physique brute (porter, frapper, encaisser)",
+      "effets": ["Dommages au corps-à-corps", "Capacité de charge", "Interactions physiques"]
+    },
+    {
+      "nom": "Endurance",
+      "description": "Résistance physique et mentale à l'effort",
+      "effets": ["Points de vie", "Résistance aux toxines", "Fatigue", "Douleur"]
+    },
+    {
+      "nom": "Agilité",
+      "description": "Réactivité, vitesse, réflexes",
+      "effets": ["Esquive", "Initiative", "Déplacement furtif"]
+    },
+    {
+      "nom": "Intelligence",
+      "description": "Capacité d'analyse, mémoire, logique",
+      "effets": ["Bonus aux hacks", "Médecine", "Ingénierie"]
+    },
+    {
+      "nom": "Perception",
+      "description": "Sens aiguisés, vigilance, attention aux détails",
+      "effets": ["Détection", "Précision à distance", "Réactivité à l’environnement"]
+    },
+    {
+      "nom": "Tech-Affinité",
+      "description": "Affinité naturelle avec les systèmes technologiques",
+      "effets": ["Interaction avec machines/implants", "Diagnostic technique"]
+    },
+    {
+      "nom": "Chance",
+      "description": "Facteur X aléatoire",
+      "effets": ["Coups critiques", "Loot rare", "Événements imprévus"]
+    }
+  ]
+}

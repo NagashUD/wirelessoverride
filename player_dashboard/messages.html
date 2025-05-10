@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Messages - Wireless Override</title>
+    
+    <style>
+
+body {
+    background: url('images/messages.png') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #ff00ff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+.container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* Style de base pour les onglets */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+        }
+        .tab {
+            background-color: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    border: 2px solid #ff00ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    margin-right: 10px;
+        }
+
+        .tab:hover {
+            background-color: #ff00ff;
+    color: #000;
+        }
+
+        .tab.active {
+            background-color: #ff00ff;
+        }
+
+        nav .tab:after {
+             content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00fff7;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+        }
+
+        nav .tab:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        label {
+    display: block;
+    margin-top: 1.5rem;
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 6px #ff00ff;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    background-color: #1a1a1a;
+    color: #00ffff;
+    border: 2px solid #ff00ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 0 10px #00ffff;
+    text-shadow: 0 0 4px #00ffff;
+}
+
+button {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #ff00ff;
+    color: #fff;
+    width: 120px;        /* largeur fixe */
+    height: 40px;        /* hauteur fixe */
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 0 0 10px #ff00ff88;
+}
+
+button:hover {
+    background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+}
+
+.btn-envoyer {
+  width: 170px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 0; 
+  
+}
+        
+.btn-envoyer {
+    :hover {
+    background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+}
+}
+    </style>
+</head>
+<body>
+    <h1>Messages - Wireless Override</h1>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('inbox')">Boîte de Réception</div>
+        <div class="tab" onclick="showTab('send')">Envoyer un Message</div>
+        <div class="tab" onclick="showTab('archived')">Messages Archivés</div>
+        <div class="tab" onclick="showTab('sent')">Messages Envoyés</div>
+    </div>
+<div class="container">
+    <div id="inbox" class="tab-content active">
+        <h3>Boîte de Réception</h3>
+        <ul>
+            <li><strong>Expéditeur :</strong> Joueur1 | <strong>Date :</strong> 2025-05-06 | <strong>Message :</strong> Mission en cours...</li>
+            <li><strong>Expéditeur :</strong> PNJ1 | <strong>Date :</strong> 2025-05-05 | <strong>Message :</strong> Nouvelle tâche disponible...</li>
+            <!-- Autres messages reçus -->
+        </ul>
+    </div>
+
+    <div id="send" class="tab-content">
+        <h3>Envoyer un Message</h3>
+        <form action="#" method="POST">
+            <label for="destinataire">Destinataire :</label>
+            <input type="text" id="destinataire" name="destinataire" placeholder="Nom du joueur ou du PNJ">
+    
+            <label for="objet">Objet :</label>
+            <input type="text" id="objet" name="objet" placeholder="Sujet du message">
+    
+            <label for="message">Message :</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tapez votre message ici..."></textarea>
+    
+            <button class="btn-envoyer">Envoyer</button>
+        </form>
+    </div>
+
+    <div id="archived" class="tab-content">
+        <h3>Messages Archivés</h3>
+        <ul>
+            <li><strong>Expéditeur :</strong> Joueur3 | <strong>Date :</strong> 2025-04-30 | <strong>Message :</strong> Demande de ressources...</li>
+            <!-- Autres messages archivés -->
+        </ul>
+    </div>
+
+    <div id="sent" class="tab-content">
+        <h3>Messages Envoyés</h3>
+        <ul>
+            <li><strong>Destinataire :</strong> Joueur2 | <strong>Date :</strong> 2025-05-04 | <strong>Message :</strong> Mission complétée...</li>
+            <!-- Autres messages envoyés -->
+        </ul>
+    </div>
+</div>
+    <script>
+        function showTab(tabId) {
+            // Cacher toutes les sections de contenu
+            let contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Retirer la classe active des onglets
+            let tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Afficher le contenu sélectionné
+            document.getElementById(tabId).classList.add('active');
+
+            // Ajouter la classe active à l'onglet sélectionné
+            let activeTab = document.querySelector(`[onclick="showTab('${tabId}')"]`);
+            activeTab.classList.add('active');
+        }
+    </script>
+</body>
+</html>

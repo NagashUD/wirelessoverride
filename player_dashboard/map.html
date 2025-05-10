@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Carte - Wireless Override</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+
+  body {
+    background: url('images/messages.png') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #ff00ff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+
+
+header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+
+    .button-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    button {
+       font-family: 'Orbitron', sans-serif;
+    background-color: #ff00ff;
+    color: #fff;
+    width: 120px;        /* largeur fixe */
+    height: 40px;        /* hauteur fixe */
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+    margin-top: 20px;
+    box-shadow: 0 0 10px #ff00ff88;
+    width: 170px;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+  padding: 0; 
+    }
+
+    button:hover {
+      background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+
+    }
+
+    .form-container {
+      width: 80%;
+      
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+    margin-top: 1.5rem;
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 6px #ff00ff;
+    }
+
+    input, textarea, select {
+      width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    background-color: #1a1a1a;
+    color: #00ffff;
+    border: 2px solid #ff00ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 0 10px #00ffff;
+    text-shadow: 0 0 4px #00ffff;
+    display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+ 
+  justify-content: center;
+  gap: 1rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+
+    }
+
+    #map {
+  width: 100%;
+  height: 500px;
+  background-color: #333;
+  border: 4px solid #ff00ff; /* bordure néon */
+  box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 8px;
+}
+
+
+
+
+/* Style mission icon si besoin d'effet */
+.leaflet-marker-icon.mission-icon {
+  filter: drop-shadow(0 0 5px #ff00ff) brightness(1.2);
+}
+
+/* Popup embellie */
+.leaflet-popup-content-wrapper {
+  background: rgba(0, 0, 0, 0.85);
+  border: 2px solid #ff00ff;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #ff00ff88;
+  color: #00ffff;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+}
+
+.popup-btn {
+  display: inline-block;
+  margin: 8px 4px 0;
+  padding: 8px 12px;
+  background-color: #ff00ff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-shadow: 0 0 4px #fff;
+  box-shadow: 0 0 10px #ff00ff88;
+}
+
+.popup-btn:hover {
+  background-color: #00fff7;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px #00fff7;
+}
+
+.popup-btn.cancel {
+  background-color: #aa0033;
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+  <body data-chef="true"></body>
+  <header>
+    <h1>Carte du monde – Wireless Override</h1>
+  </header>
+
+  <div class="button-bar">
+    <button onclick="startMissionMode()">Créer une mission</button>
+  </div>
+
+  <div id="map"></div>
+
+  <div class="form-container" id="missionForm">
+    <h2>Nouvelle Mission</h2>
+    <label for="type">Type de mission</label>
+    <select id="type">
+      <option value="Sabotage">Sabotage</option>
+      <option value="Reconnaissance">Reconnaissance</option>
+      <option value="Extraction">Extraction</option>
+      <option value="Protection">Protection</option>
+      <option value="Interception">Interception</option>
+    </select>
+
+    <label for="difficulty">Difficulté</label>
+    <select id="difficulty">
+      <option value="1">Facile (100 crédits)</option>
+      <option value="2">Moyen (200 crédits)</option>
+      <option value="3">Difficile (300 crédits)</option>
+      <option value="4">Extrême (500 crédits)</option>
+    </select>
+
+    <label for="players">Nombre de joueurs prévus</label>
+    <input type="number" id="players" value="1" min="1" max="10">
+
+    <p id="reward">Récompense : 100 crédits</p>
+    <button onclick="confirmMissionData()">Confirmer</button>
+    <button onclick="cancelMissionCreation()">Annuler</button>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    let map = L.map('map').setView([51.505, -0.09], 13);
+    let missionMode = false;
+    let pendingMarker = null;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    function startMissionMode() {
+      missionMode = true;
+      alert("Cliquez sur la carte pour positionner une mission.");
+    }
+
+    map.on('click', function(e) {
+      if (!missionMode) return;
+
+      if (pendingMarker) map.removeLayer(pendingMarker);
+
+      pendingMarker = L.marker(e.latlng, { icon: customIcon }).addTo(map);
+      document.getElementById("missionForm").style.display = "block";
+      updateReward();
+    });
+
+    function cancelMissionCreation() {
+      if (pendingMarker) {
+        map.removeLayer(pendingMarker);
+        pendingMarker = null;
+      }
+      document.getElementById("missionForm").style.display = "none";
+      missionMode = false;
+    }
+
+    function confirmMissionData() {
+      const type = document.getElementById("type").value;
+      const difficulty = parseInt(document.getElementById("difficulty").value);
+      const players = parseInt(document.getElementById("players").value);
+      const reward = difficulty * 100 * players;
+      const description = `${type} (Difficulté ${difficulty}, ${players} joueur(s)) – ${reward} crédits`;
+
+      pendingMarker.bindPopup(`
+  <div class="popup-content">
+    <strong>${description}</strong><br><br>
+    <button class="popup-btn" onclick="alert('Vous avez rejoint cette mission.')">Rejoindre</button>
+    <button class="popup-btn cancel" onclick="confirmCancelMission(this)">Annuler mission</button>
+  </div>
+`).openPopup();
+
+      pendingMarker = null;
+      document.getElementById("missionForm").style.display = "none";
+      missionMode = false;
+    }
+
+    function confirmCancelMission(button) {
+      const confirmed = confirm("Êtes-vous sûr de vouloir annuler cette mission ?");
+      if (confirmed) {
+        const popup = button.closest(".leaflet-popup");
+        const marker = popup._source;
+        map.removeLayer(marker);
+        // TODO: libérer les ressources si nécessaire
+      }
+    }
+
+    document.getElementById("difficulty").addEventListener("change", updateReward);
+    document.getElementById("players").addEventListener("input", updateReward);
+
+    function updateReward() {
+      const difficulty = parseInt(document.getElementById("difficulty").value);
+      const players = parseInt(document.getElementById("players").value);
+      const reward = difficulty * 100 * players;
+      document.getElementById("reward").innerText = `Récompense : ${reward} crédits`;
+    }
+
+    const isChef = document.body.dataset.chef === "true";
+
+if (!isChef) {
+  document.querySelector(".button-bar").style.display = "none";
+  document.getElementById("missionForm").style.display = "none";
+}
+
+const customIcon = L.icon({
+    iconUrl: 'images/mission-icon.png', // ajoute une petite icône ici
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -30],
+    className: 'mission-icon'
+  });
+
+  
+  </script>
+</body>
+</html>

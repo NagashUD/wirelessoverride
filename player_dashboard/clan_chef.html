@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Chef de Clan</title>
+  <style>
+    body {
+    background: url('images/clan.jpg') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #ff00ff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #ff00ff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+.container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+
+        /* Style de base pour les onglets */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+        }
+        .tab {
+            background-color: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    border: 2px solid #ff00ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    margin-right: 10px;
+        }
+
+        .tab:hover {
+            background-color: #ff00ff;
+    color: #000;
+        }
+
+        .tab.active {
+            background-color: #ff00ff;
+        }
+
+        nav .tab:after {
+             content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00fff7;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+        }
+
+        nav .tab:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        label {
+    display: block;
+    margin-top: 1.5rem;
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 6px #ff00ff;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    background-color: #1a1a1a;
+    color: #00ffff;
+    border: 2px solid #ff00ff;
+    border-radius: 8px;
+    font-size: 1rem;
+    box-shadow: 0 0 10px #00ffff;
+    text-shadow: 0 0 4px #00ffff;
+}
+
+button {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #ff00ff;
+    color: #fff;
+    width: 200px;        /* largeur fixe */
+    height: 40px;        /* hauteur fixe */
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+    box-shadow: 0 0 10px #ff00ff88;
+    box-sizing: border-box;
+
+    
+}
+
+button:hover {
+  background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+}
+
+.btn-repair {
+  font-family: 'Orbitron', sans-serif;
+    background-color: #ff00ff;
+    color: #fff;
+    width: 100%;        /* largeur fixe */
+    height: 40px;        /* hauteur fixe */
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    padding: 12px 25px;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 20px;
+    box-shadow: 0 0 10px #ff00ff88;
+    box-sizing: border-box;
+  padding: 0; 
+  
+}
+
+.btn-repair:hover {
+  background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+}
+
+  </style>
+</head>
+<body>
+
+  <h1>Gestion du Clan – Chef</h1>
+
+  <div class="container">
+  <section class="section">
+    <h2>Ressources du Clan</h2>
+    <ul>
+      <li>💰 Crédits : 5 000</li>
+      <li>🔫 Munitions : 1 200</li>
+      <li>🛠 Pièces détachées : 320</li>
+      <li>🍲 Rations : 600</li>
+    </ul>
+  </section>
+</div>
+
+
+<div class="container">
+  <div class="clan-section">
+    <h2>État du Matériel du Clan</h2>
+    <table class="equipment-table">
+      <thead>
+        <tr><th>Équipement</th><th>État</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Serveur réseau</td>
+          <td><span class="status ok">🟢 Opérationnel</span></td>
+          <td><span class="noop">✅ Aucun entretien</span></td>
+        </tr>
+        <tr>
+          <td>Système de surveillance</td>
+          <td><span class="status warn">🟡 Maintenance requise</span></td>
+          <td><button class="btn-repair repair">🔧 Réparer - 150 Tech</button></td>
+        </tr>
+        <tr>
+          <td>Stations médicales</td>
+          <td><span class="status critical">🔴 Hors-service</span></td>
+          <td><button class="btn-repair repair">🔧 Réparer - 300 Santé</button></td>
+        </tr>
+        <tr>
+          <td>Stockage de données</td>
+          <td>75% utilisé</td>
+          <td><button class="btn-repair upgrade">📦 Améliorer - 200 Énergie</button></td>
+        </tr>
+        <tr>
+          <td>Système de défense</td>
+          <td><span class="status locked">🔒 Verrouillé (Niv 6)</span></td>
+          <td><span class="noop">⛔ Niveau insuffisant</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="container">
+  <section class="section">
+    <h2>Journal d’activité du Clan</h2>
+    <div style="max-height: 200px; overflow-y: auto;">
+      <ul>
+        <li>[12:30] Recrutement de Kuro par le chef</li>
+        <li>[12:45] Dépôt de 200 crédits dans la banque du clan</li>
+        <li>[13:00] Mission acceptée par le clan : Surveillance périphérique</li>
+        <li>[13:20] Répartition de 100 munitions à Sora</li>
+        <li>[13:45] Ajout de 50 crédits dans l’épargne du clan</li>
+        <li>[14:10] Nouveau membre admis : Lyra</li>
+        <li>[14:25] Déclenchement d’une alerte niveau 1</li>
+      </ul>
+    </div>
+    
+  </section>
+</div>
+
+<div class="container">
+  <section class="section">
+    <h2>Inviter un membre</h2>
+    <form action="#" method="POST">
+      <input type="text" name="pseudo" placeholder="Nom du joueur">
+      <button type="submit">Inviter</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2>Créer un grade personnalisé</h2>
+    <form action="#" method="POST">
+      <input type="text" name="grade" placeholder="Nom du grade">
+      <button type="submit">Créer</button>
+    </form>
+  </section>
+
+  <section class="section">
+    <h2>Requêtes des membres</h2>
+    <form action="#" method="POST">
+      <ul>
+        <li>
+          <input type="checkbox" name="requete[]" value="1">
+          Demande d'argent de [Nom du joueur 1]
+        </li>
+        <li>
+          <input type="checkbox" name="requete[]" value="2">
+          Demande de munitions de [Nom du joueur 2]
+        </li>
+      </ul>
+      <div class="form-actions">
+        <button type="submit" name="action" value="accepter">✅ Approuver</button>
+        <button type="submit" name="action" value="refuser">❌ Refuser</button>
+      </div>
+      
+    </form>
+      </section>
+    </div>
+    
+<style>
+  .clan-container { padding: 20px; }
+  .clan-header h2 { font-size: 24px; margin-bottom: 20px; }
+  .clan-section { margin-bottom: 30px; }
+  .requests-table, .equipment-table { width: 100%; border-collapse: collapse; }
+  .requests-table th, .requests-table td,
+  .equipment-table th, .equipment-table td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  .approve { background-color: #4CAF50; color: white; margin-right: 4px; }
+  .deny { background-color: #f44336; color: white; }
+  .status.ok { color: green; }
+  .status.warn { color: orange; }
+  .status.critical { color: red; }
+  .status.locked { color: gray; }
+  .noop { color: #777; }
+</style>
+</body>
+</html>
