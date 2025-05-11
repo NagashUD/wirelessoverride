@@ -472,52 +472,7 @@ form.addEventListener("submit", async (e) => {
 }
 </script>
 
-    <script>
-        const factionDescriptions = {
-            synrax: "SYNRAX : Un collectif cybernétique prônant la fusion entre homme et machine. Leur technologie avancée défie les lois naturelles.",
-            corvex: "CORVEX INDUSTRIES : Conglomérat militaro-industriel. Organisé, implacable, axé sur le contrôle et l’optimisation des ressources.",
-            ferals: "FERALS : Survivants mutants des zones irradiées. Sauvages, imprévisibles, connectés à une forme de nature mutée.",
-            aegis: "AEGIS NOIR : Organisation paramilitaire clandestine. Tactique, spécialisée dans l’espionnage, les assassinats et le sabotage.",
-            neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
-        };
-
-        const roleDescriptions = {
-            soldier: {
-                synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
-                corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
-                ferals: "Soldat FERALS : Brutal, imprévisible, utilise des armes primitives autant que radioactives.",
-                aegis: "Soldat AEGIS NOIR : Discret, précis, mortel. Opérations spéciales en environnement hostile.",
-                neurorage: "Soldat NEURORAGE : Mi-soldat mi-pirate de champ de bataille, doté de cyberréflexes."
-            },
-            engineer: {
-                synrax: "Ingénieur SYNRAX : Crée et améliore des implants et drones autonomes.",
-                corvex: "Ingénieur CORVEX : Spécialiste en fortification, robotique industrielle et armement lourd.",
-                ferals: "Ingénieur FERALS : Bricole des artefacts mutants, armes organiques ou instables.",
-                aegis: "Ingénieur AEGIS NOIR : Expert sabotage, piratage industriel, technologie furtive.",
-                neurorage: "Ingénieur NEURORAGE : Transforme les datas en outils mortels, fabrique du code vivant."
-            },
-            hacker: {
-                synrax: "Hacker SYNRAX : Fusionne avec le réseau pour manipuler la réalité augmentée.",
-                corvex: "Hacker CORVEX : Récupère des données industrielles critiques pour un usage stratégique.",
-                ferals: "Hacker FERALS : Parasite les flux de données à l’état sauvage, anarchique et destructeur.",
-                aegis: "Hacker AEGIS NOIR : Discret, traque les failles, injecte des virus létaux dans les systèmes ennemis.",
-                neurorage: "Hacker NEURORAGE : Maître absolu des datas, il peut prendre le contrôle total d’un réseau entier."
-            },
-            medic: {
-                synrax: "Médecin SYNRAX : Greffe, remplace, améliore. Soigner, c’est upgrader.",
-                corvex: "Médecin CORVEX : Médecine de terrain rapide et rentable, à l’image de leur doctrine.",
-                ferals: "Médecin FERALS : Guérison brutale et alternative, utilise des substances mutagènes.",
-aegis: "Médecin AEGIS NOIR : Spécialisé en réanimations rapides en milieu de guerre.",
-neurorage: "Médecin NEURORAGE : Des améliorations cérébrales pour contrer les blessures complexes."
-},
-scout: {
-synrax: "Éclaireur SYNRAX : Agent discret, opérant dans les recoins cachés du monde numérique.",
-corvex: "Éclaireur CORVEX : Utilise des drones et autres dispositifs de surveillance avancés.",
-ferals: "Éclaireur FERALS : Écoute les murmures de la nature, détecte les failles dans les zones irradiées.",
-aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mouvement dans l'ombre.",
-neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
-}
-};
+  <script>
 
 
     // Gérer la description selon les choix
@@ -616,9 +571,54 @@ neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les faille
  
     </script>
 
+  <script>
+        const factionDescriptions = {
+            synrax: "SYNRAX : Un collectif cybernétique prônant la fusion entre homme et machine. Leur technologie avancée défie les lois naturelles.",
+            corvex: "CORVEX INDUSTRIES : Conglomérat militaro-industriel. Organisé, implacable, axé sur le contrôle et l’optimisation des ressources.",
+            ferals: "FERALS : Survivants mutants des zones irradiées. Sauvages, imprévisibles, connectés à une forme de nature mutée.",
+            aegis: "AEGIS NOIR : Organisation paramilitaire clandestine. Tactique, spécialisée dans l’espionnage, les assassinats et le sabotage.",
+            neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
+        };
 
+        const roleDescriptions = {
+            soldier: {
+                synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
+                corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
+                ferals: "Soldat FERALS : Brutal, imprévisible, utilise des armes primitives autant que radioactives.",
+                aegis: "Soldat AEGIS NOIR : Discret, précis, mortel. Opérations spéciales en environnement hostile.",
+                neurorage: "Soldat NEURORAGE : Mi-soldat mi-pirate de champ de bataille, doté de cyberréflexes."
+            },
+            engineer: {
+                synrax: "Ingénieur SYNRAX : Crée et améliore des implants et drones autonomes.",
+                corvex: "Ingénieur CORVEX : Spécialiste en fortification, robotique industrielle et armement lourd.",
+                ferals: "Ingénieur FERALS : Bricole des artefacts mutants, armes organiques ou instables.",
+                aegis: "Ingénieur AEGIS NOIR : Expert sabotage, piratage industriel, technologie furtive.",
+                neurorage: "Ingénieur NEURORAGE : Transforme les datas en outils mortels, fabrique du code vivant."
+            },
+            hacker: {
+                synrax: "Hacker SYNRAX : Fusionne avec le réseau pour manipuler la réalité augmentée.",
+                corvex: "Hacker CORVEX : Récupère des données industrielles critiques pour un usage stratégique.",
+                ferals: "Hacker FERALS : Parasite les flux de données à l’état sauvage, anarchique et destructeur.",
+                aegis: "Hacker AEGIS NOIR : Discret, traque les failles, injecte des virus létaux dans les systèmes ennemis.",
+                neurorage: "Hacker NEURORAGE : Maître absolu des datas, il peut prendre le contrôle total d’un réseau entier."
+            },
+            medic: {
+                synrax: "Médecin SYNRAX : Greffe, remplace, améliore. Soigner, c’est upgrader.",
+                corvex: "Médecin CORVEX : Médecine de terrain rapide et rentable, à l’image de leur doctrine.",
+                ferals: "Médecin FERALS : Guérison brutale et alternative, utilise des substances mutagènes.",
+aegis: "Médecin AEGIS NOIR : Spécialisé en réanimations rapides en milieu de guerre.",
+neurorage: "Médecin NEURORAGE : Des améliorations cérébrales pour contrer les blessures complexes."
+},
+scout: {
+synrax: "Éclaireur SYNRAX : Agent discret, opérant dans les recoins cachés du monde numérique.",
+corvex: "Éclaireur CORVEX : Utilise des drones et autres dispositifs de surveillance avancés.",
+ferals: "Éclaireur FERALS : Écoute les murmures de la nature, détecte les failles dans les zones irradiées.",
+aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mouvement dans l'ombre.",
+neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
+}
+};
 
-
+</script>
  
 </body>
 
