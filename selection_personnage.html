@@ -338,28 +338,34 @@ body::before {
       </div>
       
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-  authDomain: "wirelessoverride.firebaseapp.com",
-  projectId: "wirelessoverride",
-  storageBucket: "wirelessoverride.appspot.com",
-  messagingSenderId: "674723237901",
-  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.firebasestorage.app",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      user.reload().then(() => {
+        if (!user.emailVerified) {
+          window.location.href = "/verify.html";
+        }
+      });
+    } else {
+      window.location.href = "/index.html";
+    }
+  });
+</script>
+<script>
 
  const form = document.getElementById("character-selection-form");
 form.addEventListener("submit", async (e) => {
@@ -393,7 +399,7 @@ form.addEventListener("submit", async (e) => {
   // et rediriger ensuite
   window.location.href = "dashboard.html";
 });
-});
+
 </script>
  <script>
     firebase.auth().onAuthStateChanged((user) => {
