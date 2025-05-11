@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Choix de Faction, Rôle et Identité</title>
+    <style>
+        /* Style global */
+        body {
+    background: url('images/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #00ffff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #00ffff;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+
+    h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        color: #ff00ff; /* rose néon */
+        text-shadow: 0 0 10px #ff00ff;
+        margin-bottom: 2rem;
+    }
+
+    label {
+        display: block;
+        margin-top: 1.5rem;
+        color: #ff00ff;
+        font-weight: bold;
+        text-shadow: 0 0 6px #ff00ff;
+    }
+
+
+        header {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 10px;
+            color: white;
+        }
+
+        /* Conteneur principal */
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .description {
+        margin-top: 1rem;
+        padding: 1rem;
+        background-color: rgba(255, 0, 255, 0.1);
+        border: 2px solid #ff00ff;
+        border-radius: 8px;
+        color: #ff66ff;
+        text-shadow: 0 0 5px #ff00ff;
+    }
+
+
+        
+        .selection-group {
+            margin-bottom: 30px;
+        }
+
+        .selection-group label {
+            font-size: 1.2em;
+        }
+
+        /* Selecteurs et input */
+        input[type="text"],
+    select {
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+        background-color: #1a1a1a;
+        color: #00ffff;
+        border: 2px solid #ff00ff;
+        border-radius: 8px;
+        font-size: 1rem;
+        box-shadow: 0 0 10px #00ffff;
+        text-shadow: 0 0 4px #00ffff;
+    }
+
+        button {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #ff00ff;
+            color: #fff;
+            font-size: 1.1rem;
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            padding: 12px 25px;
+            border: none;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 0 10px #ff00ff88;
+        }
+
+        button:hover {
+            background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+        }
+
+        .description-text {
+            font-size: 1em;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        small {
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        .logo {
+            font-size: 2em;
+            text-align: center;
+            color: #FF61A6;
+        }
+
+        .container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    
+
+  .image-side {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100; /* Ajuste si besoin */
+    width: auto;
+    max-width: 20vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: rgba(10, 10, 10, 0.5); /* léger fond */
+    z-index: 1;
+    pointer-events: none;
+    border-radius: 12px;
+  }
+  
+  .image-side img {
+    max-height: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  
+  .image-side.left {
+    left: 1vw;
+  }
+  
+  .image-side.right {
+    right: 1vw;
+  }
+  
+  @keyframes pulseNeon {
+  0% {
+    box-shadow:
+      0 0 4px #0ff,
+      0 0 8px #0ff,
+      0 0 16px #0ff,
+      0 0 32px #0ff;
+  }
+  50% {
+    box-shadow:
+      0 0 6px #0ff,
+      0 0 12px #0ff,
+      0 0 24px #0ff,
+      0 0 48px #0ff;
+  }
+  100% {
+    box-shadow:
+      0 0 4px #0ff,
+      0 0 8px #0ff,
+      0 0 16px #0ff,
+      0 0 32px #0ff;
+  }
+}
+
+.neon-border {
+  animation: pulseNeon 2s infinite;
+  border: 2px solid #0ff;
+  border-radius: 12px;
+}
+
+#playerNameInput {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+.input-wrapper {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 1rem;
+}
+
+#character-name {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 2px solid #0ff;
+  border-radius: 8px;
+  background-color: #000;
+  color: #0ff;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.form-section {
+  width: 100%;
+  padding: 0 1rem;
+  margin-top: 1rem;
+}
+
+.main-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  overflow: hidden; /* ou auto */
+  box-sizing: border-box;
+}
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>Bienvenue !</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <form id="character-selection-form">
+        <h2>Choisissez votre Faction, Rôle et Identité</h2>
+
+        <!-- Sélection du Clan -->
+        <div class="selection-group">
+            <label for="faction">Sélectionnez votre Faction :</label>
+            <select id="faction" name="faction">
+                <option value="synrax">SYNRAX</option>
+                <option value="corvex">CORVEX INDUSTRIES</option>
+                <option value="ferals">FERALS</option>
+                <option value="aegis">AEGIS NOIR</option>
+                <option value="neurorage">NEURORAGE</option>
+            </select>
+            <p id="faction-description" class="description-text"></p>
+        </div>
+
+        <!-- Sélection du rôle -->
+        <div class="selection-group">
+            <label for="role">Sélectionnez votre Rôle :</label>
+            <select id="role" name="role">
+                <option value="soldier">Soldat</option>
+                <option value="engineer">Ingénieur</option>
+                <option value="hacker">Hacker</option>
+                <option value="medic">Médecin</option>
+                <option value="scout">Éclaireur</option>
+            </select>
+            <p id="role-description" class="description-text"></p>
+        </div>
+
+        <!-- Choix du Genre -->
+        <div class="selection-group">
+            <label for="genre">Choisissez votre Genre :</label>
+            <select id="genre" name="genre">
+                <option value="male">Homme</option>
+                <option value="female">Femme</option>
+            </select>
+        </div>
+
+        <!-- Choix du Nom -->
+        <div class="selection-group">
+            <label for="character-name">Entrez le nom de votre personnage :</label>
+            <input type="text" id="character-name" name="character-name" placeholder="Nom du personnage" required>
+            <small>Le nom ne doit contenir que des lettres, chiffres et espaces.</small>
+        </div>
+
+        <!-- Bouton de validation -->
+        <button id="confirm-selection" type="submit">Confirmer le choix</button>
+    </div>
+</form>
+
+    <footer>
+        <p>&copy; 2025 Wireless: Override. Tous droits réservés.</p>
+    </footer>
+
+
+    <div class="page-container" style="display: flex; align-items: flex-start; justify-content: center; gap: 20px;">
+          <!-- Div gauche avec image -->
+        <div class="side-image left">
+                 </div>
+              <!-- Contenu central conservé tel quel -->
+        <div class="main-content">
+          <!-- Ton contenu HTML principal ici -->
+        </div>
+              <!-- Div droite avec image -->
+        <div class="side-image right">
+       
+        </div>
+      
+      </div>
+      
+
+
+<script>
+    // Fonction pour vérifier le nom (pas de caractères spéciaux)
+    function isValidName(name) {
+        var regex = /^[a-zA-Z0-9\s]+$/; // Lettres, chiffres et espaces uniquement
+        return regex.test(name);
+    }
+
+    // Fonction appelée lors de la validation du personnage
+ function validerPersonnage(event) {
+    event.preventDefault(); // Pour éviter le rechargement de la page
+
+    const characterName = document.getElementById("character-name").value;
+    const faction = document.getElementById("faction").value;
+    const roleSelected = document.getElementById("role").value;
+    const genre = document.getElementById("genre").value;
+
+    if (characterName === "") {
+        alert("Le nom de votre personnage ne peut pas être vide.");
+        return;
+    }
+
+    if (!isValidName(characterName)) {
+        alert("Le nom ne peut contenir que des lettres, des chiffres et des espaces.");
+        return;
+    }
+
+    // Sauvegarde dans localStorage
+    localStorage.setItem('faction', faction);
+    localStorage.setItem('role', roleSelected);
+    localStorage.setItem('genre', genre);
+    localStorage.setItem('characterName', characterName);
+    localStorage.setItem('persoActif', 'true');
+
+    // Sauvegarde dans Firebase
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const userRef = doc(db, "players", user.uid);
+            await setDoc(userRef, {
+                characterSelected: true,
+                faction: faction,
+                role: roleSelected,
+                genre: genre,
+                characterName: characterName
+            }, { merge: true });
+
+            window.location.href = 'dashboard.html';
+        }
+    });
+}
+</script>
+
+    <script>
+        const factionDescriptions = {
+            synrax: "SYNRAX : Un collectif cybernétique prônant la fusion entre homme et machine. Leur technologie avancée défie les lois naturelles.",
+            corvex: "CORVEX INDUSTRIES : Conglomérat militaro-industriel. Organisé, implacable, axé sur le contrôle et l’optimisation des ressources.",
+            ferals: "FERALS : Survivants mutants des zones irradiées. Sauvages, imprévisibles, connectés à une forme de nature mutée.",
+            aegis: "AEGIS NOIR : Organisation paramilitaire clandestine. Tactique, spécialisée dans l’espionnage, les assassinats et le sabotage.",
+            neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
+        };
+
+        const roleDescriptions = {
+            soldier: {
+                synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
+                corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
+                ferals: "Soldat FERALS : Brutal, imprévisible, utilise des armes primitives autant que radioactives.",
+                aegis: "Soldat AEGIS NOIR : Discret, précis, mortel. Opérations spéciales en environnement hostile.",
+                neurorage: "Soldat NEURORAGE : Mi-soldat mi-pirate de champ de bataille, doté de cyberréflexes."
+            },
+            engineer: {
+                synrax: "Ingénieur SYNRAX : Crée et améliore des implants et drones autonomes.",
+                corvex: "Ingénieur CORVEX : Spécialiste en fortification, robotique industrielle et armement lourd.",
+                ferals: "Ingénieur FERALS : Bricole des artefacts mutants, armes organiques ou instables.",
+                aegis: "Ingénieur AEGIS NOIR : Expert sabotage, piratage industriel, technologie furtive.",
+                neurorage: "Ingénieur NEURORAGE : Transforme les datas en outils mortels, fabrique du code vivant."
+            },
+            hacker: {
+                synrax: "Hacker SYNRAX : Fusionne avec le réseau pour manipuler la réalité augmentée.",
+                corvex: "Hacker CORVEX : Récupère des données industrielles critiques pour un usage stratégique.",
+                ferals: "Hacker FERALS : Parasite les flux de données à l’état sauvage, anarchique et destructeur.",
+                aegis: "Hacker AEGIS NOIR : Discret, traque les failles, injecte des virus létaux dans les systèmes ennemis.",
+                neurorage: "Hacker NEURORAGE : Maître absolu des datas, il peut prendre le contrôle total d’un réseau entier."
+            },
+            medic: {
+                synrax: "Médecin SYNRAX : Greffe, remplace, améliore. Soigner, c’est upgrader.",
+                corvex: "Médecin CORVEX : Médecine de terrain rapide et rentable, à l’image de leur doctrine.",
+                ferals: "Médecin FERALS : Guérison brutale et alternative, utilise des substances mutagènes.",
+aegis: "Médecin AEGIS NOIR : Spécialisé en réanimations rapides en milieu de guerre.",
+neurorage: "Médecin NEURORAGE : Des améliorations cérébrales pour contrer les blessures complexes."
+},
+scout: {
+synrax: "Éclaireur SYNRAX : Agent discret, opérant dans les recoins cachés du monde numérique.",
+corvex: "Éclaireur CORVEX : Utilise des drones et autres dispositifs de surveillance avancés.",
+ferals: "Éclaireur FERALS : Écoute les murmures de la nature, détecte les failles dans les zones irradiées.",
+aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mouvement dans l'ombre.",
+neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
+}
+};
+
+
+    // Gérer la description selon les choix
+    document.getElementById("faction").addEventListener("change", updateDescriptions);
+    document.getElementById("role").addEventListener("change", updateDescriptions);
+
+    function updateDescriptions() {
+        const faction = document.getElementById('faction').value;
+        const roleSelected = document.getElementById('role').value;
+
+        document.getElementById('faction-description').innerText = factionDescriptions[faction];
+        document.getElementById('role-description').innerText = roleDescriptions[roleSelected][faction];
+    }
+
+
+
+      // Initialisation
+    window.addEventListener('DOMContentLoaded', () => {
+    const factionImage = document.getElementById('image-gauche');
+    const characterImage = document.getElementById('image-droite');
+
+    const factionSelect = document.getElementById('faction');
+    const roleSelect = document.getElementById('role');
+    const genreSelect = document.getElementById('genre');
+
+    const factionImages = {
+      synrax: "images/faction/synrax.png",
+      corvex: "images/faction/corvex.png",
+      ferals: "images/faction/ferals.png",
+      aegis: "images/faction/aegis.png",
+      neurorage: "images/faction/neurorage.png"
+    };
+
+    function updateFactionImage() {
+      const selectedFaction = factionSelect.value;
+      factionImage.src = factionImages[selectedFaction] || "images/faction/faction.png";
+    }
+
+    function updateCharacterImage() {
+      const role = roleSelect.value;
+      const genre = genreSelect.value;
+      const faction = factionSelect.value;
+      characterImage.src = `images/role/${role}_${genre}_${faction}.jpg`;
+    }
+
+    function updateAllImages() {
+      updateFactionImage();
+      updateCharacterImage();
+    }
+
+    // Mise à jour à chaque changement
+    factionSelect.addEventListener('change', updateAllImages);
+    roleSelect.addEventListener('change', updateCharacterImage);
+    genreSelect.addEventListener('change', updateCharacterImage);
+
+    // Initialisation des images au chargement
+    updateAllImages();
+  });
+</script>
+<!-- Conteneur image gauche -->
+<div class="image-side neon-border left">
+    <img id="image-gauche" src="images/faction/faction.png" alt="Image faction" />
+  </div>
+  
+  <!-- Conteneur image droite -->
+  <div class="image-side neon-border right">
+    <img id="image-droite" src="images/role/character.png" alt="Image personnage" />
+  </div>
+
+  <script>
+ 
+    const leftImageContainer = document.querySelector('.image-side.left');
+    const rightImageContainer = document.querySelector('.image-side.right');
+    
+    function updateImages() {
+        const faction = document.getElementById('faction').value;
+        const role = document.getElementById('role').value;
+        const genre = document.getElementById('genre').value;
+    
+        // Exemple de logique d’image (à adapter selon tes noms de fichiers)
+        const leftImgSrc = `images/faction/${faction}.png`; // ex : images/clans/synrax.png
+        const rightImgSrc = `images/role/${role}_${genre}_${faction}.png`; // ex : images/functions/engineer_female.png
+    
+        // Met à jour l'image de gauche (clan)
+        leftImageContainer.innerHTML = `<img src="${leftImgSrc}" alt="${faction}" >`;
+    
+        // Met à jour l'image de droite (role + genre)
+        rightImageContainer.innerHTML = `<img src="${rightImgSrc}" alt="${role} ${genre}" >`;
+    }
+    
+    // Mise à jour des images à chaque changement
+    document.getElementById('faction').addEventListener('change', updateImages);
+    document.getElementById('role').addEventListener('change', updateImages);
+    document.getElementById('genre').addEventListener('change', updateImages);
+    
+ 
+    </script>
+
+
+
+
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+  authDomain: "wirelessoverride.firebaseapp.com",
+  projectId: "wirelessoverride",
+  storageBucket: "wirelessoverride.appspot.com",
+  messagingSenderId: "674723237901",
+  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "../index.html";
+    return;
+  }
+
+ const form = document.getElementById("character-selection-form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const faction = document.getElementById("faction").value;
+  const roleSelected = document.getElementById("role").value;
+  const genre = document.getElementById("genre").value;
+  const characterName = document.getElementById("character-name").value.trim();
+
+  if (characterName === "") {
+    alert("Le nom de votre personnage ne peut pas être vide.");
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9\s]+$/.test(characterName)) {
+    alert("Le nom ne peut contenir que des lettres, chiffres et espaces.");
+    return;
+  }
+
+  // ici tu peux stocker les infos dans localStorage
+  const characterData = {
+    name: characterName,
+    faction: faction,
+    role: roleSelected,
+    genre: genre
+  };
+
+  localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
+
+  // et rediriger ensuite
+  window.location.href = "dashboard.html";
+});
+});
+</script>
+ <script>
+    firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    user.reload().then(() => {
+      if (!user.emailVerified) {
+        // Rediriger vers la page d'information
+        window.location.href = '/verify.html';
+      }
+    });
+  } else {
+    // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+    window.location.href = '/index.html';
+  }
+});
+ </script>
+ <script>
+  document.getElementById('character-selection-form').addEventListener('submit', validerPersonnage);
+
+  console.log({
+  faction,
+  roleSelected,
+  genre,
+  characterName
+});
+</script>
+</body>
+
+</html>
