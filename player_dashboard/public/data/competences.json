@@ -1,0 +1,39 @@
+{
+  "soldier": [
+    "Tir balistique",
+    "Armes lourdes",
+    "Armes énergétiques",
+    "Endurance physique",
+    "Tactique de terrain",
+    "Intimidation"
+  ],
+  "engineer": [
+    "Maintenance avancée",
+    "Démontage / récupération",
+    "Construction modulaire",
+    "Customisation tech",
+    "Analyse technique"
+  ],
+  "hacker": [
+    "Intrusion réseau",
+    "Combat cybernétique",
+    "Cryptographie",
+    "Drone remote",
+    "Contre-mesures"
+  ],
+  "medic": [
+    "Soins d'urgence",
+    "Biotech",
+    "Connaissance chimique",
+    "Endurance physique",
+    "Implants médicaux",
+    "Anatomie"
+  ],
+  "scout": [
+    "Camouflage actif",
+    "Analyse environnementale",
+    "Marquage cible",
+    "Mobilité augmentée",
+    "Vision augmentée"
+  ]
+}

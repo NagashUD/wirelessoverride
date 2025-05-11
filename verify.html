@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: url('images/background.jpg') no-repeat center center fixed;
+      background-size: cover;
+       color: #ff00ff; /* bleu néon par défaut */
+         text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff66ff, 0 0 30px #ff00ff;
+      min-height: 100vh;
+      line-height: 1.6;
+        display: flex;
+      justify-content: center;
+      align-items: center;
+       text-align: center;
+    }
+        body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 20, 0.6);
+      z-index: -1;
+    }
+      .box {
+      border: 1px solid #444;
+      padding: 2rem;
+      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+       box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
+    }
+  </style>
+  
+  <meta charset="UTF-8">
+  <title>Vérification de l'e-mail</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script>
+    // Configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+      authDomain: "wirelessoverride.firebaseapp.com",
+      // ... autres paramètres
+    };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+<body>
+  <div class="box">
+  <p>Vérification de votre e-mail en cours...</p>
+  </div>
+  <script>
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        user.reload().then(() => {
+          if (user.emailVerified) {
+            // Rediriger vers la sélection de personnage
+            window.location.href = 'selection_personnage.html';
+          } else {
+            // Afficher un message ou rediriger vers une page d'information
+            document.body.innerHTML = '<p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>';
+          }
+        });
+      } else {
+        // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+        window.location.href = 'index.html';
+      }
+     
+    });
+  </script>
+</body>
+</html>

@@ -243,11 +243,10 @@
 
 
 
-
-
-
   </style>
 </head>
+
+
 <body>
   <header>
     <div class="logo">
@@ -266,9 +265,7 @@
    <section id="signup">
     <h2>Rejoignez l'aventure</h2>
     <form id="signup-form">
-      <label for="username">Nom d'utilisateur :</label>
-      <input type="text" id="username" required />
-      <label for="email">Email :</label>
+       <label for="email">Email :</label>
       <input type="email" id="email" required />
       <label for="password">Mot de passe :</label>
       <input type="password" id="password" required />
@@ -285,8 +282,8 @@
     <button class="close-btn" id="close-login-modal">&times;</button>
     <h2>Connexion</h2>
     <form id="modal-login-form">
-      <label for="modal-username">Nom d'utilisateur :</label>
-      <input type="text" id="modal-username" required />
+<label for="modal-email">Email :</label>
+<input type="email" id="modal-email" required />
       <label for="modal-password">Mot de passe :</label>
       <input type="password" id="modal-password" required />
       <button type="submit">Se connecter</button>
@@ -296,23 +293,20 @@
   
 
  <script type="module">
-  // === Importation des modules Firebase ===
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
     getAuth,
-    onAuthStateChanged,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     sendEmailVerification
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
     getFirestore,
     doc,
-    getDoc,
-    setDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    setDoc,
+    getDoc
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // === Configuration Firebase ===
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
@@ -322,24 +316,9 @@
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-  // === Initialisation ===
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-
-  // === Vérification de l'état de l'utilisateur ===
-  onAuthStateChanged(auth, async (user) => {
-    if (user && user.emailVerified) {
-      const userRef = doc(db, "players", user.uid);
-      const docSnap = await getDoc(userRef);
-
-      if (!docSnap.exists() || !docSnap.data().characterSelected) {
-        window.location.href = "player_dashboard/selection_personnage.html";
-      } else {
-        window.location.href = "player_dashboard/dashboard.html";
-      }
-    }
-  });
 
   // === INSCRIPTION ===
   document.getElementById("signup-form").addEventListener("submit", async function (e) {
@@ -352,17 +331,23 @@
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Créer un document vide pour le joueur
+      // Créer un document Firestore pour ce joueur
       await setDoc(doc(db, "players", user.uid), {
         characterSelected: false
       });
 
-      await sendEmailVerification(user);
+      const actionCodeSettings = {
+        url: 'https://wirelessoverride.vercel.app/verify.html',
+        handleCodeInApp: false
+      };
+
+      await sendEmailVerification(user, actionCodeSettings);
+
       alert("Inscription réussie ! Un email de vérification vous a été envoyé.");
-      window.location.href = "player_dashboard/selection_personnage.html";
+      window.location.href = "wait_email_verify.html";
 
     } catch (error) {
-      alert("Erreur : " + error.message);
+      alert("Erreur lors de l'inscription : " + error.message);
     }
   });
 
@@ -370,25 +355,25 @@
   document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("modal-username").value;
+    const email = document.getElementById("modal-email").value;
     const password = document.getElementById("modal-password").value;
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      if (user.emailVerified) {
-        const userRef = doc(db, "players", user.uid);
-        const docSnap = await getDoc(userRef);
-
-        if (!docSnap.exists() || !docSnap.data().characterSelected) {
-          window.location.href = "player_dashboard/selection_personnage.html";
-        } else {
-          window.location.href = "player_dashboard/dashboard.html";
-        }
-
-      } else {
+      if (!user.emailVerified) {
         alert("Veuillez vérifier votre adresse email avant de vous connecter.");
+        return;
+      }
+
+      const userRef = doc(db, "players", user.uid);
+      const docSnap = await getDoc(userRef);
+
+      if (!docSnap.exists() || !docSnap.data().characterSelected) {
+        window.location.href = "player_dashboard/selection_personnage.html";
+      } else {
+        window.location.href = "player_dashboard/dashboard.html";
       }
 
     } catch (error) {
@@ -415,7 +400,6 @@
       loginModal.classList.remove('show');
     }
   });
-
 </script>
 
 

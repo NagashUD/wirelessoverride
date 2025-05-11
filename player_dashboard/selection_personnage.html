@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
-    <title>Choix de Faction, Fonction et Identité</title>
+    <title>Choix de Faction, Rôle et Identité</title>
     <style>
         /* Style global */
         body {
@@ -262,12 +262,13 @@ body::before {
 <body>
     <header>
         <div class="logo">
-            <h1>Bienvenue, [Nom d'utilisateur]!</h1>
+            <h1>Bienvenue !</h1>
         </div>
     </header>
 
     <div class="container">
-        <h2>Choisissez votre Faction, Fonction et Identité</h2>
+        <form id="character-selection-form">
+        <h2>Choisissez votre Faction, Rôle et Identité</h2>
 
         <!-- Sélection du Clan -->
         <div class="selection-group">
@@ -282,23 +283,23 @@ body::before {
             <p id="faction-description" class="description-text"></p>
         </div>
 
-        <!-- Sélection de la Fonction -->
+        <!-- Sélection du rôle -->
         <div class="selection-group">
-            <label for="function">Sélectionnez votre Fonction :</label>
-            <select id="function" name="function">
+            <label for="role">Sélectionnez votre Rôle :</label>
+            <select id="role" name="role">
                 <option value="soldier">Soldat</option>
                 <option value="engineer">Ingénieur</option>
                 <option value="hacker">Hacker</option>
                 <option value="medic">Médecin</option>
                 <option value="scout">Éclaireur</option>
             </select>
-            <p id="function-description" class="description-text"></p>
+            <p id="role-description" class="description-text"></p>
         </div>
 
         <!-- Choix du Genre -->
         <div class="selection-group">
-            <label for="gender">Choisissez votre Genre :</label>
-            <select id="gender" name="gender">
+            <label for="genre">Choisissez votre Genre :</label>
+            <select id="genre" name="genre">
                 <option value="male">Homme</option>
                 <option value="female">Femme</option>
             </select>
@@ -312,9 +313,9 @@ body::before {
         </div>
 
         <!-- Bouton de validation -->
-        <button id="confirm-selection">Confirmer le choix</button>
+        <button id="confirm-selection" type="submit">Confirmer le choix</button>
     </div>
-
+</form>
 
     <footer>
         <p>&copy; 2025 Wireless: Override. Tous droits réservés.</p>
@@ -322,18 +323,14 @@ body::before {
 
 
     <div class="page-container" style="display: flex; align-items: flex-start; justify-content: center; gap: 20px;">
-  
-        <!-- Div gauche avec image -->
+          <!-- Div gauche avec image -->
         <div class="side-image left">
-         
-        </div>
-      
-        <!-- Contenu central conservé tel quel -->
+                 </div>
+              <!-- Contenu central conservé tel quel -->
         <div class="main-content">
           <!-- Ton contenu HTML principal ici -->
         </div>
-      
-        <!-- Div droite avec image -->
+              <!-- Div droite avec image -->
         <div class="side-image right">
        
         </div>
@@ -342,47 +339,56 @@ body::before {
       
 
 
-    <script>
-        // Fonction pour vérifier le nom (pas de caractères spéciaux)
-        function isValidName(name) {
-            var regex = /^[a-zA-Z0-9\s]+$/; // Lettres, chiffres et espaces uniquement
-            return regex.test(name);
-        }
+<script>
+    // Fonction pour vérifier le nom (pas de caractères spéciaux)
+    function isValidName(name) {
+        var regex = /^[a-zA-Z0-9\s]+$/; // Lettres, chiffres et espaces uniquement
+        return regex.test(name);
+    }
 
-        // Sauvegarder les sélections du joueur dans localStorage ou autre base de données
-        document.getElementById('confirm-selection').addEventListener('click', function() {
-            var faction = document.getElementById('faction').value;
-            var functionSelected = document.getElementById('function').value;
-            var gender = document.getElementById('gender').value;
-            var characterName = document.getElementById('character-name').value;
+    // Fonction appelée lors de la validation du personnage
+ function validerPersonnage(event) {
+    event.preventDefault(); // Pour éviter le rechargement de la page
 
-            // Vérification du nom de personnage
-            if (characterName === "") {
-                alert("Le nom de votre personnage ne peut pas être vide.");
-                return;
-            }
+    const characterName = document.getElementById("character-name").value;
+    const faction = document.getElementById("faction").value;
+    const roleSelected = document.getElementById("role").value;
+    const genre = document.getElementById("genre").value;
 
-            if (!isValidName(characterName)) {
-                alert("Le nom ne peut contenir que des lettres, des chiffres et des espaces.");
-                return;
-            }
+    if (characterName === "") {
+        alert("Le nom de votre personnage ne peut pas être vide.");
+        return;
+    }
 
-            // Sauvegarde dans localStorage pour que le joueur ne soit pas redirigé vers cette page à nouveau
-            localStorage.setItem('faction', faction);
-            localStorage.setItem('function', func);
-            localStorage.setItem('gender', gender);
-            localStorage.setItem('characterName', name);
-            localStorage.setItem('persoActif', 'true');
+    if (!isValidName(characterName)) {
+        alert("Le nom ne peut contenir que des lettres, des chiffres et des espaces.");
+        return;
+    }
+
+    // Sauvegarde dans localStorage
+    localStorage.setItem('faction', faction);
+    localStorage.setItem('role', roleSelected);
+    localStorage.setItem('genre', genre);
+    localStorage.setItem('characterName', characterName);
+    localStorage.setItem('persoActif', 'true');
+
+    // Sauvegarde dans Firebase
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            const userRef = doc(db, "players", user.uid);
+            await setDoc(userRef, {
+                characterSelected: true,
+                faction: faction,
+                role: roleSelected,
+                genre: genre,
+                characterName: characterName
+            }, { merge: true });
 
             window.location.href = 'dashboard.html';
-        });
-              // Redirection si perso déjà défini
-            //  window.addEventListener('DOMContentLoaded', () => {
-           // if (localStorage.getItem('persoActif')) {
-            //    window.location.href = "index.html";
-          //  }
-      //  });
-    </script>
+        }
+    });
+}
+</script>
 
     <script>
         const factionDescriptions = {
@@ -393,7 +399,7 @@ body::before {
             neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
         };
 
-        const functionDescriptions = {
+        const roleDescriptions = {
             soldier: {
                 synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
                 corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
@@ -430,207 +436,180 @@ aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mou
 neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
 }
 };
+
+
     // Gérer la description selon les choix
     document.getElementById("faction").addEventListener("change", updateDescriptions);
-    document.getElementById("function").addEventListener("change", updateDescriptions);
+    document.getElementById("role").addEventListener("change", updateDescriptions);
 
     function updateDescriptions() {
         const faction = document.getElementById('faction').value;
-        const functionSelected = document.getElementById('function').value;
+        const roleSelected = document.getElementById('role').value;
 
         document.getElementById('faction-description').innerText = factionDescriptions[faction];
-        document.getElementById('function-description').innerText = functionDescriptions[functionSelected][faction];
+        document.getElementById('role-description').innerText = roleDescriptions[roleSelected][faction];
     }
 
 
 
+      // Initialisation
+    window.addEventListener('DOMContentLoaded', () => {
+    const factionImage = document.getElementById('image-gauche');
+    const characterImage = document.getElementById('image-droite');
 
-const factionImage = document.getElementById('image-gauche');
-const factionSelect = document.getElementById('faction');
+    const factionSelect = document.getElementById('faction');
+    const roleSelect = document.getElementById('role');
+    const genreSelect = document.getElementById('genre');
 
-const factionImages = {
-    synrax: "images/faction/synrax.png",
-    corvex: "images/faction/corvex.png",
-    ferals: "images/faction/ferals.png",
-    aegis: "images/faction/aegis.png",
-    neurorage: "images/faction/neurorage.png"
-};
+    const factionImages = {
+      synrax: "images/faction/synrax.png",
+      corvex: "images/faction/corvex.png",
+      ferals: "images/faction/ferals.png",
+      aegis: "images/faction/aegis.png",
+      neurorage: "images/faction/neurorage.png"
+    };
 
-factionSelect.addEventListener('change', () => {
-    const selectedFaction = factionSelect.value;
-    factionImage.src = factionImages[selectedFaction] || "images/faction.jpg";
-});
+    function updateFactionImage() {
+      const selectedFaction = factionSelect.value;
+      factionImage.src = factionImages[selectedFaction] || "images/faction/faction.png";
+    }
 
+    function updateCharacterImage() {
+      const role = roleSelect.value;
+      const genre = genreSelect.value;
+      const faction = factionSelect.value;
+      characterImage.src = `images/role/${role}_${genre}_${faction}.jpg`;
+    }
 
+    function updateAllImages() {
+      updateFactionImage();
+      updateCharacterImage();
+    }
 
-const characterImage = document.getElementById('image-droite');
-const functionSelect = document.getElementById('function');
-const genderSelect = document.getElementById('gender');
+    // Mise à jour à chaque changement
+    factionSelect.addEventListener('change', updateAllImages);
+    roleSelect.addEventListener('change', updateCharacterImage);
+    genreSelect.addEventListener('change', updateCharacterImage);
 
-function updateCharacterImage() {
-    const func = functionSelect.value;
-    const gender = genderSelect.value;
-    characterImage.src = `images/characters/${gender}_${func}_${faction}.jpg`; // ex: images/characters/male_medic.jpg
-}
-
-functionSelect.addEventListener('change', updateCharacterImage);
-genderSelect.addEventListener('change', updateCharacterImage);
-
-
-    // Initialiser les descriptions
-    updateDescriptions();
+    // Initialisation des images au chargement
+    updateAllImages();
+  });
 </script>
 <!-- Conteneur image gauche -->
 <div class="image-side neon-border left">
-    <img src="images/faction.png" alt="Image homme" />
+    <img id="image-gauche" src="images/faction/faction.png" alt="Image faction" />
   </div>
   
   <!-- Conteneur image droite -->
   <div class="image-side neon-border right">
-    <img src="images/character.png" alt="Image femme" />
+    <img id="image-droite" src="images/role/character.png" alt="Image personnage" />
   </div>
 
   <script>
+ 
     const leftImageContainer = document.querySelector('.image-side.left');
     const rightImageContainer = document.querySelector('.image-side.right');
     
     function updateImages() {
         const faction = document.getElementById('faction').value;
-        const func = document.getElementById('function').value;
-        const gender = document.getElementById('gender').value;
+        const role = document.getElementById('role').value;
+        const genre = document.getElementById('genre').value;
     
         // Exemple de logique d’image (à adapter selon tes noms de fichiers)
         const leftImgSrc = `images/faction/${faction}.png`; // ex : images/clans/synrax.png
-        const rightImgSrc = `images/functions/${func}_${gender}_${faction}.png`; // ex : images/functions/engineer_female.png
+        const rightImgSrc = `images/role/${role}_${genre}_${faction}.png`; // ex : images/functions/engineer_female.png
     
         // Met à jour l'image de gauche (clan)
         leftImageContainer.innerHTML = `<img src="${leftImgSrc}" alt="${faction}" >`;
     
-        // Met à jour l'image de droite (fonction + genre)
-        rightImageContainer.innerHTML = `<img src="${rightImgSrc}" alt="${func} ${gender}" >`;
+        // Met à jour l'image de droite (role + genre)
+        rightImageContainer.innerHTML = `<img src="${rightImgSrc}" alt="${role} ${genre}" >`;
     }
     
     // Mise à jour des images à chaque changement
     document.getElementById('faction').addEventListener('change', updateImages);
-    document.getElementById('function').addEventListener('change', updateImages);
-    document.getElementById('gender').addEventListener('change', updateImages);
+    document.getElementById('role').addEventListener('change', updateImages);
+    document.getElementById('genre').addEventListener('change', updateImages);
     
-    // Initialisation
-    window.addEventListener('DOMContentLoaded', updateImages);
+ 
     </script>
 
-<script>// Exemple avec Firestore
-import { getFirestore, doc, setDoc } from "firebase/firestore";
-const db = getFirestore();
 
-const user = firebase.auth().currentUser;
-const userRef = doc(db, "players", user.uid);
-await setDoc(userRef, {
-  characterSelected: true,
-  // autres infos du personnage
-}, { merge: true });
+
+
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+  authDomain: "wirelessoverride.firebaseapp.com",
+  projectId: "wirelessoverride",
+  storageBucket: "wirelessoverride.appspot.com",
+  messagingSenderId: "674723237901",
+  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "../index.html";
+    return;
+  }
+
+ const form = document.getElementById("character-selection-form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const faction = document.getElementById("faction").value;
+  const roleSelected = document.getElementById("role").value;
+  const genre = document.getElementById("genre").value;
+  const characterName = document.getElementById("character-name").value.trim();
+
+  if (characterName === "") {
+    alert("Le nom de votre personnage ne peut pas être vide.");
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9\s]+$/.test(characterName)) {
+    alert("Le nom ne peut contenir que des lettres, chiffres et espaces.");
+    return;
+  }
+
+  // ici tu peux stocker les infos dans localStorage
+  const characterData = {
+    name: characterName,
+    faction: faction,
+    role: roleSelected,
+    genre: genre
+  };
+
+  localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
+
+  // et rediriger ensuite
+  window.location.href = "dashboard.html";
+});
+});
 </script>
-
-
-<script>
-
-    <form id="character-selection-form">
-  <label for="faction">Faction :</label>
-  <select id="faction" required>
-    <option value="">--Choisir une faction--</option>
-    <option value="SYNRAX">SYNRAX</option>
-    <option value="CORVEX INDUSTRIES">CORVEX INDUSTRIES</option>
-    <option value="FERALS">FERALS</option>
-    <option value="AEGIS">AEGIS</option>
-    <option value="NOIR">NOIR</option>
-    <option value="NEURORAGE">NEURORAGE</option>
-  </select>
-
-  <label for="fonction">Fonction :</label>
-  <select id="fonction" required>
-    <option value="">--Choisir une fonction--</option>
-    <option value="Soldat">Soldat</option>
-    <option value="Ingénieur">Ingénieur</option>
-    <option value="Hacker">Hacker</option>
-    <option value="Médecin">Médecin</option>
-    <option value="Éclaireur">Éclaireur</option>
-  </select>
-
-  <label for="genre">Genre :</label>
-  <select id="genre" required>
-    <option value="">--Choisir un genre--</option>
-    <option value="Homme">Homme</option>
-    <option value="Femme">Femme</option>
-  </select>
-
-  <label for="nomPersonnage">Nom du personnage :</label>
-  <input type="text" id="nomPersonnage" required />
-
-  <button type="submit" id="confirmer">Confirmer</button>
-</form>
-</script>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-    import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-      authDomain: "wirelessoverride.firebaseapp.com",
-      projectId: "wirelessoverride",
-      storageBucket: "wirelessoverride.appspot.com",
-      messagingSenderId: "674723237901",
-      appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "../index.html";
-        return;
+ <script>
+    firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    user.reload().then(() => {
+      if (!user.emailVerified) {
+        // Rediriger vers la page d'information
+        window.location.href = '/verify.html';
       }
-
-      const form = document.getElementById("character-selection-form");
-      if (!form) {
-        console.error("Formulaire non trouvé !");
-        return;
-      }
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const faction = document.getElementById("faction").value;
-        const fonction = document.getElementById("fonction").value;
-        const genre = document.getElementById("genre").value;
-        const nomPersonnage = document.getElementById("nomPersonnage").value.trim();
-
-        if (!faction || !fonction || !genre || !nomPersonnage) {
-          alert("Veuillez remplir tous les champs !");
-          return;
-        }
-
-        try {
-          const userRef = doc(db, "players", user.uid);
-          await updateDoc(userRef, {
-            faction,
-            fonction,
-            genre,
-            nomPersonnage,
-            characterSelected: true
-          });
-
-          window.location.href = "dashboard.html";
-        } catch (error) {
-          console.error("Erreur lors de l'enregistrement :", error);
-          alert("Une erreur est survenue pendant l'enregistrement.");
-        }
-      });
     });
-  </script>
-
-
+  } else {
+    // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
+    window.location.href = '/index.html';
+  }
+});
+ </script>
 </body>
+
 </html>

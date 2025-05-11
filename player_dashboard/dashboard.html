@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
     <title>Dashboard - Wireless: Overdrive</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="dashboard.js"></script>
+
     <style>
         /* Corps de la page */
         body {
@@ -106,7 +105,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
               background-size: cover;
-  background-position: center;
+
 
         }
 
@@ -357,7 +356,7 @@ th {
   <!-- HEADER -->
   <header>
     <div class="logo">
-      <h1>Welcome back, <span id="username-display">[Nom d'utilisateur]</span>!</h1>
+     <h1 id="welcome-message" class="titre-dashboard"></h1>
     </div>
     <nav>
       <button data-page="base.html">Base</button>
@@ -378,7 +377,7 @@ th {
       <!-- Profil à gauche -->
       <div class="profile">
         <h3>Profil</h3>
-        <p><strong>Faction:</strong> <span id="faction-name"></span></p>
+        <p>Faction : <span id="faction"></span></p>
         <p><strong>Niveau:</strong> <span id="player-level">5</span></p>
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p><strong>Réputation:</strong> <span id="reputation">75%</span></p>
@@ -406,12 +405,12 @@ th {
         </ul>
       </section>
     </div>
-</div>
+
     <!-- Zone Iframe au centre -->
     <div id="iframe-container">
       <iframe src="base.html" frameborder="0"></iframe>
     </div>
-    </section>
+  </section>
   <!-- FIN du dashboard -->
 
   <!-- MODAL ÉTAT DU PERSONNAGE -->
@@ -419,7 +418,6 @@ th {
     <div class="modal-content neon-frame">
       <span class="close">&times;</span>
       <h2>État du personnage</h2>
-      <img src="https://via.placeholder.com/150x200?text=Silhouette" alt="Silhouette" class="perso-img">
       <table>
         <thead>
           <tr><th>Partie</th><th>État</th><th>Implant</th></tr>
@@ -439,13 +437,130 @@ th {
     <div class="modal-content neon-frame">
       <span class="close" id="closeSkills">&times;</span>
       <h2>Compétences du personnage</h2>
-      <p>Ici, tu peux lister les compétences, niveaux, expériences, ou tout ce que tu veux afficher.</p>
+      <div class="skills-columns">
+        <ul id="attributs-col"></ul> <!-- Liste des attributs -->
+        <ul id="competences-col"></ul> <!-- Liste des compétences -->
+      </div>
     </div>
   </div>
+
+  <script>
+    // ► Affichage des infos dans le header et le profil
+    document.getElementById("faction").textContent = localStorage.getItem("faction");
+
+    // ► Gestion du bouton santé (modal perso)
+    document.getElementById("openModal").onclick = () => {
+      document.getElementById("modalPerso").style.display = "block";
+    };
+
+    // ► Gestion du bouton compétences (modal skills)
+    document.getElementById("openSkills").addEventListener("click", () => {
+      let fonctionRaw = localStorage.getItem("role");
+      if (fonctionRaw) {
+        const fonction = fonctionRaw.charAt(0).toUpperCase() + fonctionRaw.slice(1).toLowerCase();
+
+        // Charge les deux fichiers JSON
+        Promise.all([
+          fetch('./dashboard/player_dashboard/public/data/attributs_base.json').then(res => res.json()),
+          fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
+        ]).then(([attributsData, competencesData]) => {
+          const attributs = attributsData[fonction] || {};  // Prend les attributs du rôle
+          const competences = competencesData[fonction] || [];  // Prend les compétences du rôle
+
+          const modal = document.getElementById('modalSkills');
+          const container = modal.querySelector('.modal-content');
+
+          // Nettoyage du contenu du modal avant de le remplir
+          container.innerHTML = `
+            <span class="close" id="closeSkills">&times;</span>
+            <h2>Compétences du personnage</h2>
+            <div class="skills-columns">
+              <ul id="attributs-col"></ul>
+              <ul id="competences-col"></ul>
+            </div>
+          `;
+
+          // Sélectionner les éléments de la liste
+          const ulAttr = container.querySelector('#attributs-col');
+          const ulComp = container.querySelector('#competences-col');
+
+          // Remplir les attributs dans la première colonne
+          Object.entries(attributs).forEach(([nom, valeur]) => {
+            const li = document.createElement('li');
+            li.textContent = `${nom} : ${valeur}`;
+            ulAttr.appendChild(li);
+          });
+
+          // Remplir les compétences dans la deuxième colonne
+          competences.forEach(skill => {
+            const li = document.createElement('li');
+            li.textContent = skill;
+            ulComp.appendChild(li);
+          });
+
+          modal.style.display = 'block';
+        }).catch(err => console.error("Erreur de chargement des données", err));
+      } else {
+        console.warn("Rôle non défini dans le localStorage.");
+      }
+    });
+
+    // ► Fermeture des modaux
+    document.querySelectorAll(".close").forEach(closeBtn => {
+      closeBtn.onclick = function () {
+        this.closest(".modal").style.display = "none";
+      };
+    });
+
+    // ► Fermeture des modaux si clic en dehors
+    window.onclick = function (event) {
+      document.querySelectorAll(".modal").forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    };
+
+    // ► Déconnexion
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "player_dashboard/index.html";
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const characterName = localStorage.getItem("characterName");
+
+      const welcomeElement = document.getElementById('welcome-message');
+      if (welcomeElement) {
+        welcomeElement.innerText = `Bienvenue ${characterName}`;
+      }
+
+      const faction = localStorage.getItem("faction");
+      const factionDisplay = document.getElementById("faction");
+
+      if (faction) {
+        factionDisplay.textContent = faction;
+      } else {
+        factionDisplay.textContent = "non définie";
+        console.warn("Faction non trouvée dans le localStorage");
+      }
+    });
+
+    document.querySelectorAll("nav button[data-page]").forEach(button => {
+      button.addEventListener("click", () => {
+        const page = button.getAttribute("data-page");
+        const iframe = document.querySelector("#iframe-container iframe");
+        if (iframe) {
+          iframe.src = page;
+        }
+      });
+    });
+  </script>
 
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
   </footer>
 </body>
+
 </html>

@@ -1,15 +1,9 @@
+<!-- wait_email_verify.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vérification réussie</title>
-  <script>
-    // Redirection après 2 secondes
-    setTimeout(() => {
-      window.location.href = "player_dashboard/selection_personnage.html";
-    }, 3000);
-  </script>
+  <meta charset="UTF-8">
+  <title>Vérification de votre e-mail</title>
   <style>
     body {
       font-family: 'Orbitron', sans-serif;
@@ -24,7 +18,7 @@
       align-items: center;
        text-align: center;
     }
-        body::before {
+         body::before {
       content: '';
       position: fixed;
       top: 0;
@@ -33,9 +27,8 @@
       height: 100%;
       background: rgba(10, 10, 20, 0.6);
       z-index: -1;
-    
     }
-      .box {
+    .box {
       border: 1px solid #444;
       padding: 2rem;
       border-radius: 10px;
@@ -46,8 +39,10 @@
 </head>
 <body>
   <div class="box">
-    <h1>Email vérifié avec succès !</h1>
-    <p>Redirection vers la sélection de personnage...</p>
+    <h1>Vérification requise</h1>
+    <p>Un e-mail de vérification vous a été envoyé.</p>
+    <p>Merci de cliquer sur le lien dans l’e-mail pour activer votre compte.</p>
+    <p>Une fois vérifié, vous pourrez accéder à la création de votre personnage.</p>
   </div>
 </body>
 </html>
