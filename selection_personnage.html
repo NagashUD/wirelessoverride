@@ -338,44 +338,47 @@ body::before {
       </div>
       
 <script type="module">
+  // Importations des modules Firebase nécessaires
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.firebasestorage.app",
+    storageBucket: "wirelessoverride.appspot.com",
     messagingSenderId: "674723237901",
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
+  // Initialisation de Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Redirection si pas connecté ou email non vérifié
-  onAuthStateChanged(auth, (user) => {
+  // Vérification de l'état d'authentification de l'utilisateur
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
-      user.reload().then(() => {
-        if (!user.emailVerified) {
-          window.location.href = "/verify.html";
-        }
-      });
+      await user.reload();
+      if (!user.emailVerified) {
+        window.location.href = "/verify.html";
+      }
     } else {
       window.location.href = "/index.html";
     }
   });
 
-  // Fonction de validation de personnage
-  document.getElementById("character-selection-form").addEventListener("submit", async (e) => {
+  // Gestion du formulaire de sélection de personnage
+  const form = document.getElementById("character-selection-form");
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const characterName = document.getElementById("character-name").value.trim();
     const faction = document.getElementById("faction").value;
     const roleSelected = document.getElementById("role").value;
     const genre = document.getElementById("genre").value;
+    const characterName = document.getElementById("character-name").value.trim();
 
     if (characterName === "") {
       alert("Le nom de votre personnage ne peut pas être vide.");
@@ -388,32 +391,33 @@ body::before {
     }
 
     // Sauvegarde dans localStorage
-    localStorage.setItem("selectedCharacter", JSON.stringify({
+    const characterData = {
       name: characterName,
-      faction,
+      faction: faction,
       role: roleSelected,
-      genre
-    }));
-    localStorage.setItem("persoActif", "true");
+      genre: genre
+    };
 
-    // Sauvegarde dans Firebase
-    const user = auth.currentUser;
-    if (user) {
-      const userRef = doc(db, "players", user.uid);
+    localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
+
+    // Sauvegarde dans Firestore
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const userRef = doc(db, "players", currentUser.uid);
       await setDoc(userRef, {
         characterSelected: true,
-        faction,
+        faction: faction,
         role: roleSelected,
-        genre,
-        characterName
+        genre: genre,
+        characterName: characterName
       }, { merge: true });
 
+      // Redirection vers le tableau de bord
       window.location.href = "dashboard.html";
-    } else {
-      alert("Utilisateur non connecté.");
     }
   });
 </script>
+
 
   <script>
 
