@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <title>Dashboard - Wireless: Overdrive</title>
+
+    <style>
+        /* Corps de la page */
+        body {
+           
+            background: url('images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+
+        /* Header */
+        header {
+          background-color: rgba(0, 0, 0, 0.5); /* Transparent pour l'effet */
+            color: #fff;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+
+        header h1 {
+            font-size: 24px;
+            color: #ff00ff; /* Rose fluo */
+            text-shadow: 0 0 10px #ff00ff;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        nav button {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        nav button:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+
+        nav button:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+        nav button:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* Tableau de bord */
+        #dashboard {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 40px;
+        }
+
+        .dashboard-left {
+            width: 30%;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+              background-size: cover;
+
+
+        }
+
+        
+
+        .profile, #missions {
+            background-color: rgba(51, 51, 51, 0.8);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .profile p {
+            color: #ff00ff;
+        }
+
+        #missions li {
+            background-color: #444;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        #missions button {
+            background-color: #00fff7;
+            border: none;
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        #missions button:hover {
+            background-color: #ff00ff;
+            color: #fff;
+  box-shadow: 0 0 15px #ff00ff;
+        }
+
+        /* Iframe */
+        #iframe-container {
+            width: 70%;
+            height:100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            
+
+        }
+
+        
+        iframe {
+            width: 100%;
+            height: 700px;
+            border-radius: 10px;
+            
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(17, 17, 17, 0.9);
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            box-shadow: 0 -2px 10px rgba(255, 0, 255, 0.4);
+        }
+
+        /* Popup */
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: #222;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 0, 255, 0.7);
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+        }
+
+        button {
+            background-color: #ff00ff;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+           
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+          background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+        }
+
+  .modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 20, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0.4);
+  margin: 10vh auto;
+  padding: 20px;
+  border-radius: 14px;
+  width: 90%;
+  max-width: 400px;
+  color: #fff;
+  box-shadow: 0 0 20px #00faff80, 0 0 40px #ff00ff30;
+  text-align: center;
+}
+
+.close {
+  float: right;
+  font-size: 1.5em;
+  color: #ff00ff;
+  cursor: pointer;
+  text-shadow: 0 0 6px #ff00ff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1em;
+  font-size: 0.9em;
+}
+
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+  color: #fff;
+  background-color: rgba(10,10,30,0.4);
+}
+
+@media (max-width: 500px) {
+  .modal-content {
+    width: 95%;
+    margin-top: 20vh;
+  }
+}
+
+th {
+  background-color: #111122;
+  color: #00faff;
+  text-shadow: 0 0 4px #0ff;
+}
+
+.neon-btn {
+  background: none;
+  border: none;
+  color: #00faff;
+  font-size: 1em;
+  cursor: pointer;
+  text-shadow: 0 0 6px #0ff;
+}
+
+.neon-frame {
+  border: 1px solid #00faff66;
+  box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
+}
+.perso-img {
+  width: 100%;
+  max-width: 140px;
+  margin: 1em auto;
+  border: 2px solid #ff00ff80;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #ff00ff66;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px #00faff,
+      0 0 12px #00faff,
+      0 0 20px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 2px #00faff,
+      0 0 4px #00faff,
+      0 0 6px #ff00ff,
+      0 0 8px #ff00ff;
+  }
+}
+
+.modal-content.neon-frame {
+  animation: neonPulse 2.5s ease-in-out infinite;
+}
+
+.skills-columns {
+  display: flex;
+  gap: 2rem;
+}
+.column {
+  flex: 1;
+}
+.skill {
+  margin: 0.5em 0;
+}
+.skill.has-malus {
+  color: red;
+}
+.malus-icon {
+  margin-left: 5px;
+}
+
+
+
+.skills-columns {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+.skills-columns li {
+  break-inside: avoid;
+  margin-bottom: 8px;
+}
+
+    </style>
+
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+     <h1 id="welcome-message" class="titre-dashboard"></h1>
+    </div>
+    <nav>
+      <button data-page="base.html">Base</button>
+      <button data-page="clan.html">Clan</button>
+      <button data-page="missions.html">Missions</button>
+      <button data-page="craft.html">Artisanat</button>
+      <button data-page="equipement.html">Équipement</button>
+      <button data-page="magasins.html">Magasins</button>
+      <button data-page="messages.html">Messages</button>
+      <button data-page="map.html" id="open-map">Carte</button>
+      <button id="logout">Se déconnecter</button>
+    </nav>
+  </header>
+
+  <!-- TABLEAU DE BORD -->
+  <section id="dashboard">
+    <div class="dashboard-left">
+      <!-- Profil à gauche -->
+      <div class="profile">
+        <h3>Profil</h3>
+        <p>Faction : <span id="faction"></span></p>
+        <p><strong>Niveau:</strong> <span id="player-level">5</span></p>
+        <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
+        <p><strong>Réputation:</strong> <span id="reputation">75%</span></p>
+        <p><strong>État du personnage:</strong> <span id="health-status">100%</span> 
+          <button id="openModal" class="neon-btn">👤</button>
+        </p>
+      </div>
+
+      <!-- Missions en cours -->
+      <section id="missions">
+        <h3>Missions en cours</h3>
+        <ul>
+          <li>
+            <strong>Raid contre l'Usine Arakasta</strong>
+            <p>En attente de confirmation</p>
+            <p>Risque: Élevé</p>
+            <button>Participer</button>
+          </li>
+          <li>
+            <strong>Réapprovisionnement en munitions</strong>
+            <p>En cours</p>
+            <p>Progression: 75%</p>
+            <button>Terminer Mission</button>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Zone Iframe au centre -->
+    <div id="iframe-container">
+      <iframe src="base.html" frameborder="0"></iframe>
+    </div>
+  </section>
+  <!-- FIN du dashboard -->
+
+  <!-- MODAL ÉTAT DU PERSONNAGE -->
+  <div id="modalPerso" class="modal">
+    <div class="modal-content neon-frame">
+      <span class="close">&times;</span>
+      <h2>État du personnage</h2>
+      <table>
+        <thead>
+          <tr><th>Partie</th><th>État</th><th>Implant</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Tête</td><td>OK</td><td>Neural Link V2</td></tr>
+          <tr><td>Bras droit</td><td>Légèrement blessé</td><td>Implant tactique</td></tr>
+          <tr><td>Jambe gauche</td><td>OK</td><td>Aucun</td></tr>
+          <tr><td>Torso</td><td>OK</td><td>Blindage léger</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MODAL COMPÉTENCES -->
+  <div id="modalSkills" class="modal">
+    <div class="modal-content neon-frame">
+      <span class="close" id="closeSkills">&times;</span>
+      <h2>Compétences du personnage</h2>
+      <div class="skills-columns">
+        <ul id="attributs-col"></ul> <!-- Liste des attributs -->
+        <ul id="competences-col"></ul> <!-- Liste des compétences -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ► Affichage des infos dans le header et le profil
+    document.getElementById("faction").textContent = localStorage.getItem("faction");
+
+    // ► Gestion du bouton santé (modal perso)
+    document.getElementById("openModal").onclick = () => {
+      document.getElementById("modalPerso").style.display = "block";
+    };
+
+    // ► Gestion du bouton compétences (modal skills)
+    document.getElementById("openSkills").addEventListener("click", () => {
+      let fonctionRaw = localStorage.getItem("role");
+      if (fonctionRaw) {
+        const fonction = fonctionRaw.charAt(0).toUpperCase() + fonctionRaw.slice(1).toLowerCase();
+
+        // Charge les deux fichiers JSON
+        Promise.all([
+          fetch('./dashboard/player_dashboard/public/data/attributs_base.json').then(res => res.json()),
+          fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
+        ]).then(([attributsData, competencesData]) => {
+          const attributs = attributsData[fonction] || {};  // Prend les attributs du rôle
+          const competences = competencesData[fonction] || [];  // Prend les compétences du rôle
+
+          const modal = document.getElementById('modalSkills');
+          const container = modal.querySelector('.modal-content');
+
+          // Nettoyage du contenu du modal avant de le remplir
+          container.innerHTML = `
+            <span class="close" id="closeSkills">&times;</span>
+            <h2>Compétences du personnage</h2>
+            <div class="skills-columns">
+              <ul id="attributs-col"></ul>
+              <ul id="competences-col"></ul>
+            </div>
+          `;
+
+          // Sélectionner les éléments de la liste
+          const ulAttr = container.querySelector('#attributs-col');
+          const ulComp = container.querySelector('#competences-col');
+
+          // Remplir les attributs dans la première colonne
+          Object.entries(attributs).forEach(([nom, valeur]) => {
+            const li = document.createElement('li');
+            li.textContent = `${nom} : ${valeur}`;
+            ulAttr.appendChild(li);
+          });
+
+          // Remplir les compétences dans la deuxième colonne
+          competences.forEach(skill => {
+            const li = document.createElement('li');
+            li.textContent = skill;
+            ulComp.appendChild(li);
+          });
+
+          modal.style.display = 'block';
+        }).catch(err => console.error("Erreur de chargement des données", err));
+      } else {
+        console.warn("Rôle non défini dans le localStorage.");
+      }
+    });
+
+    // ► Fermeture des modaux
+    document.querySelectorAll(".close").forEach(closeBtn => {
+      closeBtn.onclick = function () {
+        this.closest(".modal").style.display = "none";
+      };
+    });
+
+    // ► Fermeture des modaux si clic en dehors
+    window.onclick = function (event) {
+      document.querySelectorAll(".modal").forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    };
+
+    // ► Déconnexion
+    document.getElementById("logout").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const characterName = localStorage.getItem("characterName");
+
+      const welcomeElement = document.getElementById('welcome-message');
+      if (welcomeElement) {
+        welcomeElement.innerText = `Bienvenue ${characterName}`;
+      }
+
+      const faction = localStorage.getItem("faction");
+      const factionDisplay = document.getElementById("faction");
+
+      if (faction) {
+        factionDisplay.textContent = faction;
+      } else {
+        factionDisplay.textContent = "non définie";
+        console.warn("Faction non trouvée dans le localStorage");
+      }
+    });
+
+    document.querySelectorAll("nav button[data-page]").forEach(button => {
+      button.addEventListener("click", () => {
+        const page = button.getAttribute("data-page");
+        const iframe = document.querySelector("#iframe-container iframe");
+        if (iframe) {
+          iframe.src = page;
+        }
+      });
+    });
+  </script>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
+  </footer>
+</body>
+
+</html>
