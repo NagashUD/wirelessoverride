@@ -90,6 +90,11 @@
     window.location.href = "index.html";
   });
 </script>
+<script>
+firebase.auth().signOut().then(() => {
+  alert("Déconnexion réussie. Veuillez vous reconnecter.");
+});
+</script>
   </div>
   
 </body>

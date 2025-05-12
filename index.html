@@ -350,7 +350,7 @@
     }
   });
 
-// === CONNEXION ===
+  // === CONNEXION ===
 document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -358,25 +358,21 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
   const password = document.getElementById("modal-password").value;
 
   try {
+    // Connexion de l'utilisateur
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Ajout d'un log pour vérifier l'état des données de l'utilisateur après la connexion
-    console.log("Utilisateur connecté : ", user);
-    console.log("Vérification email : ", user.emailVerified);
-
-    // Rafraîchissement des informations de l'utilisateur pour s'assurer que l'email est bien vérifié
+    // Rafraîchissement des données de l'utilisateur
     await user.reload();
 
-    console.log("Après reload - Vérification email : ", user.emailVerified);
-
-    // Vérification de l'email
+    // Vérification si l'email est validé
     if (!user.emailVerified) {
-      alert("Veuillez vérifier votre adresse email avant de vous connecter.");
-      return;
-    }
+  await user.sendEmailVerification(); // Renvoie un email de confirmation
+  alert("Un email de vérification a été renvoyé. Veuillez vérifier votre boîte de réception.");
+  return;
+}
 
-    // Si l'email est vérifié, on poursuit avec la redirection vers le dashboard ou la sélection de personnage
+    // Rediriger l'utilisateur selon son état (personnage sélectionné ou non)
     const userRef = doc(db, "players", user.uid);
     const docSnap = await getDoc(userRef);
 
@@ -391,7 +387,8 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
   }
 });
 
-// === GESTION DU MODAL LOGIN ===
+
+ // === GESTION DU MODAL LOGIN ===
 const loginModal = document.getElementById('loginModal');
 const openLoginLink = document.getElementById('open-login');
 const closeLoginBtn = document.getElementById('close-login-modal');
