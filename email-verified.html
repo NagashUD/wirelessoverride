@@ -101,8 +101,8 @@
   const password = document.getElementById("verify-password").value;
 
   try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    await signOut(auth);
+const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
     await user.reload();  // 🔁 Important : recharge l'objet utilisateur
     console.log("user.emailVerified:", user.emailVerified); // 👈 Diagnostic
