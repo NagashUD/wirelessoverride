@@ -389,18 +389,23 @@ body::before {
   // Auth Check
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    await user.reload(); // <-- on force l'update
-    console.log("Email vérifié :", user.emailVerified);
+    await user.reload();
+    const isVerified = user.emailVerified;
 
-    if (!user.emailVerified) {
-      console.warn("Email pas encore vérifié, nouvelle vérification dans 3s...");
+    console.log("Email vérifié :", isVerified);
+
+    if (!isVerified) {
+      console.log("Email pas encore vérifié, nouvelle vérification dans 3s...");
       setTimeout(() => {
-        window.location.reload(); // <-- On recharge la page après un petit délai
+        location.reload();
       }, 3000);
       return;
     }
+
+    // Email bien vérifié, continue l'exécution de la page normalement
   } else {
-    window.location.href = "/index.html";
+    document.body.innerHTML = "<p>Vérification de l'e-mail en attente... (nous rechargeons dans 3 secondes)</p>";
+setTimeout(() => location.reload(), 3000);
   }
 });
   // Formulaire de sélection
