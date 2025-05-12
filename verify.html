@@ -37,40 +37,45 @@
   
   <meta charset="UTF-8">
   <title>Vérification de l'e-mail</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-  <script>
-    // Configuration Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-      authDomain: "wirelessoverride.firebaseapp.com",
-      // ... autres paramètres
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
-</head>
-<body>
-  <div class="box">
-  <p>Vérification de votre e-mail en cours...</p>
-  </div>
-  <script>
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        user.reload().then(() => {
-          if (user.emailVerified) {
-            // Rediriger vers la sélection de personnage
-            window.location.href = 'selection_personnage.html';
-          } else {
-            // Afficher un message ou rediriger vers une page d'information
-            document.body.innerHTML = '<p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>';
-          }
-        });
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+      await user.reload();
+
+      if (user.emailVerified) {
+        const userRef = db.collection("players").doc(user.uid);
+        const docSnap = await userRef.get();
+
+        if (docSnap.exists && docSnap.data().characterSelected === true) {
+          window.location.href = "dashboard.html";
+          <p>Vérification réussie. Redirection en cours...</p>
+        } else {
+          window.location.href = "selection_personnage.html";
+          <p>Vérification réussie. Redirection en cours...</p>
+        }
       } else {
-        // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
-        window.location.href = 'index.html';
+        document.body.innerHTML = '<p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>';
       }
-     
-    });
-  </script>
+    } else {
+      window.location.href = 'index.html';
+      <p>Vérification réussie. Redirection en cours...</p>
+    }
+  });
+</script>
+
 </body>
 </html>
