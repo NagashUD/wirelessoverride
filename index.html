@@ -351,7 +351,7 @@
   });
 
   // === CONNEXION ===
-document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
+ document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const email = document.getElementById("modal-email").value;
@@ -365,15 +365,18 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
     // Rafraîchissement des données de l'utilisateur
     await user.reload();
 
-    // Vérification si l'email est validé
-    if (!user.emailVerified) {
-  await user.sendEmailVerification(); // Renvoie un email de confirmation
-  alert("Un email de vérification a été renvoyé. Veuillez vérifier votre boîte de réception.");
-  return;
-}
+    // Vérification de l'état de l'email
+    const currentUser = auth.currentUser; // Utilise auth.currentUser ici
+
+    if (!currentUser.emailVerified) {
+      // Envoie de l'email de vérification si l'email n'est pas vérifié
+      await currentUser.sendEmailVerification(); 
+      alert("Un email de vérification a été renvoyé. Veuillez vérifier votre boîte de réception.");
+      return; // Empêche la connexion tant que l'email n'est pas vérifié
+    }
 
     // Rediriger l'utilisateur selon son état (personnage sélectionné ou non)
-    const userRef = doc(db, "players", user.uid);
+    const userRef = doc(db, "players", currentUser.uid);
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists() || !docSnap.data().characterSelected) {
@@ -387,26 +390,6 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
   }
 });
 
-
- // === GESTION DU MODAL LOGIN ===
-const loginModal = document.getElementById('loginModal');
-const openLoginLink = document.getElementById('open-login');
-const closeLoginBtn = document.getElementById('close-login-modal');
-
-openLoginLink.addEventListener('click', (e) => {
-  e.preventDefault();
-  loginModal.classList.add('show');
-});
-
-closeLoginBtn.addEventListener('click', () => {
-  loginModal.classList.remove('show');
-});
-
-window.addEventListener('click', (event) => {
-  if (event.target === loginModal) {
-    loginModal.classList.remove('show');
-  }
-});
 </script>
 
 
