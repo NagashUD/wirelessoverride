@@ -50,22 +50,34 @@
 
   firebase.initializeApp(firebaseConfig);
 
-  firebase.auth().onAuthStateChanged(async (user) => {
+   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
       await user.reload();
-      if (user.emailVerified) {
-        console.log("Utilisateur connecté :", user);
-console.log("Email vérifié :", user.emailVerified);
+      const isVerified = user.emailVerified;
+
+      console.log("Utilisateur connecté :", user);
+      console.log("Email vérifié :", isVerified);
+
+      if (isVerified) {
         const db = firebase.firestore();
         const docRef = db.collection("players").doc(user.uid);
         const docSnap = await docRef.get();
+
         if (docSnap.exists && docSnap.data().characterSelected === true) {
           window.location.href = "dashboard.html";
         } else {
           window.location.href = "selection_personnage.html";
         }
       } else {
-        document.body.innerHTML = '<p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>';
+        document.body.innerHTML = `
+          <p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>
+          <p>Cette page vérifiera automatiquement toutes les 5 secondes.</p>
+        `;
+
+        setTimeout(() => {
+          console.log("Nouvelle tentative de rechargement des infos utilisateur...");
+          location.reload(); // force un nouveau cycle de auth state + reload
+        }, 5000);
       }
     } else {
       window.location.href = 'index.html';

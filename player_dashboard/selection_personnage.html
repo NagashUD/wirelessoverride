@@ -389,19 +389,15 @@ body::before {
   // Auth Check
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    let tries = 0;
-    while (tries < 5) {
-      await user.reload();
-      console.log("Tentative #" + (tries + 1) + " - emailVerified :", user.emailVerified);
-      if (user.emailVerified) {
-        break;
-      }
-      await new Promise(r => setTimeout(r, 2000)); // Pause 2 secondes
-      tries++;
-    }
+    await user.reload(); // <-- on force l'update
+    console.log("Email vérifié :", user.emailVerified);
 
     if (!user.emailVerified) {
-      window.location.href = "/verify.html";
+      console.warn("Email pas encore vérifié, nouvelle vérification dans 3s...");
+      setTimeout(() => {
+        window.location.reload(); // <-- On recharge la page après un petit délai
+      }, 3000);
+      return;
     }
   } else {
     window.location.href = "/index.html";
