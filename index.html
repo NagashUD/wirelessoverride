@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wireless: Override</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     /* Styles initiaux (inchangés, conservés comme tu les avais) */
@@ -350,33 +351,29 @@
     }
   });
 
-  // === CONNEXION ===
- document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
+// === CONNEXION ===
+document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const email = document.getElementById("modal-email").value;
   const password = document.getElementById("modal-password").value;
 
   try {
-    // Connexion de l'utilisateur
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
+    await userCredential.user.reload(); // recharge les infos de l'utilisateur
 
-    // Rafraîchissement des données de l'utilisateur
-    await user.reload();
+    const refreshedUser = auth.currentUser;
 
-    // Vérification de l'état de l'email
-    const currentUser = auth.currentUser; // Utilise auth.currentUser ici
+    console.log("Utilisateur connecté : ", refreshedUser.email);
+    console.log("Vérification email : ", refreshedUser.emailVerified);
 
-    if (!currentUser.emailVerified) {
-      // Envoie de l'email de vérification si l'email n'est pas vérifié
-      await currentUser.sendEmailVerification(); 
-      alert("Un email de vérification a été renvoyé. Veuillez vérifier votre boîte de réception.");
-      return; // Empêche la connexion tant que l'email n'est pas vérifié
+    if (!refreshedUser.emailVerified) {
+      alert("Votre email n'est pas vérifié. Un email de vérification vous a été renvoyé.");
+      await sendEmailVerification(refreshedUser);  // Renvoie un nouvel email de vérification
+      return;
     }
 
-    // Rediriger l'utilisateur selon son état (personnage sélectionné ou non)
-    const userRef = doc(db, "players", currentUser.uid);
+    const userRef = doc(db, "players", refreshedUser.uid);
     const docSnap = await getDoc(userRef);
 
     if (!docSnap.exists() || !docSnap.data().characterSelected) {
@@ -390,6 +387,31 @@
   }
 });
 
+  // === GESTION DU MODAL LOGIN ===
+document.addEventListener("DOMContentLoaded", () => {
+  const loginModal = document.getElementById("loginModal");
+  const openLoginLink = document.getElementById("open-login");
+  const closeLoginBtn = document.getElementById("close-login-modal");
+
+  if (openLoginLink && loginModal && closeLoginBtn) {
+    openLoginLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      loginModal.style.display = "block";
+    });
+
+    closeLoginBtn.addEventListener("click", () => {
+      loginModal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === loginModal) {
+        loginModal.style.display = "none";
+      }
+    });
+  } else {
+    console.warn("Un ou plusieurs éléments modaux n'ont pas été trouvés dans le DOM.");
+  }
+});
 </script>
 
 

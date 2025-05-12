@@ -63,27 +63,38 @@
 </head>
 <body>
    <div class="box">
- <h2>✉️ Adresse vérifiée</h2>
-<p>Votre adresse est maintenant confirmée. Veuillez vous reconnecter pour continuer.</p>
-<button id="reconnect-button">Se reconnecter</button>
+<p id="status">Vérification en cours...</p>
+<button id="reconnect-button">Retour à l'accueil</button>
 
 <script type="module">
-  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.appspot.com",
+    storageBucket: "wirelessoverride.firebasestorage.app",
     messagingSenderId: "674723237901",
-    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544",
-    measurementId: "G-21710DJ0G9"
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
- 
+
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await user.reload(); // recharge l'état de vérification
+      if (user.emailVerified) {
+        document.getElementById("status").innerText = "Votre adresse email est vérifiée ! Vous pouvez maintenant vous connecter.";
+      } else {
+        document.getElementById("status").innerText = "Votre adresse email n'est pas encore vérifiée. Cliquez sur le lien reçu dans votre boîte mail.";
+      }
+    } else {
+      document.getElementById("status").innerText = "Vous n'êtes pas connecté. Veuillez revenir à la page d'accueil.";
+    }
+  });
 
   document.getElementById("reconnect-button").addEventListener("click", async () => {
     await signOut(auth);
