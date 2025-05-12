@@ -60,20 +60,26 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
-      await user.reload();
-      if (user.emailVerified) {
-        console.log("✅ Email bien vérifié !");
-        localStorage.setItem("emailVerifiedNow", "true");
-        document.querySelector("p").innerText = "✅ Votre e-mail est maintenant vérifié. Redirection...";
-        setTimeout(() => {
-          window.location.href = "player_dashboard/selection_personnage.html";
-        }, 2000);
-      } else {
-        console.log("❌ Email pas encore vérifié !");
-        document.querySelector("p").innerText = "❌ Erreur : votre email n'est pas encore confirmé.";
-      }
+      const checkEmailVerification = async () => {
+        await user.reload();
+        if (user.emailVerified) {
+          console.log("✅ Email vérifié !");
+          localStorage.setItem("emailVerifiedNow", "true");
+          document.querySelector("p").innerText = "✅ Votre e-mail est maintenant vérifié. Redirection...";
+          clearInterval(checkInterval);
+          setTimeout(() => {
+            window.location.href = "player_dashboard/selection_personnage.html";
+          }, 2000);
+        } else {
+          console.log("⏳ Toujours pas vérifié...");
+        }
+      };
+
+      // Lancer toutes les 3 secondes
+      const checkInterval = setInterval(checkEmailVerification, 3000);
+      checkEmailVerification(); // Lancer une fois tout de suite aussi
     } else {
       document.querySelector("p").innerText = "❌ Erreur : utilisateur non connecté.";
     }
