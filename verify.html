@@ -54,6 +54,8 @@
     if (user) {
       await user.reload();
       if (user.emailVerified) {
+        console.log("Utilisateur connecté :", user);
+console.log("Email vérifié :", user.emailVerified);
         const db = firebase.firestore();
         const docRef = db.collection("players").doc(user.uid);
         const docSnap = await docRef.get();
