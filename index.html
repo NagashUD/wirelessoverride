@@ -361,7 +361,9 @@
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Vérifie si l'email est bien vérifié
+    // Rafraîchissement des informations de l'utilisateur pour s'assurer que l'email est bien vérifié
+    await user.reload();
+
     if (!user.emailVerified) {
       alert("Veuillez vérifier votre adresse email avant de vous connecter.");
       return;
