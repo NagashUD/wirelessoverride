@@ -351,54 +351,57 @@
   });
 
   // === CONNEXION ===
-  document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
+ document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-    const email = document.getElementById("modal-email").value;
-    const password = document.getElementById("modal-password").value;
+  const email = document.getElementById("modal-email").value;
+  const password = document.getElementById("modal-password").value;
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-      if (!user.emailVerified) {
-        alert("Veuillez vérifier votre adresse email avant de vous connecter.");
-        return;
-      }
-
-      const userRef = doc(db, "players", user.uid);
-      const docSnap = await getDoc(userRef);
-
-      if (!docSnap.exists() || !docSnap.data().characterSelected) {
-        window.location.href = "player_dashboard/selection_personnage.html";
-      } else {
-        window.location.href = "player_dashboard/dashboard.html";
-      }
-
-    } catch (error) {
-      alert("Erreur de connexion : " + error.message);
+    // Vérifie si l'email est bien vérifié
+    if (!user.emailVerified) {
+      alert("Veuillez vérifier votre adresse email avant de vous connecter.");
+      return;
     }
-  });
 
-  // === GESTION DU MODAL LOGIN ===
-  const loginModal = document.getElementById('loginModal');
-  const openLoginLink = document.getElementById('open-login');
-  const closeLoginBtn = document.getElementById('close-login-modal');
+    const userRef = doc(db, "players", user.uid);
+    const docSnap = await getDoc(userRef);
 
-  openLoginLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    loginModal.classList.add('show');
-  });
+    // Si le document de l'utilisateur n'existe pas ou que le personnage n'a pas été sélectionné, redirige vers la sélection
+    if (!docSnap.exists() || !docSnap.data().characterSelected) {
+      window.location.href = "player_dashboard/selection_personnage.html";
+    } else {
+      // Si le personnage est déjà sélectionné, redirige vers le dashboard
+      window.location.href = "player_dashboard/dashboard.html";
+    }
 
-  closeLoginBtn.addEventListener('click', () => {
+  } catch (error) {
+    alert("Erreur de connexion : " + error.message);
+  }
+});
+
+ // === GESTION DU MODAL LOGIN ===
+const loginModal = document.getElementById('loginModal');
+const openLoginLink = document.getElementById('open-login');
+const closeLoginBtn = document.getElementById('close-login-modal');
+
+openLoginLink.addEventListener('click', (e) => {
+  e.preventDefault();
+  loginModal.classList.add('show');
+});
+
+closeLoginBtn.addEventListener('click', () => {
+  loginModal.classList.remove('show');
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === loginModal) {
     loginModal.classList.remove('show');
-  });
-
-  window.addEventListener('click', (event) => {
-    if (event.target === loginModal) {
-      loginModal.classList.remove('show');
-    }
-  });
+  }
+});
 </script>
 
 

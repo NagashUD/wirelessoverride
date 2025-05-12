@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vérification réussie</title>
-
+  <meta charset="UTF-8">
+  <title>Vérification de l'e-mail</title>
   <style>
-    body {
+      body {
       font-family: 'Orbitron', sans-serif;
       background: url('images/background.jpg') no-repeat center center fixed;
       background-size: cover;
@@ -28,9 +26,31 @@
       height: 100%;
       background: rgba(10, 10, 20, 0.6);
       z-index: -1;
-    
     }
-      .box {
+    .status {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+   button {
+            background-color: #ff00ff;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+           
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+          background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+        }
+              .box {
       border: 1px solid #444;
       padding: 2rem;
       border-radius: 10px;
@@ -38,67 +58,14 @@
        box-shadow: 0 0 30px rgba(255, 0, 255, 0.4);
     }
   </style>
+
+
 </head>
 <body>
-
-<p id="status">⏳ Vérification de votre e-mail en cours...</p>
-<button id="reconnect" style="display:none;">🔁 Recharger la session</button>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-    authDomain: "wirelessoverride.firebaseapp.com",
-    projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.firebasestorage.app",
-    messagingSenderId: "674723237901",
-    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544",
-    measurementId: "G-21710DJ0G9"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const statusText = document.getElementById("status");
-  const reconnectBtn = document.getElementById("reconnect");
-
-  let checkCount = 0;
-
-  reconnectBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    statusText.innerText = "🔄 Déconnexion... Redirection vers la page d'accueil";
-    setTimeout(() => {
-      window.location.href = "index.html";
-    }, 2000);
-  });
-
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      const interval = setInterval(async () => {
-        await user.reload();
-        if (user.emailVerified) {
-          clearInterval(interval);
-          localStorage.setItem("emailVerifiedNow", "true");
-          statusText.innerText = "✅ E-mail vérifié ! Redirection...";
-          setTimeout(() => {
-            window.location.href = "player_dashboard/selection_personnage.html";
-          }, 2000);
-        } else {
-          console.log("⏳ Toujours pas vérifié...");
-          checkCount++;
-          if (checkCount >= 5) {
-            clearInterval(interval);
-            statusText.innerText = "❌ Toujours pas vérifié. Veuillez vous reconnecter.";
-            reconnectBtn.style.display = "inline-block";
-          }
-        }
-      }, 3000);
-    } else {
-      statusText.innerText = "❌ Erreur : utilisateur non connecté.";
-      reconnectBtn.style.display = "inline-block";
-    }
-  });
-</script>
+   <div class="box">
+  <p class="status">Votre adresse e-mail est maintenant confirmée.</p>
+  <p>Veuillez vous reconnecter pour continuer.</p>
+  <p><button onclick="window.location.href='index.html'">Se reconnecter</button></p>
+  </div>
 </body>
 </html>
