@@ -337,105 +337,117 @@ body::before {
       
       </div>
       
+<script type="module">
+  // Import Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+  // Config Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
 
-<script>
-    // Fonction pour vérifier le nom (pas de caractères spéciaux)
-    function isValidName(name) {
-        var regex = /^[a-zA-Z0-9\s]+$/; // Lettres, chiffres et espaces uniquement
-        return regex.test(name);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Fonctions pour localStorage
+  function saveToLocalStorage(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+      console.error("Erreur lors de l'enregistrement dans localStorage :", e);
     }
+  }
 
-    // Fonction appelée lors de la validation du personnage
- function validerPersonnage(event) {
-    event.preventDefault(); // Pour éviter le rechargement de la page
+  function loadFromLocalStorage(key) {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : null;
+    } catch (e) {
+      console.warn("Données corrompues ou illisibles dans localStorage :", key);
+      return null;
+    }
+  }
 
-    const characterName = document.getElementById("character-name").value;
+  function isValidCharacterData(data) {
+    return (
+      data &&
+      typeof data.name === "string" &&
+      typeof data.faction === "string" &&
+      typeof data.role === "string" &&
+      typeof data.genre === "string"
+    );
+  }
+
+  // Auth Check
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await user.reload();
+      if (!user.emailVerified) {
+        window.location.href = "/verify.html";
+      }
+    } else {
+      window.location.href = "/index.html";
+    }
+  });
+
+  // Formulaire de sélection
+  const form = document.getElementById("character-selection-form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     const faction = document.getElementById("faction").value;
     const roleSelected = document.getElementById("role").value;
     const genre = document.getElementById("genre").value;
+    const characterName = document.getElementById("character-name").value.trim();
 
     if (characterName === "") {
-        alert("Le nom de votre personnage ne peut pas être vide.");
-        return;
+      alert("Le nom de votre personnage ne peut pas être vide.");
+      return;
     }
 
-    if (!isValidName(characterName)) {
-        alert("Le nom ne peut contenir que des lettres, des chiffres et des espaces.");
-        return;
+    if (!/^[a-zA-Z0-9\s]+$/.test(characterName)) {
+      alert("Le nom ne peut contenir que des lettres, chiffres et espaces.");
+      return;
     }
 
-    // Sauvegarde dans localStorage
-    localStorage.setItem('faction', faction);
-    localStorage.setItem('role', roleSelected);
-    localStorage.setItem('genre', genre);
-    localStorage.setItem('characterName', characterName);
-    localStorage.setItem('persoActif', 'true');
+    const characterData = {
+      name: characterName,
+      faction: faction,
+      role: roleSelected,
+      genre: genre
+    };
 
-    // Sauvegarde dans Firebase
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const userRef = doc(db, "players", user.uid);
-            await setDoc(userRef, {
-                characterSelected: true,
-                faction: faction,
-                role: roleSelected,
-                genre: genre,
-                characterName: characterName
-            }, { merge: true });
+    // Validation avant stockage
+    if (!isValidCharacterData(characterData)) {
+      alert("Les données de personnage sont invalides.");
+      return;
+    }
 
-            window.location.href = 'dashboard.html';
-        }
-    });
-}
+    saveToLocalStorage("selectedCharacter", characterData);
+
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const userRef = doc(db, "players", currentUser.uid);
+      await setDoc(userRef, {
+        characterSelected: true,
+        ...characterData
+      }, { merge: true });
+
+      window.location.href = "dashboard.html";
+    }
+  });
 </script>
 
-    <script>
-        const factionDescriptions = {
-            synrax: "SYNRAX : Un collectif cybernétique prônant la fusion entre homme et machine. Leur technologie avancée défie les lois naturelles.",
-            corvex: "CORVEX INDUSTRIES : Conglomérat militaro-industriel. Organisé, implacable, axé sur le contrôle et l’optimisation des ressources.",
-            ferals: "FERALS : Survivants mutants des zones irradiées. Sauvages, imprévisibles, connectés à une forme de nature mutée.",
-            aegis: "AEGIS NOIR : Organisation paramilitaire clandestine. Tactique, spécialisée dans l’espionnage, les assassinats et le sabotage.",
-            neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
-        };
 
-        const roleDescriptions = {
-            soldier: {
-                synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
-                corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
-                ferals: "Soldat FERALS : Brutal, imprévisible, utilise des armes primitives autant que radioactives.",
-                aegis: "Soldat AEGIS NOIR : Discret, précis, mortel. Opérations spéciales en environnement hostile.",
-                neurorage: "Soldat NEURORAGE : Mi-soldat mi-pirate de champ de bataille, doté de cyberréflexes."
-            },
-            engineer: {
-                synrax: "Ingénieur SYNRAX : Crée et améliore des implants et drones autonomes.",
-                corvex: "Ingénieur CORVEX : Spécialiste en fortification, robotique industrielle et armement lourd.",
-                ferals: "Ingénieur FERALS : Bricole des artefacts mutants, armes organiques ou instables.",
-                aegis: "Ingénieur AEGIS NOIR : Expert sabotage, piratage industriel, technologie furtive.",
-                neurorage: "Ingénieur NEURORAGE : Transforme les datas en outils mortels, fabrique du code vivant."
-            },
-            hacker: {
-                synrax: "Hacker SYNRAX : Fusionne avec le réseau pour manipuler la réalité augmentée.",
-                corvex: "Hacker CORVEX : Récupère des données industrielles critiques pour un usage stratégique.",
-                ferals: "Hacker FERALS : Parasite les flux de données à l’état sauvage, anarchique et destructeur.",
-                aegis: "Hacker AEGIS NOIR : Discret, traque les failles, injecte des virus létaux dans les systèmes ennemis.",
-                neurorage: "Hacker NEURORAGE : Maître absolu des datas, il peut prendre le contrôle total d’un réseau entier."
-            },
-            medic: {
-                synrax: "Médecin SYNRAX : Greffe, remplace, améliore. Soigner, c’est upgrader.",
-                corvex: "Médecin CORVEX : Médecine de terrain rapide et rentable, à l’image de leur doctrine.",
-                ferals: "Médecin FERALS : Guérison brutale et alternative, utilise des substances mutagènes.",
-aegis: "Médecin AEGIS NOIR : Spécialisé en réanimations rapides en milieu de guerre.",
-neurorage: "Médecin NEURORAGE : Des améliorations cérébrales pour contrer les blessures complexes."
-},
-scout: {
-synrax: "Éclaireur SYNRAX : Agent discret, opérant dans les recoins cachés du monde numérique.",
-corvex: "Éclaireur CORVEX : Utilise des drones et autres dispositifs de surveillance avancés.",
-ferals: "Éclaireur FERALS : Écoute les murmures de la nature, détecte les failles dans les zones irradiées.",
-aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mouvement dans l'ombre.",
-neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
-}
-};
+  <script>
 
 
     // Gérer la description selon les choix
@@ -534,82 +546,55 @@ neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les faille
  
     </script>
 
+  <script>
+        const factionDescriptions = {
+            synrax: "SYNRAX : Un collectif cybernétique prônant la fusion entre homme et machine. Leur technologie avancée défie les lois naturelles.",
+            corvex: "CORVEX INDUSTRIES : Conglomérat militaro-industriel. Organisé, implacable, axé sur le contrôle et l’optimisation des ressources.",
+            ferals: "FERALS : Survivants mutants des zones irradiées. Sauvages, imprévisibles, connectés à une forme de nature mutée.",
+            aegis: "AEGIS NOIR : Organisation paramilitaire clandestine. Tactique, spécialisée dans l’espionnage, les assassinats et le sabotage.",
+            neurorage: "NEURORAGE : Hacktivistes augmentés. Leurs cerveaux surconnectés manipulent les réseaux comme une arme."
+        };
 
-
-
- <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
-  authDomain: "wirelessoverride.firebaseapp.com",
-  projectId: "wirelessoverride",
-  storageBucket: "wirelessoverride.appspot.com",
-  messagingSenderId: "674723237901",
-  appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+        const roleDescriptions = {
+            soldier: {
+                synrax: "Soldat SYNRAX : Implanté et renforcé, il combat comme une machine de guerre semi-autonome.",
+                corvex: "Soldat CORVEX : Formé par l'industrie de la guerre. Obéissance, puissance, efficacité.",
+                ferals: "Soldat FERALS : Brutal, imprévisible, utilise des armes primitives autant que radioactives.",
+                aegis: "Soldat AEGIS NOIR : Discret, précis, mortel. Opérations spéciales en environnement hostile.",
+                neurorage: "Soldat NEURORAGE : Mi-soldat mi-pirate de champ de bataille, doté de cyberréflexes."
+            },
+            engineer: {
+                synrax: "Ingénieur SYNRAX : Crée et améliore des implants et drones autonomes.",
+                corvex: "Ingénieur CORVEX : Spécialiste en fortification, robotique industrielle et armement lourd.",
+                ferals: "Ingénieur FERALS : Bricole des artefacts mutants, armes organiques ou instables.",
+                aegis: "Ingénieur AEGIS NOIR : Expert sabotage, piratage industriel, technologie furtive.",
+                neurorage: "Ingénieur NEURORAGE : Transforme les datas en outils mortels, fabrique du code vivant."
+            },
+            hacker: {
+                synrax: "Hacker SYNRAX : Fusionne avec le réseau pour manipuler la réalité augmentée.",
+                corvex: "Hacker CORVEX : Récupère des données industrielles critiques pour un usage stratégique.",
+                ferals: "Hacker FERALS : Parasite les flux de données à l’état sauvage, anarchique et destructeur.",
+                aegis: "Hacker AEGIS NOIR : Discret, traque les failles, injecte des virus létaux dans les systèmes ennemis.",
+                neurorage: "Hacker NEURORAGE : Maître absolu des datas, il peut prendre le contrôle total d’un réseau entier."
+            },
+            medic: {
+                synrax: "Médecin SYNRAX : Greffe, remplace, améliore. Soigner, c’est upgrader.",
+                corvex: "Médecin CORVEX : Médecine de terrain rapide et rentable, à l’image de leur doctrine.",
+                ferals: "Médecin FERALS : Guérison brutale et alternative, utilise des substances mutagènes.",
+aegis: "Médecin AEGIS NOIR : Spécialisé en réanimations rapides en milieu de guerre.",
+neurorage: "Médecin NEURORAGE : Des améliorations cérébrales pour contrer les blessures complexes."
+},
+scout: {
+synrax: "Éclaireur SYNRAX : Agent discret, opérant dans les recoins cachés du monde numérique.",
+corvex: "Éclaireur CORVEX : Utilise des drones et autres dispositifs de surveillance avancés.",
+ferals: "Éclaireur FERALS : Écoute les murmures de la nature, détecte les failles dans les zones irradiées.",
+aegis: "Éclaireur AEGIS NOIR : Maître de l’infiltration, il capte chaque mouvement dans l'ombre.",
+neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les failles comme personne."
+}
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-onAuthStateChanged(auth, (user) => {
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
-
- const form = document.getElementById("character-selection-form");
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const faction = document.getElementById("faction").value;
-  const roleSelected = document.getElementById("role").value;
-  const genre = document.getElementById("genre").value;
-  const characterName = document.getElementById("character-name").value.trim();
-
-  if (characterName === "") {
-    alert("Le nom de votre personnage ne peut pas être vide.");
-    return;
-  }
-
-  if (!/^[a-zA-Z0-9\s]+$/.test(characterName)) {
-    alert("Le nom ne peut contenir que des lettres, chiffres et espaces.");
-    return;
-  }
-
-  // ici tu peux stocker les infos dans localStorage
-  const characterData = {
-    name: characterName,
-    faction: faction,
-    role: roleSelected,
-    genre: genre
-  };
-
-  localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
-
-  // et rediriger ensuite
-  window.location.href = "dashboard.html";
-});
-});
 </script>
- <script>
-    firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    user.reload().then(() => {
-      if (!user.emailVerified) {
-        // Rediriger vers la page d'information
-        window.location.href = '/verify.html';
-      }
-    });
-  } else {
-    // L'utilisateur n'est pas connecté, rediriger vers la page de connexion
-    window.location.href = '/index.html';
-  }
-});
- </script>
+ 
 </body>
 
 </html>
