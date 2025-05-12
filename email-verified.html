@@ -65,7 +65,7 @@
    <div class="box">
  <h2>✉️ Adresse vérifiée</h2>
 <p>Votre adresse est maintenant confirmée. Veuillez vous reconnecter pour continuer.</p>
-<button onclick="redirectToLogin()">Se reconnecter</button>
+<button id="reconnect-button">Se reconnecter</button>
 
 <script type="module">
   import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
@@ -81,13 +81,14 @@
     measurementId: "G-21710DJ0G9"
   };
 
+ 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  async function redirectToLogin() {
+  document.getElementById("reconnect-button").addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "index.html";
-  }
+  });
 </script>
   </div>
   
