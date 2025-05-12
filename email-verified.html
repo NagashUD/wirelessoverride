@@ -41,11 +41,12 @@
 </head>
 <body>
 
-<p>⏳ Vérification de votre e-mail en cours...</p>
+<p id="status">⏳ Vérification de votre e-mail en cours...</p>
+<button id="reconnect" style="display:none;">🔁 Recharger la session</button>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
@@ -59,29 +60,43 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
+  const statusText = document.getElementById("status");
+  const reconnectBtn = document.getElementById("reconnect");
+
+  let checkCount = 0;
+
+  reconnectBtn.addEventListener("click", async () => {
+    await signOut(auth);
+    statusText.innerText = "🔄 Déconnexion... Redirection vers la page d'accueil";
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 2000);
+  });
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const checkEmailVerification = async () => {
+      const interval = setInterval(async () => {
         await user.reload();
         if (user.emailVerified) {
-          console.log("✅ Email vérifié !");
+          clearInterval(interval);
           localStorage.setItem("emailVerifiedNow", "true");
-          document.querySelector("p").innerText = "✅ Votre e-mail est maintenant vérifié. Redirection...";
-          clearInterval(checkInterval);
+          statusText.innerText = "✅ E-mail vérifié ! Redirection...";
           setTimeout(() => {
             window.location.href = "player_dashboard/selection_personnage.html";
           }, 2000);
         } else {
           console.log("⏳ Toujours pas vérifié...");
+          checkCount++;
+          if (checkCount >= 5) {
+            clearInterval(interval);
+            statusText.innerText = "❌ Toujours pas vérifié. Veuillez vous reconnecter.";
+            reconnectBtn.style.display = "inline-block";
+          }
         }
-      };
-
-      // Lancer toutes les 3 secondes
-      const checkInterval = setInterval(checkEmailVerification, 3000);
-      checkEmailVerification(); // Lancer une fois tout de suite aussi
+      }, 3000);
     } else {
-      document.querySelector("p").innerText = "❌ Erreur : utilisateur non connecté.";
+      statusText.innerText = "❌ Erreur : utilisateur non connecté.";
+      reconnectBtn.style.display = "inline-block";
     }
   });
 </script>
