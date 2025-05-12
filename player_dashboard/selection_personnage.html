@@ -159,7 +159,7 @@ body::before {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    height: 100%; /* Ajuste si besoin */
+    height: 100px; /* Ajuste si besoin */
     width: auto;
     max-width: 20vw;
     display: flex;
@@ -343,7 +343,7 @@ body::before {
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  // Config Firebase
+  // Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
@@ -357,12 +357,12 @@ body::before {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Fonctions pour localStorage
+  // Utils localStorage
   function saveToLocalStorage(key, value) {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (e) {
-      console.error("Erreur lors de l'enregistrement dans localStorage :", e);
+      console.error("Erreur localStorage (sauvegarde) :", e);
     }
   }
 
@@ -371,7 +371,7 @@ body::before {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : null;
     } catch (e) {
-      console.warn("Données corrompues ou illisibles dans localStorage :", key);
+      console.warn("Erreur localStorage (lecture) :", key);
       return null;
     }
   }
@@ -386,29 +386,32 @@ body::before {
     );
   }
 
-  // Auth Check
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    await user.reload();
-    const isVerified = user.emailVerified;
+  // Vérification de l'authentification et de l'email
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await user.reload();
+      const isVerified = user.emailVerified;
 
-    console.log("Email vérifié :", isVerified);
+      // Cas spécial : redirection depuis email-verified.html
+      if (localStorage.getItem("emailVerifiedNow") === "true") {
+        console.log("Redirection après vérification d'email réussie");
+        localStorage.removeItem("emailVerifiedNow");
+      } else if (!isVerified) {
+        console.log("Email non vérifié. Tentative automatique dans 3 secondes...");
+        document.body.innerHTML = "<p>Votre e-mail n'est pas encore vérifié. Nouvelle tentative dans 3 secondes...</p>";
+        setTimeout(() => location.reload(), 3000);
+        return;
+      }
 
-    if (!isVerified) {
-      console.log("Email pas encore vérifié, nouvelle vérification dans 3s...");
-      setTimeout(() => {
-        location.reload();
-      }, 3000);
-      return;
+      // Email vérifié, tout est OK
+      console.log("Utilisateur connecté et email vérifié :", user.email);
+    } else {
+      document.body.innerHTML = "<p>Utilisateur non connecté. Recharge dans 3 secondes...</p>";
+      setTimeout(() => location.reload(), 3000);
     }
+  });
 
-    // Email bien vérifié, continue l'exécution de la page normalement
-  } else {
-    document.body.innerHTML = "<p>Vérification de l'e-mail en attente... (nous rechargeons dans 3 secondes)</p>";
-setTimeout(() => location.reload(), 3000);
-  }
-});
-  // Formulaire de sélection
+  // Formulaire de sélection de personnage
   const form = document.getElementById("character-selection-form");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -430,12 +433,11 @@ setTimeout(() => location.reload(), 3000);
 
     const characterData = {
       name: characterName,
-      faction: faction,
+      faction,
       role: roleSelected,
-      genre: genre
+      genre
     };
 
-    // Validation avant stockage
     if (!isValidCharacterData(characterData)) {
       alert("Les données de personnage sont invalides.");
       return;
@@ -445,16 +447,23 @@ setTimeout(() => location.reload(), 3000);
 
     const currentUser = auth.currentUser;
     if (currentUser) {
-      const userRef = doc(db, "players", currentUser.uid);
-      await setDoc(userRef, {
-        characterSelected: true,
-        ...characterData
-      }, { merge: true });
+      try {
+        const userRef = doc(db, "players", currentUser.uid);
+        await setDoc(userRef, {
+          characterSelected: true,
+          ...characterData
+        }, { merge: true });
 
-      window.location.href = "dashboard.html";
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        console.error("Erreur lors de l'enregistrement du personnage :", error);
+        alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
+      }
     }
   });
 </script>
+
+
 
 
   <script>

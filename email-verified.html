@@ -4,12 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vérification réussie</title>
-  <script>
-    // Redirection après 2 secondes
-    setTimeout(() => {
-      window.location.href = "player_dashboard/selection_personnage.html";
-    }, 3000);
-  </script>
+
   <style>
     body {
       font-family: 'Orbitron', sans-serif;
@@ -49,5 +44,46 @@
     <h1>Email vérifié avec succès !</h1>
     <p>Redirection vers la sélection de personnage...</p>
   </div>
+    <script>
+    // Redirection après 2 secondes
+    setTimeout(() => {
+      window.location.href = "player_dashboard/selection_personnage.html";
+    }, 3000);
+  </script>
+
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "571956854406",
+    appId: "1:571956854406:web:e065f3de0f83b4acde86c6",
+    measurementId: "G-WW0LPQ8NWK"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      await user.reload();
+      if (user.emailVerified) {
+        console.log("Email bien vérifié dans l'onglet email-verified.html !");
+        // On enregistre un flag pour que selection_personnage.html sache que c’est bon
+        localStorage.setItem("emailVerifiedNow", "true");
+        window.location.href = "player_dashboard/selection_personnage.html";
+      } else {
+        console.log("Email pas encore vérifié !");
+        document.querySelector("p").innerText = "Erreur : votre email n'est pas encore confirmé.";
+      }
+    } else {
+      document.querySelector("p").innerText = "Erreur : utilisateur non connecté.";
+    }
+  });
+</script>
 </body>
 </html>
