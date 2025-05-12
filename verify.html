@@ -37,9 +37,9 @@
   
   <meta charset="UTF-8">
   <title>Vérification de l'e-mail</title>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
 <script>
   const firebaseConfig = {
@@ -49,33 +49,28 @@
   };
 
   firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const db = firebase.firestore();
 
-  auth.onAuthStateChanged(async (user) => {
+  firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
       await user.reload();
-
       if (user.emailVerified) {
-        const userRef = db.collection("players").doc(user.uid);
-        const docSnap = await userRef.get();
-
+        const db = firebase.firestore();
+        const docRef = db.collection("players").doc(user.uid);
+        const docSnap = await docRef.get();
         if (docSnap.exists && docSnap.data().characterSelected === true) {
           window.location.href = "dashboard.html";
-          <p>Vérification réussie. Redirection en cours...</p>
         } else {
           window.location.href = "selection_personnage.html";
-          <p>Vérification réussie. Redirection en cours...</p>
         }
       } else {
         document.body.innerHTML = '<p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>';
       }
     } else {
       window.location.href = 'index.html';
-      <p>Vérification réussie. Redirection en cours...</p>
     }
   });
 </script>
+
 
 </body>
 </html>
