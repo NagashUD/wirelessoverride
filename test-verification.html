@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Vérification Email</title>
+</head>
+<body>
+  <h2 id="status">Vérification en cours...</h2>
+
+  <form id="login-form">
+    <label>Email :</label>
+    <input type="email" id="email" required />
+    <label>Mot de passe :</label>
+    <input type="password" id="password" required />
+    <button type="submit">Se connecter</button>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const statusText = document.getElementById("status");
+    const form = document.getElementById("login-form");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        await user.reload();
+        console.log("user.emailVerified:", user.emailVerified);
+
+        if (user.emailVerified) {
+          statusText.innerText = "✅ Email vérifié !";
+        } else {
+          statusText.innerText = "❌ Email non vérifié.";
+        }
+      } catch (error) {
+        console.error("Erreur de connexion :", error.code, error.message);
+        statusText.innerText = "❌ Erreur de connexion.";
+      }
+    });
+  </script>
+</body>
+</html>
