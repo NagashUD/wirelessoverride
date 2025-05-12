@@ -351,7 +351,7 @@
   });
 
   // === CONNEXION ===
- document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
+document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const email = document.getElementById("modal-email").value;
@@ -361,8 +361,14 @@
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    // Ajout d'un log pour vérifier l'état des données de l'utilisateur après la connexion
+    console.log("Utilisateur connecté : ", user);
+    console.log("Vérification email : ", user.emailVerified);
+
     // Rafraîchissement des informations de l'utilisateur pour s'assurer que l'email est bien vérifié
     await user.reload();
+
+    console.log("Après reload - Vérification email : ", user.emailVerified);
 
     if (!user.emailVerified) {
       alert("Veuillez vérifier votre adresse email avant de vous connecter.");
@@ -372,11 +378,9 @@
     const userRef = doc(db, "players", user.uid);
     const docSnap = await getDoc(userRef);
 
-    // Si le document de l'utilisateur n'existe pas ou que le personnage n'a pas été sélectionné, redirige vers la sélection
     if (!docSnap.exists() || !docSnap.data().characterSelected) {
       window.location.href = "player_dashboard/selection_personnage.html";
     } else {
-      // Si le personnage est déjà sélectionné, redirige vers le dashboard
       window.location.href = "player_dashboard/dashboard.html";
     }
 
