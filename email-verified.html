@@ -63,9 +63,33 @@
 </head>
 <body>
    <div class="box">
-  <p class="status">Votre adresse e-mail est maintenant confirmée.</p>
-  <p>Veuillez vous reconnecter pour continuer.</p>
-  <p><button onclick="window.location.href='index.html'">Se reconnecter</button></p>
+ <h2>✉️ Adresse vérifiée</h2>
+<p>Votre adresse est maintenant confirmée. Veuillez vous reconnecter pour continuer.</p>
+<button onclick="redirectToLogin()">Se reconnecter</button>
+
+<script type="module">
+  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544",
+    measurementId: "G-21710DJ0G9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  async function redirectToLogin() {
+    await signOut(auth);
+    window.location.href = "index.html";
+  }
+</script>
   </div>
+  
 </body>
 </html>
