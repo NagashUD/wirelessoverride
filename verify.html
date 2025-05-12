@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
+  <p>Veuillez vérifier votre email.</p>
+<button onclick="checkVerification()">J’ai validé mon email</button>
+
+
+
+
 <head>
   
   <style>
@@ -84,7 +90,18 @@
     }
   });
 </script>
-
+<script>
+  async function checkVerification() {
+  const user = auth.currentUser;
+  await user.reload();
+  if (user.emailVerified) {
+    console.log("Email vérifié après action manuelle !");
+    location.reload();
+  } else {
+    alert("Toujours pas vérifié !");
+  }
+}
+</script>
 
 </body>
 </html>
