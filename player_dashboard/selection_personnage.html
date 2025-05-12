@@ -389,8 +389,17 @@ body::before {
   // Auth Check
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    await user.reload();
-    console.log("Email vérifié dans selection_personnage.html :", user.emailVerified); // ← à surveiller
+    let tries = 0;
+    while (tries < 5) {
+      await user.reload();
+      console.log("Tentative #" + (tries + 1) + " - emailVerified :", user.emailVerified);
+      if (user.emailVerified) {
+        break;
+      }
+      await new Promise(r => setTimeout(r, 2000)); // Pause 2 secondes
+      tries++;
+    }
+
     if (!user.emailVerified) {
       window.location.href = "/verify.html";
     }
@@ -398,7 +407,6 @@ onAuthStateChanged(auth, async (user) => {
     window.location.href = "/index.html";
   }
 });
-
   // Formulaire de sélection
   const form = document.getElementById("character-selection-form");
   form.addEventListener("submit", async (e) => {
