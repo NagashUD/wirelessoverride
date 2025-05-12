@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
+
   <p>Veuillez vérifier votre email.</p>
 <button onclick="checkVerification()">J’ai validé mon email</button>
-
-
-
 
 <head>
   
@@ -47,61 +45,53 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-  firebase.initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-   firebase.auth().onAuthStateChanged(async (user) => {
+  const statusDiv = document.getElementById("status");
+
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       await user.reload();
-      const isVerified = user.emailVerified;
 
-      console.log("Utilisateur connecté :", user);
-      console.log("Email vérifié :", isVerified);
+      if (user.emailVerified) {
+        // Sauvegarde temporaire pour informer selection_personnage.html
+        localStorage.setItem("emailVerifiedNow", "true");
 
-      if (isVerified) {
-        const db = firebase.firestore();
-        const docRef = db.collection("players").doc(user.uid);
-        const docSnap = await docRef.get();
-
-        if (docSnap.exists && docSnap.data().characterSelected === true) {
-          window.location.href = "dashboard.html";
-        } else {
+        statusDiv.innerText = "✅ E-mail vérifié avec succès. Redirection...";
+        setTimeout(() => {
           window.location.href = "selection_personnage.html";
-        }
+        }, 1500);
       } else {
-        document.body.innerHTML = `
-          <p>Veuillez vérifier votre e-mail en cliquant sur le lien que nous vous avons envoyé.</p>
-          <p>Cette page vérifiera automatiquement toutes les 5 secondes.</p>
+        statusDiv.innerHTML = `
+          ❌ Votre e-mail n'a pas encore été vérifié.<br>
+          Veuillez cliquer sur le lien dans votre boîte e-mail, puis revenir ici.<br>
+          <button id="refresh">🔄 Rafraîchir</button>
         `;
 
-        setTimeout(() => {
-          console.log("Nouvelle tentative de rechargement des infos utilisateur...");
-          location.reload(); // force un nouveau cycle de auth state + reload
-        }, 5000);
+        document.getElementById("refresh").addEventListener("click", () => location.reload());
       }
     } else {
-      window.location.href = 'index.html';
+      statusDiv.innerText = "Aucun utilisateur connecté. Merci de vous reconnecter.";
     }
   });
 </script>
-<script>
-  async function checkVerification() {
-  const user = auth.currentUser;
-  await user.reload();
-  if (user.emailVerified) {
-    console.log("Email vérifié après action manuelle !");
-    location.reload();
-  } else {
-    alert("Toujours pas vérifié !");
-  }
-}
-</script>
+
+<!-- Dans le body de verify.html -->
+<div id="status">⏳ Vérification de l'e-mail en cours...</div>
 
 </body>
 </html>

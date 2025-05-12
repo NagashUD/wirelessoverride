@@ -159,7 +159,7 @@ body::before {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    height: 100px; /* Ajuste si besoin */
+    height: 100%; /* Ajuste si besoin */
     width: auto;
     max-width: 20vw;
     display: flex;
@@ -357,6 +357,12 @@ body::before {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  if (localStorage.getItem("emailVerifiedNow") === "true") {
+  console.log("Redirection après email vérifié.");
+  localStorage.removeItem("emailVerifiedNow");
+}
+  
+  
   // Utils localStorage
   function saveToLocalStorage(key, value) {
     try {
