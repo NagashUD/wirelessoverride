@@ -96,28 +96,30 @@
   const statusText = document.getElementById("email-status");
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("verify-email").value;
-    const password = document.getElementById("verify-password").value;
+  e.preventDefault();
+  const email = document.getElementById("verify-email").value;
+  const password = document.getElementById("verify-password").value;
 
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      await user.reload();
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-      if (user.emailVerified) {
-        statusText.innerText = "✅ Email vérifié ! Redirection...";
-        setTimeout(() => {
-          window.location.href = "selection_personnage.html";
-        }, 1000);
-      } else {
-        statusText.innerText = "❌ Email non vérifié, clique bien sur le lien dans l'email reçu.";
-      }
-    } catch (error) {
-      console.error(error);
-      statusText.innerText = "❌ Erreur de connexion. Vérifie l'email et le mot de passe.";
+    await user.reload();  // 🔁 Important : recharge l'objet utilisateur
+    console.log("user.emailVerified:", user.emailVerified); // 👈 Diagnostic
+
+    if (user.emailVerified) {
+      statusText.innerText = "✅ Email vérifié ! Redirection...";
+      setTimeout(() => {
+        window.location.href = "selection_personnage.html";
+      }, 1000);
+    } else {
+      statusText.innerText = "❌ Email non vérifié, clique bien sur le lien dans l'email reçu.";
     }
-  });
+  } catch (error) {
+    console.error("Erreur de connexion :", error.code, error.message);
+    statusText.innerText = "❌ Erreur de connexion. Vérifie l'email et le mot de passe.";
+  }
+});
 </script>
 
 
