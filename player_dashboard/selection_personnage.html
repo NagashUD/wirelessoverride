@@ -390,7 +390,7 @@ body::before {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     await user.reload();
-    console.log("Email vérifié :", user.emailVerified); // 👈 À observer dans la console
+    console.log("Email vérifié dans selection_personnage.html :", user.emailVerified); // ← à surveiller
     if (!user.emailVerified) {
       window.location.href = "/verify.html";
     }
