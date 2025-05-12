@@ -390,8 +390,8 @@ body::before {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     await user.reload();
-    const refreshedUser = auth.currentUser;
-    if (!refreshedUser.emailVerified) {
+    console.log("Email vérifié :", user.emailVerified); // 👈 À observer dans la console
+    if (!user.emailVerified) {
       window.location.href = "/verify.html";
     }
   } else {
