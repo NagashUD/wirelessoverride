@@ -67,38 +67,46 @@
 <button id="reconnect-button">Retour à l'accueil</button>
 
 <script type="module">
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.firebasestorage.app",
+    storageBucket: "wirelessoverride.appspot.com",
     messagingSenderId: "674723237901",
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
+  const statusText = document.getElementById("email-status");
+  const reconnectBtn = document.getElementById("reconnect-button");
+
   onAuthStateChanged(auth, async (user) => {
     if (user) {
-      await user.reload(); // recharge l'état de vérification
+      await user.reload(); // Très important
       if (user.emailVerified) {
-        document.getElementById("status").innerText = "Votre adresse email est vérifiée ! Vous pouvez maintenant vous connecter.";
+        statusText.innerText = "Votre adresse email est bien vérifiée !";
+        reconnectBtn.innerText = "Accéder au jeu";
+        reconnectBtn.onclick = () => {
+          window.location.href = "index.html"; // ou dashboard.html directement
+        };
       } else {
-        document.getElementById("status").innerText = "Votre adresse email n'est pas encore vérifiée. Cliquez sur le lien reçu dans votre boîte mail.";
+        statusText.innerText = "Votre adresse email n'est pas encore vérifiée. Cliquez sur le lien reçu dans votre boîte mail.";
+        reconnectBtn.onclick = async () => {
+          await signOut(auth);
+          window.location.href = "index.html";
+        };
       }
     } else {
-      document.getElementById("status").innerText = "Vous n'êtes pas connecté. Veuillez revenir à la page d'accueil.";
+      statusText.innerText = "Aucun utilisateur connecté.";
+      reconnectBtn.onclick = () => {
+        window.location.href = "index.html";
+      };
     }
-  });
-
-  document.getElementById("reconnect-button").addEventListener("click", async () => {
-    await signOut(auth);
-    window.location.href = "index.html";
   });
 </script>
 
