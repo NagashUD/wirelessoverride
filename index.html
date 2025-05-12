@@ -350,7 +350,7 @@
     }
   });
 
-  // === CONNEXION ===
+// === CONNEXION ===
 document.getElementById("modal-login-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -370,11 +370,13 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
 
     console.log("Après reload - Vérification email : ", user.emailVerified);
 
+    // Vérification de l'email
     if (!user.emailVerified) {
       alert("Veuillez vérifier votre adresse email avant de vous connecter.");
       return;
     }
 
+    // Si l'email est vérifié, on poursuit avec la redirection vers le dashboard ou la sélection de personnage
     const userRef = doc(db, "players", user.uid);
     const docSnap = await getDoc(userRef);
 
@@ -389,7 +391,7 @@ document.getElementById("modal-login-form").addEventListener("submit", async fun
   }
 });
 
- // === GESTION DU MODAL LOGIN ===
+// === GESTION DU MODAL LOGIN ===
 const loginModal = document.getElementById('loginModal');
 const openLoginLink = document.getElementById('open-login');
 const closeLoginBtn = document.getElementById('close-login-modal');
