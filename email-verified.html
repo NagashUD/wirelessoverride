@@ -74,7 +74,7 @@
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.appspot.com",
+    storageBucket: "wirelessoverride.firebasestorage.app",
     messagingSenderId: "674723237901",
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
@@ -86,26 +86,22 @@
   const reconnectBtn = document.getElementById("reconnect-button");
 
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      await user.reload(); // Très important
+    if (!user) {
+      statusText.innerText = "✅ Votre adresse email est maintenant vérifiée. Veuillez vous reconnecter.";
+      reconnectBtn.onclick = () => window.location.href = "index.html";
+    } else {
+      await user.reload();
       if (user.emailVerified) {
-        statusText.innerText = "Votre adresse email est bien vérifiée !";
-        reconnectBtn.innerText = "Accéder au jeu";
-        reconnectBtn.onclick = () => {
-          window.location.href = "index.html"; // ou dashboard.html directement
-        };
+        statusText.innerText = "✅ Email vérifié ! Redirection vers le jeu...";
+        reconnectBtn.style.display = "none";
+        setTimeout(() => window.location.href = "selection_personnage.html", 1500);
       } else {
-        statusText.innerText = "Votre adresse email n'est pas encore vérifiée. Cliquez sur le lien reçu dans votre boîte mail.";
+        statusText.innerText = "❌ Votre adresse email n'est pas encore vérifiée.";
         reconnectBtn.onclick = async () => {
           await signOut(auth);
           window.location.href = "index.html";
         };
       }
-    } else {
-      statusText.innerText = "Aucun utilisateur connecté.";
-      reconnectBtn.onclick = () => {
-        window.location.href = "index.html";
-      };
     }
   });
 </script>
