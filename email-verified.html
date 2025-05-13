@@ -62,61 +62,54 @@
 
 </head>
 <body>
-   <div class="box">
-<h2 id="email-status">Vérification en cours...</h2>
+  <div class="box">
+    <h2 id="email-status">Vérification en cours...</h2>
+  </div>
 
-<form id="verify-login-form">
-  <label>Email :</label>
-  <input type="email" id="verify-email" required />
-  <label>Mot de passe :</label>
-  <input type="password" id="verify-password" required />
-  <button type="submit">Se reconnecter</button>
-</form>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getAuth, applyActionCode } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, applyActionCode } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
     projectId: "wirelessoverride",
-    storageBucket: "wirelessoverride.appspot.com",
+    storageBucket: "wirelessoverride.firebasestorage.app",
     messagingSenderId: "674723237901",
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const mode = urlParams.get("mode");
-  const oobCode = urlParams.get("oobCode");
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get("mode");
+    const oobCode = urlParams.get("oobCode");
 
-  const statusEl = document.getElementById("email-status");
-  statusEl.textContent = "⏳ Vérification en cours...";
+    const statusEl = document.getElementById("email-status");
+    statusEl.textContent = "⏳ Vérification en cours...";
 
-  if (mode === "verifyEmail" && oobCode) {
-    applyActionCode(auth, oobCode)
-      .then(() => {
-        statusEl.textContent = "✅ Email vérifié avec succès ! Vous pouvez vous connecter.";
-        // Redirection possible après quelques secondes :
-        // setTimeout(() => window.location.href = "dashboard.html", 2000);
-      })
-      .catch((error) => {
-        console.error("Erreur de vérification :", error);
-        statusEl.textContent = "❌ Lien invalide ou déjà utilisé.";
-      });
-  } else {
-    statusEl.textContent = "❌ Lien incomplet ou manquant.";
-  }
-</script>
-
-
-
-
-
-  </div>
-  
+    if (mode === "verifyEmail" && oobCode) {
+      applyActionCode(auth, oobCode)
+        .then(() => {
+          statusEl.textContent = "Email vérifié avec succès ! Redirection...";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 3000);
+        })
+        .catch((error) => {
+          console.error("Erreur de vérification :", error);
+          statusEl.textContent = "Lien invalide, expiré ou déjà utilisé. Redirection...";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 3000);
+        });
+    } else {
+      statusEl.textContent = "Lien incomplet ou manquant. Redirection...";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 3000);
+    }
+  </script>
 </body>
 </html>

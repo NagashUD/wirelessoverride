@@ -314,6 +314,7 @@ body::before {
 
         <!-- Bouton de validation -->
         <button id="confirm-selection" type="submit">Confirmer le choix</button>
+        <button id="retour-btn">Retour</button>
     </div>
 </form>
 
@@ -566,7 +567,11 @@ neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les faille
 };
 
 </script>
- 
+ <script>
+  document.getElementById("retour-btn").addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+</script>
 </body>
 
 </html>
