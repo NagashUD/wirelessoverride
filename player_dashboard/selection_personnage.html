@@ -436,18 +436,18 @@ body::before {
     localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
 
     // Sauvegarde dans Firestore
-    const currentUser = auth.currentUser;
-    if (currentUser) {
-     const userRef = doc(db, "players", uid);
-      await setDoc(userRef, {
-        characterSelected: true,
-        faction: faction,
-        role: roleSelected,
-        genre: genre,
-        characterName: characterName,
-        niveau: 1,
-        experience: 0,
-      }, { merge: true });
+const currentUser = auth.currentUser;
+if (currentUser) {
+  const userRef = doc(db, "players", currentUser.uid);
+  await setDoc(userRef, {
+    characterSelected: true,
+    faction: faction,
+    role: roleSelected,
+    genre: genre,
+    characterName: characterName,
+    niveau: 1,
+    experience: 0,
+  }, { merge: true });
 
       // Redirection vers le tableau de bord
       window.location.href = "dashboard.html";
