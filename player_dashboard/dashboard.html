@@ -183,7 +183,7 @@
         }
 
         /* Popup */
-        .popup #popup-epargne{
+        .popup{
             position: fixed;
             top: 0;
             left: 0;
@@ -195,7 +195,7 @@
             align-items: center;
         }
 
-        .popup-content #popup-epargne{
+        .popup-content {
             background-color: #222;
             padding: 30px;
             border-radius: 10px;
@@ -371,6 +371,7 @@ th {
   transition: width 0.4s ease-in-out;
 }
 
+
     </style>
 
 </head>
@@ -413,16 +414,28 @@ th {
 
       <!-- Missions en cours -->
       <section id="container-bank">
-         <h3>Banque</h3>
-         <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
-         <p>
-         Épargne : <span id="epargne-text">0</span> crédits
-        <button onclick="ouvrirPopupEpargne()">Ajouter épargne</button>
-        </p>
-        <p>
-        Dette : <span id="dette-text">0</span> crédits
-        <button onclick="reglerDette()">Régler la dette</button>
-        </p>
+  <section id="container-bank">
+  <h3>Banque</h3>
+  <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
+  <p>
+    Épargne : <span id="epargne-text">0</span> crédits
+    <button onclick="ouvrirPopupEpargne()">Ajouter épargne</button>
+  </p>
+  <p>
+    Dette : <span id="dette-text">0</span> crédits
+    <button onclick="reglerDette()">Régler la dette</button>
+  </p>
+  <div id="popup-epargne" class="popup hidden">
+  <div class="popup-content">
+    <span class="close" onclick="fermerPopupEpargne()">&times;</span>
+    <h3>Ajouter de l'épargne</h3>
+    <label for="montant-epargne">Montant à ajouter :</label>
+    <input type="number" id="montant-epargne" />
+    <button onclick="confirmerDepotEpargne()">Confirmer</button>
+  </div>
+</section>
+
+<!-- Popup pour ajouter de l'épargne -->
         </section>
         
       
@@ -474,8 +487,7 @@ th {
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-  import { updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
   
   // 🔧 Config Firebase
   const firebaseConfig = {
@@ -491,63 +503,65 @@ th {
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-function calculXpPourNiveau(level) {
-  return Math.round(100 * Math.pow(level, 1.5));
-
-}
+  function calculXpPourNiveau(level) {
+    return Math.round(100 * Math.pow(level, 1.5));
+  }
 
   // 🔐 Authentification & chargement des données utilisateur
-onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      window.location.href = "../index.html";
+      return;
+    }
 
-  const uid = user.uid;
-  const userRef = doc(db, "players", uid);
-  const userSnap = await getDoc(userRef);
+    const uid = user.uid;
+    const userRef = doc(db, "players", uid);
+    const userSnap = await getDoc(userRef);
 
-  let characterName = "Inconnu";
-  let faction = "non définie";
-  let level = 1;
-  let xp = 0;
+    let characterName = "Inconnu";
+    let faction = "non définie";
+    let level = 1;
+    let xp = 0;
+    let data = {};
 
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    characterName = data.characterName || characterName;
-    faction = data.faction || faction;
-    level = data.level || level;
-    xp = data.xp || xp;
+    if (userSnap.exists()) {
+      data = userSnap.data();
+      characterName = data.characterName || characterName;
+      faction = data.faction || faction;
+      level = data.level || level;
+      xp = data.xp || xp;
 
-    // Ajoute level et xp si manquants
-const updates = {};
-if (!("level" in data)) updates.level = level;
-if (!("xp" in data)) updates.xp = xp;
-if (!("reputation" in data)) updates.reputation = 0;
-if (!("etat" in data)) updates.etat = "100%";
-if (!data.solde) data.solde = 500; // ou 0 si tu préfères
-if (!data.epargne) data.epargne = 0;
-if (!data.dette) data.dette = 0;
-if (Object.keys(updates).length > 0) {
-  await updateDoc(userRef, updates);
-}
-  }
+      // Ajoute les données manquantes (si elles n'existent pas dans Firestore)
+      const updates = {};
 
-  const xpNext = calculXpPourNiveau(level);
-  const progress = Math.min((xp / xpNext) * 100, 100);
+      if (!("level" in data)) updates.level = level;
+      if (!("xp" in data)) updates.xp = xp;
+      if (!("reputation" in data)) updates.reputation = 0;
+      if (!("etat" in data)) updates.etat = "100%";
+      if (!data.solde) updates.solde = 500; // ou 0 si tu préfères
+      if (!data.epargne) updates.epargne = 0;
+      if (!data.dette) updates.dette = 0;
 
- document.getElementById("faction-text").innerText = faction;
-document.getElementById("level-text").innerText = level;
-document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
-document.getElementById("xp-bar-fill").style.width = `${progress}%`;
-document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
-document.getElementById("reputation-text").innerText = data.reputation ? data.reputation : 0;
-document.getElementById("etat-text").innerText = data.etat ? data.etat : "100%";
-document.getElementById("solde-text").innerText = data.solde ? data.solde : 0;
-document.getElementById("epargne-text").innerText = data.epargne ? data.epargne : 0;
-document.getElementById("dette-text").innerText = data.dette ? data.dette : 0;
+      if (Object.keys(updates).length > 0) {
+        await updateDoc(userRef, updates);
+      }
+    }
 
-});
+    const xpNext = calculXpPourNiveau(level);
+    const progress = Math.min((xp / xpNext) * 100, 100);
+
+    // Mise à jour de l'interface utilisateur
+    document.getElementById("faction-text").innerText = faction;
+    document.getElementById("level-text").innerText = level;
+    document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
+    document.getElementById("xp-bar-fill").style.width = `${progress}%`;
+    document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
+    document.getElementById("reputation-text").innerText = data.reputation || 0;
+    document.getElementById("etat-text").innerText = data.etat || "100%";
+    document.getElementById("solde-text").innerText = data.solde || 0;
+    document.getElementById("epargne-text").innerText = data.epargne || 0;
+    document.getElementById("dette-text").innerText = data.dette || 0;
+  });
 
   // 📜 Gestion du bouton compétences (modal skills)
   document.getElementById("openSkills").addEventListener("click", async () => {
@@ -634,40 +648,57 @@ document.getElementById("dette-text").innerText = data.dette ? data.dette : 0;
       if (iframe) iframe.src = page;
     });
   });
-</script>
-<script>
 
- function ouvrirPopupEpargne() {
-  document.getElementById("popup-epargne").classList.remove("hidden");
-}
-function fermerPopupEpargne() {
-  document.getElementById("popup-epargne").classList.add("hidden");
-}
-function confirmerDepotEpargne() {
-  const montant = parseInt(document.getElementById("montant-epargne").value);
-  if (isNaN(montant) || montant <= 0) return;
-  if (montant > data.solde) {
-    alert("Vous n'avez pas assez de crédits");
-    return;
+  let data = {}; // On suppose que `data` est initialisé quelque part avec les données utilisateur récupérées de Firestore
+
+  function ouvrirPopupEpargne() {
+    document.getElementById("popup-epargne").classList.remove("hidden");
   }
-  data.solde -= montant;
-  data.epargne += montant;
-  updateUserData(); // Sauvegarde Firebase
-  fermerPopupEpargne();
-}
 
-// Régler dette
-function reglerDette() {
-  if (data.solde >= data.dette) {
-    data.solde -= data.dette;
-    data.dette = 0;
+  function fermerPopupEpargne() {
+    document.getElementById("popup-epargne").classList.add("hidden");
+  }
+
+  function confirmerDepotEpargne() {
+    const montant = parseInt(document.getElementById("montant-epargne").value);
+    if (isNaN(montant) || montant <= 0) return; // Vérifie si le montant est valide
+    if (montant > data.solde) {
+      alert("Vous n'avez pas assez de crédits");
+      return;
+    }
+    data.solde -= montant; // Retirer du solde
+    data.epargne += montant; // Ajouter à l'épargne
+
+    // Mise à jour des données dans Firestore
     updateUserData();
-  } else {
-    alert("Vous n'avez pas assez de crédits");
+    fermerPopupEpargne();
   }
-}
-</script>
 
+  function updateUserData() {
+    // Fonction pour sauvegarder les données mises à jour dans Firestore
+    const userRef = doc(db, "players", user.uid); // Assure-toi que `user.uid` est bien défini
+    updateDoc(userRef, {
+      solde: data.solde,
+      epargne: data.epargne
+    }).then(() => {
+      // Met à jour l'affichage après la sauvegarde
+      document.getElementById("solde-text").innerText = data.solde;
+      document.getElementById("epargne-text").innerText = data.epargne;
+    }).catch(error => {
+      console.error("Erreur de mise à jour des données : ", error);
+    });
+  }
+
+  function reglerDette() {
+    if (data.solde >= data.dette) {
+      data.solde -= data.dette;
+      data.dette = 0;
+      updateUserData(); // Sauvegarde Firebase
+    } else {
+      alert("Vous n'avez pas assez de crédits");
+    }
+  }
+</script>
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
