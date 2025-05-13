@@ -541,11 +541,11 @@ document.getElementById("level-text").innerText = level;
 document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
 document.getElementById("xp-bar-fill").style.width = `${progress}%`;
 document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
-document.getElementById("reputation-text").innerText = data.reputation ?? 0;
-document.getElementById("etat-text").innerText = data.etat ?? "100%";
-document.getElementById("solde-text").innerText = data.solde ?? 0;
-document.getElementById("epargne-text").innerText = data.epargne ?? 0;
-document.getElementById("dette-text").innerText = data.dette ?? 0;
+document.getElementById("reputation-text").innerText = data.reputation ? data.reputation : 0;
+document.getElementById("etat-text").innerText = data.etat ? data.etat : "100%";
+document.getElementById("solde-text").innerText = data.solde ? data.solde : 0;
+document.getElementById("epargne-text").innerText = data.epargne ? data.epargne : 0;
+document.getElementById("dette-text").innerText = data.dette ? data.dette : 0;
 
 });
 
