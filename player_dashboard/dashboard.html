@@ -12,11 +12,15 @@
         body {
            
             background: url('images/background.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            color: #f0f0f0;
-            overflow-x: hidden;
+   
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #00ffff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #00ffff;
         }
 
         body::before {
@@ -33,7 +37,8 @@
         /* Header */
         header {
           background-color: rgba(0, 0, 0, 0.5); /* Transparent pour l'effet */
-            color: #fff;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
             padding: 15px 30px;
             display: flex;
             justify-content: space-between;
@@ -103,7 +108,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+           box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
               background-size: cover;
 
 
@@ -111,8 +116,8 @@
 
         
 
-        .profile, #missions {
-            background-color: rgba(51, 51, 51, 0.8);
+        .profile, #container-bank {
+               background-color: rgba(0, 0, 0, 0.5);
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -178,7 +183,7 @@
         }
 
         /* Popup */
-        .popup {
+        .popup #popup-epargne{
             position: fixed;
             top: 0;
             left: 0;
@@ -190,7 +195,7 @@
             align-items: center;
         }
 
-        .popup-content {
+        .popup-content #popup-epargne{
             background-color: #222;
             padding: 30px;
             border-radius: 10px;
@@ -400,31 +405,28 @@ th {
 
   <div id="xp-bar-fill"></div>
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
-        <p><strong>Réputation:</strong> <span id="reputation">75%</span></p>
-        <p><strong>État du personnage:</strong> <span id="health-status">100%</span> 
+        <p>Réputation : <span id="reputation-text">...</span></p>
+        <p>État du personnage : <span id="etat-text">...</span></p>
           <button id="openModal" class="neon-btn">👤</button>
         </p>
       </div>
 
       <!-- Missions en cours -->
-      <section id="missions">
-        <h3>Missions en cours</h3>
-        <ul>
-          <li>
-            <strong>Raid contre l'Usine Arakasta</strong>
-            <p>En attente de confirmation</p>
-            <p>Risque: Élevé</p>
-            <button>Participer</button>
-          </li>
-          <li>
-            <strong>Réapprovisionnement en munitions</strong>
-            <p>En cours</p>
-            <p>Progression: 75%</p>
-            <button>Terminer Mission</button>
-          </li>
-        </ul>
-      </section>
-    </div>
+      <section id="container-bank">
+         <h3>Banque</h3>
+         <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
+         <p>
+         Épargne : <span id="epargne-text">0</span> crédits
+        <button onclick="ouvrirPopupEpargne()">Ajouter épargne</button>
+        </p>
+        <p>
+        Dette : <span id="dette-text">0</span> crédits
+        <button onclick="reglerDette()">Régler la dette</button>
+        </p>
+        </section>
+        
+      
+        </div>
 
     <!-- Zone Iframe au centre -->
     <div id="iframe-container">
@@ -437,6 +439,9 @@ th {
   <div id="modalPerso" class="modal">
     <div class="modal-content neon-frame">
       <span class="close">&times;</span>
+
+
+
       <h2>État du personnage</h2>
       <table>
         <thead>
@@ -515,12 +520,17 @@ onAuthStateChanged(auth, async (user) => {
     xp = data.xp || xp;
 
     // Ajoute level et xp si manquants
-    const updates = {};
-    if (!("level" in data)) updates.level = level;
-    if (!("xp" in data)) updates.xp = xp;
-    if (Object.keys(updates).length > 0) {
-      await updateDoc(userRef, updates);
-    }
+const updates = {};
+if (!("level" in data)) updates.level = level;
+if (!("xp" in data)) updates.xp = xp;
+if (!("reputation" in data)) updates.reputation = 0;
+if (!("etat" in data)) updates.etat = "100%";
+if (!data.solde) data.solde = 500; // ou 0 si tu préfères
+if (!data.epargne) data.epargne = 0;
+if (!data.dette) data.dette = 0;
+if (Object.keys(updates).length > 0) {
+  await updateDoc(userRef, updates);
+}
   }
 
   const xpNext = calculXpPourNiveau(level);
@@ -531,6 +541,12 @@ document.getElementById("level-text").innerText = level;
 document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
 document.getElementById("xp-bar-fill").style.width = `${progress}%`;
 document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
+document.getElementById("reputation-text").innerText = data.reputation ?? 0;
+document.getElementById("etat-text").innerText = data.etat ?? "100%";
+document.getElementById("solde-text").innerText = data.solde ?? 0;
+document.getElementById("epargne-text").innerText = data.epargne ?? 0;
+document.getElementById("dette-text").innerText = data.dette ?? 0;
+
 });
 
   // 📜 Gestion du bouton compétences (modal skills)
@@ -619,7 +635,38 @@ document.getElementById("welcome-message").innerText = `Bienvenue ${characterNam
     });
   });
 </script>
+<script>
 
+ function ouvrirPopupEpargne() {
+  document.getElementById("popup-epargne").classList.remove("hidden");
+}
+function fermerPopupEpargne() {
+  document.getElementById("popup-epargne").classList.add("hidden");
+}
+function confirmerDepotEpargne() {
+  const montant = parseInt(document.getElementById("montant-epargne").value);
+  if (isNaN(montant) || montant <= 0) return;
+  if (montant > data.solde) {
+    alert("Vous n'avez pas assez de crédits");
+    return;
+  }
+  data.solde -= montant;
+  data.epargne += montant;
+  updateUserData(); // Sauvegarde Firebase
+  fermerPopupEpargne();
+}
+
+// Régler dette
+function reglerDette() {
+  if (data.solde >= data.dette) {
+    data.solde -= data.dette;
+    data.dette = 0;
+    updateUserData();
+  } else {
+    alert("Vous n'avez pas assez de crédits");
+  }
+}
+</script>
 
   <!-- FOOTER -->
   <footer>
