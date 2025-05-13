@@ -349,6 +349,23 @@ th {
   margin-bottom: 8px;
 }
 
+
+.xp-bar-container {
+  background-color: #333;
+  height: 16px;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 5px 0 15px;
+}
+
+.xp-bar-fill {
+  background: linear-gradient(to right, #6ae3ff, #4a90e2);
+  height: 100%;
+  width: 0%; /* mis à jour dynamiquement */
+  transition: width 0.4s ease-in-out;
+}
+
     </style>
 
 </head>
@@ -356,7 +373,7 @@ th {
   <!-- HEADER -->
   <header>
     <div class="logo">
-     <h1 id="welcome-message" class="titre-dashboard"></h1>
+    <h2 id="welcome-message">Bienvenue ...</h2>
     </div>
     <nav>
       <button data-page="base.html">Base</button>
@@ -377,8 +394,11 @@ th {
       <!-- Profil à gauche -->
       <div class="profile">
         <h3>Profil</h3>
-        <p>Faction : <span id="faction"></span></p>
-        <p><strong>Niveau:</strong> <span id="player-level">5</span></p>
+          <p><strong>Faction :</strong> <span id="faction-text"></span></p>
+          <p><strong>Niveau :</strong> <span id="level-text"></span></p>
+          <p><strong>XP :</strong> <span id="xp-text"></span></p>
+
+  <div id="xp-bar-fill"></div>
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p><strong>Réputation:</strong> <span id="reputation">75%</span></p>
         <p><strong>État du personnage:</strong> <span id="health-status">100%</span> 
@@ -448,9 +468,11 @@ th {
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-
+  import { updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  
+  // 🔧 Config Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
@@ -460,160 +482,144 @@ th {
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-  // Initialise Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // Écoute l'état de l'authentification
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const uid = user.uid;
-      const userDoc = doc(db, "users", uid);
-      const docSnap = await getDoc(userDoc);
+function calculXpPourNiveau(level) {
+  return Math.round(100 * Math.pow(level, 1.5));
 
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const characterName = data.characterName || "Nom inconnu";
-        document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
-      } else {
-        console.warn("Aucune donnée trouvée pour cet utilisateur.");
-        document.getElementById("welcome-message").innerText = "Bienvenue explorateur";
-      }
-    } else {
-      console.warn("Aucun utilisateur connecté.");
-      window.location.href = "../index.html"; // redirige si déconnecté
+}
+
+  // 🔐 Authentification & chargement des données utilisateur
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "../index.html";
+    return;
+  }
+
+  const uid = user.uid;
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+
+  let characterName = "Inconnu";
+  let faction = "non définie";
+  let level = 1;
+  let xp = 0;
+
+  if (userSnap.exists()) {
+    const data = userSnap.data();
+    characterName = data.characterName || characterName;
+    faction = data.faction || faction;
+    level = data.level || level;
+    xp = data.xp || xp;
+
+    // Ajoute level et xp si manquants
+    const updates = {};
+    if (!("level" in data)) updates.level = level;
+    if (!("xp" in data)) updates.xp = xp;
+    if (Object.keys(updates).length > 0) {
+      await updateDoc(userRef, updates);
     }
+  }
+
+  const xpNext = calculXpPourNiveau(level);
+  const progress = Math.min((xp / xpNext) * 100, 100);
+
+  document.getElementById("faction-text").innerText = faction;
+  document.getElementById("level-text").innerText = level;
+  document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
+  document.getElementById("xp-bar-fill").style.width = `${progress}%`;
+});
+
+  // 📜 Gestion du bouton compétences (modal skills)
+  document.getElementById("openSkills").addEventListener("click", async () => {
+    const { fonction } = window.userData || {};
+    if (!fonction) {
+      console.warn("Fonction non définie, impossible de charger les compétences.");
+      return;
+    }
+
+    try {
+      const [attributsData, competencesData] = await Promise.all([
+        fetch('./dashboard/player_dashboard/public/data/attributs_base.json').then(res => res.json()),
+        fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
+      ]);
+
+      const attributs = attributsData[fonction] || {};
+      const competences = competencesData[fonction] || [];
+
+      const modal = document.getElementById('modalSkills');
+      const container = modal.querySelector('.modal-content');
+
+      container.innerHTML = `
+        <span class="close" id="closeSkills">&times;</span>
+        <h2>Compétences du personnage</h2>
+        <div class="skills-columns">
+          <ul id="attributs-col"></ul>
+          <ul id="competences-col"></ul>
+        </div>
+      `;
+
+      const ulAttr = container.querySelector('#attributs-col');
+      const ulComp = container.querySelector('#competences-col');
+
+      Object.entries(attributs).forEach(([nom, valeur]) => {
+        const li = document.createElement('li');
+        li.textContent = `${nom} : ${valeur}`;
+        ulAttr.appendChild(li);
+      });
+
+      competences.forEach(skill => {
+        const li = document.createElement('li');
+        li.textContent = skill;
+        ulComp.appendChild(li);
+      });
+
+      modal.style.display = 'block';
+    } catch (err) {
+      console.error("Erreur de chargement des données JSON :", err);
+    }
+  });
+
+  // 🩺 Gestion du bouton santé (modal perso)
+  document.getElementById("openModal").onclick = () => {
+    document.getElementById("modalPerso").style.display = "block";
+  };
+
+  // ❌ Fermeture des modaux
+  document.querySelectorAll(".close").forEach(closeBtn => {
+    closeBtn.onclick = function () {
+      this.closest(".modal").style.display = "none";
+    };
+  });
+
+  // ❌ Clic en dehors d’un modal = fermeture
+  window.onclick = function (event) {
+    document.querySelectorAll(".modal").forEach(modal => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  };
+
+  // 🚪 Déconnexion Firebase
+  document.getElementById("logout").addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "../index.html";
+  });
+
+  // 🔄 Navigation dans l'interface
+  document.querySelectorAll("nav button[data-page]").forEach(button => {
+    button.addEventListener("click", () => {
+      const page = button.getAttribute("data-page");
+      const iframe = document.querySelector("#iframe-container iframe");
+      if (iframe) iframe.src = page;
+    });
   });
 </script>
 
 
-
-
-
-
-
-
-
-  <script>
-    // ► Affichage des infos dans le header et le profil
-    document.getElementById("faction").textContent = localStorage.getItem("faction");
-
-    // ► Gestion du bouton santé (modal perso)
-    document.getElementById("openModal").onclick = () => {
-      document.getElementById("modalPerso").style.display = "block";
-    };
-
-    // ► Gestion du bouton compétences (modal skills)
-    document.getElementById("openSkills").addEventListener("click", () => {
-      let fonctionRaw = localStorage.getItem("role");
-      if (fonctionRaw) {
-        const fonction = fonctionRaw.charAt(0).toUpperCase() + fonctionRaw.slice(1).toLowerCase();
-
-        // Charge les deux fichiers JSON
-        Promise.all([
-          fetch('./dashboard/player_dashboard/public/data/attributs_base.json').then(res => res.json()),
-          fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
-        ]).then(([attributsData, competencesData]) => {
-          const attributs = attributsData[fonction] || {};  // Prend les attributs du rôle
-          const competences = competencesData[fonction] || [];  // Prend les compétences du rôle
-
-          const modal = document.getElementById('modalSkills');
-          const container = modal.querySelector('.modal-content');
-
-          // Nettoyage du contenu du modal avant de le remplir
-          container.innerHTML = `
-            <span class="close" id="closeSkills">&times;</span>
-            <h2>Compétences du personnage</h2>
-            <div class="skills-columns">
-              <ul id="attributs-col"></ul>
-              <ul id="competences-col"></ul>
-            </div>
-          `;
-
-          // Sélectionner les éléments de la liste
-          const ulAttr = container.querySelector('#attributs-col');
-          const ulComp = container.querySelector('#competences-col');
-
-          // Remplir les attributs dans la première colonne
-          Object.entries(attributs).forEach(([nom, valeur]) => {
-            const li = document.createElement('li');
-            li.textContent = `${nom} : ${valeur}`;
-            ulAttr.appendChild(li);
-          });
-
-          // Remplir les compétences dans la deuxième colonne
-          competences.forEach(skill => {
-            const li = document.createElement('li');
-            li.textContent = skill;
-            ulComp.appendChild(li);
-          });
-
-          modal.style.display = 'block';
-        }).catch(err => console.error("Erreur de chargement des données", err));
-      } else {
-        console.warn("Rôle non défini dans le localStorage.");
-      }
-    });
-
-    // ► Fermeture des modaux
-    document.querySelectorAll(".close").forEach(closeBtn => {
-      closeBtn.onclick = function () {
-        this.closest(".modal").style.display = "none";
-      };
-    });
-
-    // ► Fermeture des modaux si clic en dehors
-    window.onclick = function (event) {
-      document.querySelectorAll(".modal").forEach(modal => {
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
-      });
-    };
-
-    // ► Déconnexion
-    document.getElementById("logout").addEventListener("click", () => {
-      localStorage.clear();
-      window.location.href = "../index.html";
-    });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const characterName = localStorage.getItem("characterName");
-
-      const welcomeElement = document.getElementById('welcome-message');
-      if (welcomeElement) {
-        welcomeElement.innerText = `Bienvenue ${characterName}`;
-      }
-
-      const faction = localStorage.getItem("faction");
-      const factionDisplay = document.getElementById("faction");
-
-      if (faction) {
-        factionDisplay.textContent = faction;
-      } else {
-        factionDisplay.textContent = "non définie";
-        console.warn("Faction non trouvée dans le localStorage");
-      }
-    });
-
-    document.querySelectorAll("nav button[data-page]").forEach(button => {
-      button.addEventListener("click", () => {
-        const page = button.getAttribute("data-page");
-        const iframe = document.querySelector("#iframe-container iframe");
-        if (iframe) {
-          iframe.src = page;
-        }
-      });
-    });
-  </script>
-<script>
-const faction = localStorage.getItem('faction');
-const role = localStorage.getItem('role');
-const genre = localStorage.getItem('genre');
-const characterName = localStorage.getItem('characterName');
-
-</script>
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
