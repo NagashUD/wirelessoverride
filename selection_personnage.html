@@ -257,6 +257,26 @@ body::before {
 }
 
 
+  #retour-btn {
+    background-color: #222;
+    color: #fff;
+    border: 2px solid #ff00ff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1em;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #retour-btn:hover {
+    background-color: #ff00ff;
+    color: black;
+    box-shadow: 0 0 10px #ff00ff;
+    transform: scale(1.05);
+  }
+
     </style>
 </head>
 <body>
@@ -313,8 +333,8 @@ body::before {
         </div>
 
         <!-- Bouton de validation -->
-        <button id="confirm-selection" type="submit">Confirmer le choix</button>
-        <button id="retour-btn">Retour</button>
+        <button id="confirm-selection" type="submit">Confirmer le choix</button><button id="retour-btn">Retour</button>
+        
     </div>
 </form>
 
