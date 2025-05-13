@@ -499,7 +499,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 
   const uid = user.uid;
-  const userRef = doc(db, "users", uid);
+  const userRef = doc(db, "players", uid);
   const userSnap = await getDoc(userRef);
 
   let characterName = "Inconnu";
