@@ -347,7 +347,7 @@ body::before {
         </div>
 
         <!-- Bouton de validation -->
-       <div class="boutons-alignes"> <button id="confirm-selection" type="submit">Confirmer le choix</button><button id="retour-btn">Retour</button></div>
+       <div class="boutons-alignes"> <button id="retour-btn">Retour</button><button id="confirm-selection" type="submit">Confirmer le choix</button></div>
         
     </div>
 </form>
@@ -438,7 +438,7 @@ body::before {
     // Sauvegarde dans Firestore
     const currentUser = auth.currentUser;
     if (currentUser) {
-      const userRef = doc(db, "players", currentUser.uid);
+     const userRef = doc(db, "players", uid);
       await setDoc(userRef, {
         characterSelected: true,
         faction: faction,
