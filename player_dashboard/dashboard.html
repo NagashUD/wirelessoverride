@@ -526,10 +526,11 @@ onAuthStateChanged(auth, async (user) => {
   const xpNext = calculXpPourNiveau(level);
   const progress = Math.min((xp / xpNext) * 100, 100);
 
-  document.getElementById("faction-text").innerText = faction;
-  document.getElementById("level-text").innerText = level;
-  document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
-  document.getElementById("xp-bar-fill").style.width = `${progress}%`;
+ document.getElementById("faction-text").innerText = faction;
+document.getElementById("level-text").innerText = level;
+document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
+document.getElementById("xp-bar-fill").style.width = `${progress}%`;
+document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
 });
 
   // 📜 Gestion du bouton compétences (modal skills)
