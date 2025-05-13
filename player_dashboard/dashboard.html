@@ -444,6 +444,57 @@ th {
     </div>
   </div>
 
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+
+  // Initialise Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // Écoute l'état de l'authentification
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const uid = user.uid;
+      const userDoc = doc(db, "users", uid);
+      const docSnap = await getDoc(userDoc);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const characterName = data.characterName || "Nom inconnu";
+        document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
+      } else {
+        console.warn("Aucune donnée trouvée pour cet utilisateur.");
+        document.getElementById("welcome-message").innerText = "Bienvenue explorateur";
+      }
+    } else {
+      console.warn("Aucun utilisateur connecté.");
+      window.location.href = "../index.html"; // redirige si déconnecté
+    }
+  });
+</script>
+
+
+
+
+
+
+
+
+
   <script>
     // ► Affichage des infos dans le header et le profil
     document.getElementById("faction").textContent = localStorage.getItem("faction");
@@ -524,7 +575,7 @@ th {
     // ► Déconnexion
     document.getElementById("logout").addEventListener("click", () => {
       localStorage.clear();
-      window.location.href = "./index.html";
+      window.location.href = "../index.html";
     });
 
     window.addEventListener('DOMContentLoaded', () => {
