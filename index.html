@@ -245,7 +245,11 @@
 
   </style>
 </head>
-
+<audio id="sound-click" src="son/glass_001.ogg" preload="auto"></audio>
+<audio id="background-music" autoplay loop>
+  <source src="son/ambient-background-339939.mp3" type="audio/mp3">
+  Votre navigateur ne supporte pas l'élément audio.
+</audio>
 
 <body>
   <header>
@@ -256,7 +260,7 @@
       Un monde où la guerre cybernétique fait rage entre factions en quête de pouvoir et de ressources. Rejoignez une faction, relevez des défis, et laissez votre empreinte dans l'univers de l'Override.
     </p>
     <div class="language-selector">
-      <button id="lang-toggle">ENG/FRA</button>
+      <button onclick="playClickSound();id=lang-toggle">ENG/FRA</button>
     </div>
 
   </header>
@@ -269,7 +273,7 @@
       <input type="email" id="email" required />
       <label for="password">Mot de passe :</label>
       <input type="password" id="password" required />
-      <button type="submit">S'inscrire</button>
+      <button  type="submit">S'inscrire</button>
     </form>
     <p class="existing-user">
   Vous avez déjà un compte ? <a href="#" id="open-login">Connectez-vous ici</a>.
@@ -413,8 +417,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
+<script>
+  function playClickSound() {
+  const audio = document.getElementById('sound-click');
+  audio.currentTime = 0;
+  audio.play();
+}
 
+  document.addEventListener('DOMContentLoaded', function() {
+    var audio = document.getElementById('background-music');
+    audio.volume = 0.2; // Volume entre 0.0 (silence) et 1.0 (maximum)
+  });
 
+</script>
+<script>
+  
+</script>
   <footer>
     &copy; 2025 Wireless: Override. Tous droits réservés.
   </footer>

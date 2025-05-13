@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="fr">
+  
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +21,7 @@
     color: #00ffff; /* bleu néon par défaut */
     font-family: 'Orbitron', sans-serif;
     padding: 2rem;
-    text-shadow: 0 0 5px #00ffff;
+
         }
 
         body::before {
@@ -43,7 +44,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+          
         }
 
         header h1 {
@@ -118,10 +119,11 @@
 
         .profile, #container-bank {
                background-color: rgba(0, 0, 0, 0.5);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+           border: 1px  #ff00ff; /* bordure néon */
+  box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 6px;
+
+  
         }
 
         .profile p {
@@ -131,7 +133,7 @@
         #missions li {
             background-color: #444;
             padding: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 1px;
             border-radius: 6px;
         }
 
@@ -203,26 +205,6 @@
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
-        }
-
-        button {
-            background-color: #ff00ff;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-           
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-          background-color: #00fff7;
-    color: #fff;
-    box-shadow: 0 0 15px #ff00ff;
-      transform: scale(1.05);
         }
 
   .modal {
@@ -371,13 +353,110 @@ th {
   transition: width 0.4s ease-in-out;
 }
 
+.popup-epargne {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  z-index: 1; /* Au-dessus du contenu */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Fond noir semi-transparent */
+  color: #ff00ff;
+    border-radius: 2px;
+}
+
+/* Contenu du popup */
+.popup-epargne-content {
+   
+    background-color: rgba(0, 0, 20, 0.8);
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      
+          animation: neonPulse 2.5s ease-in-out infinite;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+}
+
+/* Bouton de fermeture */
+.close-epargne {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  float: right;
+    cursor: pointer;
+  
+}
+
+.popup-epargne.active {
+  display: flex;
+  opacity: 1;
+}
+
+.input-epargne {
+  background-color: #000;
+  color: #0ff;
+  border: 1px solid #0ff;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+
+
+     .buttongauche {
+            font-family: 'Orbitron', sans-serif;
+              background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+              width: 240px;
+  height: 40px;
+        }
+
+        .buttongauche:hover {
+              background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttongauche:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttongauche:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
 
     </style>
 
 </head>
 <body>
+
   <!-- HEADER -->
   <header>
+    
     <div class="logo">
     <h2 id="welcome-message">Bienvenue ...</h2>
     </div>
@@ -405,37 +484,39 @@ th {
           <p><strong>XP :</strong> <span id="xp-text"></span></p>
 
   <div id="xp-bar-fill"></div>
+  <section>
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p>Réputation : <span id="reputation-text">...</span></p>
-        <p>État du personnage : <span id="etat-text">...</span></p>
-          <button id="openModal" class="neon-btn">👤</button>
-        </p>
+        État du personnage : <span id="etat-text">...</span> <button id="openModal" class="neon-btn">👤</button>
+                </section>
       </div>
 
-      <!-- Missions en cours -->
-      <section id="container-bank">
+      <section>
   <section id="container-bank">
   <h3>Banque</h3>
   <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
   <p>
-    Épargne : <span id="epargne-text">0</span> crédits
-    <button onclick="ouvrirPopupEpargne()">Ajouter épargne</button>
-  </p>
+  Épargne : <span id="epargne-text">0</span> crédits
+  <button class="buttongauche" id="ouvrir-popup-epargne">Ajouter épargne</button></p>
   <p>
     Dette : <span id="dette-text">0</span> crédits
-    <button onclick="reglerDette()">Régler la dette</button>
+    <button class="buttongauche" onclick="reglerDette()">Régler la dette</button>
   </p>
-  <div id="popup-epargne" class="popup hidden">
-  <div class="popup-content">
-    <span class="close" onclick="fermerPopupEpargne()">&times;</span>
+
+
+<div id="popup-epargne" class="popup-epargne">
+  <div class="popup-epargne-content">
+    <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
     <h3>Ajouter de l'épargne</h3>
     <label for="montant-epargne">Montant à ajouter :</label>
-    <input type="number" id="montant-epargne" />
-    <button onclick="confirmerDepotEpargne()">Confirmer</button>
+ <input type="number" id="montant-epargne" class="input-epargne" />
+    <button class="buttongauche" id="confirmer-depot-epargne">Confirmer</button>
+ 
   </div>
+</div>
 </section>
 
-<!-- Popup pour ajouter de l'épargne -->
+
         </section>
         
       
@@ -530,7 +611,7 @@ th {
       faction = data.faction || faction;
       level = data.level || level;
       xp = data.xp || xp;
-
+  window.userData = data;
       // Ajoute les données manquantes (si elles n'existent pas dans Firestore)
       const updates = {};
 
@@ -565,11 +646,11 @@ th {
 
   // 📜 Gestion du bouton compétences (modal skills)
   document.getElementById("openSkills").addEventListener("click", async () => {
-    const { fonction } = window.userData || {};
-    if (!fonction) {
-      console.warn("Fonction non définie, impossible de charger les compétences.");
-      return;
-    }
+const fonction = window.userData?.fonction;
+if (!fonction) {
+  alert("Fonction inconnue. Veuillez définir une fonction pour accéder aux compétences.");
+  return;
+}
 
     try {
       const [attributsData, competencesData] = await Promise.all([
@@ -582,6 +663,7 @@ th {
 
       const modal = document.getElementById('modalSkills');
       const container = modal.querySelector('.modal-content');
+      
 
       container.innerHTML = `
         <span class="close" id="closeSkills">&times;</span>
@@ -619,10 +701,11 @@ th {
   };
 
   // ❌ Fermeture des modaux
-  document.querySelectorAll(".close").forEach(closeBtn => {
-    closeBtn.onclick = function () {
-      this.closest(".modal").style.display = "none";
-    };
+document.querySelectorAll(".close").forEach(closeBtn => {
+  closeBtn.onclick = function () {
+   const modal = this.closest(".modal");
+if (modal) modal.style.display = "none"
+  };
   });
 
   // ❌ Clic en dehors d’un modal = fermeture
@@ -651,28 +734,43 @@ th {
 
   let data = {}; // On suppose que `data` est initialisé quelque part avec les données utilisateur récupérées de Firestore
 
-  function ouvrirPopupEpargne() {
-    document.getElementById("popup-epargne").classList.remove("hidden");
-  }
 
-  function fermerPopupEpargne() {
-    document.getElementById("popup-epargne").classList.add("hidden");
-  }
+</script>
+  <script>
 
-  function confirmerDepotEpargne() {
-    const montant = parseInt(document.getElementById("montant-epargne").value);
-    if (isNaN(montant) || montant <= 0) return; // Vérifie si le montant est valide
-    if (montant > data.solde) {
-      alert("Vous n'avez pas assez de crédits");
-      return;
-    }
-    data.solde -= montant; // Retirer du solde
-    data.epargne += montant; // Ajouter à l'épargne
+   // Fonction d'ouverture
+function ouvrirPopupEpargne() {
+  const popup = document.getElementById("popup-epargne");
+  popup.style.display = "block";
+  popup.classList.add("active");
+}
 
-    // Mise à jour des données dans Firestore
-    updateUserData();
+// Fonction de fermeture
+function fermerPopupEpargne() {
+  const popup = document.getElementById("popup-epargne");
+  popup.classList.remove("active");
+  popup.style.display = "none";
+}
+
+// Fonction de confirmation (à adapter selon ta logique de dépôt)
+function confirmerDepotEpargne() {
+  const montant = parseInt(document.getElementById("montant-epargne").value, 10);
+  if (!isNaN(montant) && montant > 0) {
+    // Exemple simple : on ajoute à l'épargne affichée
+    const epargneText = document.getElementById("epargne-text");
+    const nouvelleEpargne = parseInt(epargneText.textContent, 10) + montant;
+    epargneText.textContent = nouvelleEpargne;
     fermerPopupEpargne();
+  } else {
+    alert("Veuillez entrer un montant valide.");
   }
+}
+
+// Événements
+document.getElementById("ouvrir-popup-epargne").addEventListener("click", ouvrirPopupEpargne);
+document.getElementById("fermer-popup-epargne").addEventListener("click", fermerPopupEpargne);
+document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
+
 
   function updateUserData() {
     // Fonction pour sauvegarder les données mises à jour dans Firestore
@@ -698,7 +796,7 @@ th {
       alert("Vous n'avez pas assez de crédits");
     }
   }
-</script>
+  </script>
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
