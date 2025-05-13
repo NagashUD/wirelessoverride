@@ -105,21 +105,23 @@ body::before {
     }
 
         button {
-            font-family: 'Orbitron', sans-serif;
-            background-color: #ff00ff;
-            color: #fff;
-            font-size: 1.1rem;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            padding: 12px 25px;
-            border: none;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 0 10px #ff00ff88;
+        font-family: 'Orbitron', sans-serif;
+  background-color: #ff00ff;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 12px 25px;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 250px;
+  height: 40px;
+  box-shadow: 0 0 10px #ff00ff88;
+  text-align: center;
+
+
         }
 
         button:hover {
@@ -159,9 +161,9 @@ body::before {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    height: 200px; /* Ajuste si besoin */
-    width: auto;
-    max-width: 20vw;
+    height: 300px; /* Ajuste si besoin */
+    
+    width: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,6 +259,38 @@ body::before {
 }
 
 
+  #retour-btn {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #ff00ff;
+  color: #fff;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  padding: 12px 25px;
+  border: none;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 250px;
+  height: 40px;
+  box-shadow: 0 0 10px #ff00ff88;
+  text-align: center;
+  }
+
+  #retour-btn:hover {
+            background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+  }
+
+  .boutons-alignes {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center; /* centre horizontalement */
+  margin-top: 20px; /* optionnel pour aérer un peu */
+}
     </style>
 </head>
 <body>
@@ -313,7 +347,8 @@ body::before {
         </div>
 
         <!-- Bouton de validation -->
-        <button id="confirm-selection" type="submit">Confirmer le choix</button>
+       <div class="boutons-alignes"> <button id="confirm-selection" type="submit">Confirmer le choix</button><button id="retour-btn">Retour</button></div>
+        
     </div>
 </form>
 
@@ -338,7 +373,7 @@ body::before {
       </div>
       
 <script type="module">
-  // Import Firebase
+  // Importations des modules Firebase nécessaires
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -353,71 +388,24 @@ body::before {
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
+  // Initialisation de Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  if (localStorage.getItem("emailVerifiedNow") === "true") {
-  console.log("Redirection après email vérifié.");
-  localStorage.removeItem("emailVerifiedNow");
-}
-  
-  
-  // Utils localStorage
-  function saveToLocalStorage(key, value) {
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch (e) {
-      console.error("Erreur localStorage (sauvegarde) :", e);
-    }
-  }
-
-  function loadFromLocalStorage(key) {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
-    } catch (e) {
-      console.warn("Erreur localStorage (lecture) :", key);
-      return null;
-    }
-  }
-
-  function isValidCharacterData(data) {
-    return (
-      data &&
-      typeof data.name === "string" &&
-      typeof data.faction === "string" &&
-      typeof data.role === "string" &&
-      typeof data.genre === "string"
-    );
-  }
-
-  // Vérification de l'authentification et de l'email
+  // Vérification de l'état d'authentification de l'utilisateur
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       await user.reload();
-      const isVerified = user.emailVerified;
-
-      // Cas spécial : redirection depuis email-verified.html
-      if (localStorage.getItem("emailVerifiedNow") === "true") {
-        console.log("Redirection après vérification d'email réussie");
-        localStorage.removeItem("emailVerifiedNow");
-      } else if (!isVerified) {
-        console.log("Email non vérifié. Tentative automatique dans 3 secondes...");
-        document.body.innerHTML = "<p>Votre e-mail n'est pas encore vérifié. Nouvelle tentative dans 3 secondes...</p>";
-        setTimeout(() => location.reload(), 3000);
-        return;
+      if (!user.emailVerified) {
+        window.location.href = "/verify.html";
       }
-
-      // Email vérifié, tout est OK
-      console.log("Utilisateur connecté et email vérifié :", user.email);
     } else {
-      document.body.innerHTML = "<p>Utilisateur non connecté. Recharge dans 3 secondes...</p>";
-      setTimeout(() => location.reload(), 3000);
+      window.location.href = "/index.html";
     }
   });
 
-  // Formulaire de sélection de personnage
+  // Gestion du formulaire de sélection de personnage
   const form = document.getElementById("character-selection-form");
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -437,39 +425,33 @@ body::before {
       return;
     }
 
+    // Sauvegarde dans localStorage
     const characterData = {
       name: characterName,
-      faction,
+      faction: faction,
       role: roleSelected,
-      genre
+      genre: genre
     };
 
-    if (!isValidCharacterData(characterData)) {
-      alert("Les données de personnage sont invalides.");
-      return;
-    }
+    localStorage.setItem("selectedCharacter", JSON.stringify(characterData));
 
-    saveToLocalStorage("selectedCharacter", characterData);
-
+    // Sauvegarde dans Firestore
     const currentUser = auth.currentUser;
     if (currentUser) {
-      try {
-        const userRef = doc(db, "players", currentUser.uid);
-        await setDoc(userRef, {
-          characterSelected: true,
-          ...characterData
-        }, { merge: true });
+      const userRef = doc(db, "players", currentUser.uid);
+      await setDoc(userRef, {
+        characterSelected: true,
+        faction: faction,
+        role: roleSelected,
+        genre: genre,
+        characterName: characterName
+      }, { merge: true });
 
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        console.error("Erreur lors de l'enregistrement du personnage :", error);
-        alert("Une erreur est survenue lors de l'enregistrement. Veuillez réessayer.");
-      }
+      // Redirection vers le tableau de bord
+      window.location.href = "dashboard.html";
     }
   });
 </script>
-
-
 
 
   <script>
@@ -619,7 +601,11 @@ neurorage: "Éclaireur NEURORAGE : Prédateur du réseau, il détecte les faille
 };
 
 </script>
- 
+ <script>
+  document.getElementById("retour-btn").addEventListener("click", () => {
+    window.location.href = "../index.html";
+  });
+</script>
 </body>
 
 </html>
