@@ -484,11 +484,11 @@ th {
           <p><strong>XP :</strong> <span id="xp-text"></span></p>
 
   <div id="xp-bar-fill"></div>
-  <section>
+
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p>Réputation : <span id="reputation-text">...</span></p>
         État du personnage : <span id="etat-text">...</span> <button id="openModal" class="neon-btn">👤</button>
-                </section>
+
       </div>
 
       <section>
@@ -754,16 +754,42 @@ function fermerPopupEpargne() {
 
 // Fonction de confirmation (à adapter selon ta logique de dépôt)
 function confirmerDepotEpargne() {
+async function confirmerDepotEpargne() {
   const montant = parseInt(document.getElementById("montant-epargne").value, 10);
-  if (!isNaN(montant) && montant > 0) {
-    // Exemple simple : on ajoute à l'épargne affichée
-    const epargneText = document.getElementById("epargne-text");
-    const nouvelleEpargne = parseInt(epargneText.textContent, 10) + montant;
-    epargneText.textContent = nouvelleEpargne;
-    fermerPopupEpargne();
-  } else {
+  if (isNaN(montant) || montant <= 0) {
     alert("Veuillez entrer un montant valide.");
+    return;
   }
+
+  if (data.solde < montant) {
+    alert("Crédits insuffisants pour ce dépôt.");
+    return;
+  }
+
+  // Mise à jour des valeurs en mémoire
+  data.solde -= montant;
+  data.epargne += montant;
+
+  // Sauvegarde Firebase
+  try {
+    const user = auth.currentUser;
+    const userRef = doc(db, "players", user.uid);
+
+    await updateDoc(userRef, {
+      solde: data.solde,
+      epargne: data.epargne
+    });
+
+    // Mise à jour UI
+    document.getElementById("solde-text").textContent = data.solde;
+    document.getElementById("epargne-text").textContent = data.epargne;
+
+    fermerPopupEpargne();
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour de l'épargne :", error);
+    alert("Erreur lors de l'opération. Réessayez.");
+  }
+}
 }
 
 // Événements

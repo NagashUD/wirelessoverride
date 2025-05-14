@@ -239,6 +239,33 @@
       font-size: 1.5rem;
       float: right;
       cursor: pointer;
+
+#audio-player {
+  position: fixed !important;
+  top: 10px !important;
+  right: 10px !important;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid #ff00ff;
+  border-radius: 5px;
+  padding: 5px;
+  z-index: 9999;
+  display: flex;
+ 
+}
+
+#audio-player button {
+  background: none;
+  border: none;
+  color: #0ff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+}
+
+#audio-player button:hover {
+  color: #ff00ff;
+}
+
     }
 
 
@@ -246,16 +273,17 @@
   </style>
 </head>
 <audio id="sound-click" src="son/glass_001.ogg" preload="auto"></audio>
-<audio id="background-music" autoplay loop>
-  <source src="son/ambient-background-339939.mp3" type="audio/mp3">
-  Votre navigateur ne supporte pas l'élément audio.
-</audio>
+
 
 <body>
+  
   <header>
+
+
     <div class="logo">
       <h1>Wireless: Override</h1>
     </div>
+    
     <p class="game-description">
       Un monde où la guerre cybernétique fait rage entre factions en quête de pouvoir et de ressources. Rejoignez une faction, relevez des défis, et laissez votre empreinte dans l'univers de l'Override.
     </p>
@@ -264,7 +292,6 @@
     </div>
 
   </header>
-
 
    <section id="signup">
     <h2>Rejoignez l'aventure</h2>
@@ -424,15 +451,32 @@ document.addEventListener("DOMContentLoaded", () => {
   audio.play();
 }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var audio = document.getElementById('background-music');
-    audio.volume = 0.2; // Volume entre 0.0 (silence) et 1.0 (maximum)
-  });
+</script>
 
-</script>
-<script>
-  
-</script>
+<div id="audio-player">
+    <button id="toggle-music" title="Lecture / Pause">&#9658;</button>
+    <audio id="background-music" loop>
+      <source src="son/ambient-background-339939.mp3" type="audio/mp3">
+      Votre navigateur ne supporte pas l'audio.
+    </audio>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById("toggle-music");
+    const music = document.getElementById("background-music");
+
+    music.volume = 0.2;
+
+    toggleBtn.addEventListener("click", () => {
+      if (music.paused) {
+        music.play();
+        toggleBtn.innerHTML = "❚❚";
+      } else {
+        music.pause();
+        toggleBtn.innerHTML = "▶";
+      }
+    });
+  </script>
   <footer>
     &copy; 2025 Wireless: Override. Tous droits réservés.
   </footer>
