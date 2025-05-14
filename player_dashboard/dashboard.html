@@ -753,7 +753,6 @@ function fermerPopupEpargne() {
 }
 
 // Fonction de confirmation (à adapter selon ta logique de dépôt)
-function confirmerDepotEpargne() {
 async function confirmerDepotEpargne() {
   const montant = parseInt(document.getElementById("montant-epargne").value, 10);
   if (isNaN(montant) || montant <= 0) {
@@ -790,7 +789,7 @@ async function confirmerDepotEpargne() {
     alert("Erreur lors de l'opération. Réessayez.");
   }
 }
-}
+
 
 // Événements
 document.getElementById("ouvrir-popup-epargne").addEventListener("click", ouvrirPopupEpargne);
