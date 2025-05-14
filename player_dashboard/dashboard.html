@@ -569,8 +569,8 @@ th {
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
-  
-  // 🔧 Config Firebase
+
+  // 🔧 Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
     authDomain: "wirelessoverride.firebaseapp.com",
@@ -580,18 +580,20 @@ th {
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
+  // Initialisation Firebase
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
+  // Fonction pour calculer l'XP nécessaire pour le niveau suivant
   function calculXpPourNiveau(level) {
     return Math.round(100 * Math.pow(level, 1.5));
   }
 
-  // 🔐 Authentification & chargement des données utilisateur
+  // 🔐 Authentification & Chargement des données utilisateur
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      window.location.href = "../index.html";
+      window.location.href = "../index.html"; // Rediriger si non authentifié
       return;
     }
 
@@ -611,15 +613,15 @@ th {
       faction = data.faction || faction;
       level = data.level || level;
       xp = data.xp || xp;
-  window.userData = data;
-      // Ajoute les données manquantes (si elles n'existent pas dans Firestore)
-      const updates = {};
+      window.userData = data;
 
+      // Mise à jour des données manquantes dans Firestore
+      const updates = {};
       if (!("level" in data)) updates.level = level;
       if (!("xp" in data)) updates.xp = xp;
       if (!("reputation" in data)) updates.reputation = 0;
       if (!("etat" in data)) updates.etat = "100%";
-      if (!data.solde) updates.solde = 500; // ou 0 si tu préfères
+      if (!data.solde) updates.solde = 500;
       if (!data.epargne) updates.epargne = 0;
       if (!data.dette) updates.dette = 0;
 
@@ -646,11 +648,11 @@ th {
 
   // 📜 Gestion du bouton compétences (modal skills)
   document.getElementById("openSkills").addEventListener("click", async () => {
-const fonction = window.userData?.fonction;
-if (!fonction) {
-  alert("Fonction inconnue. Veuillez définir une fonction pour accéder aux compétences.");
-  return;
-}
+    const fonction = window.userData?.fonction;
+    if (!fonction) {
+      alert("Fonction inconnue. Veuillez définir une fonction pour accéder aux compétences.");
+      return;
+    }
 
     try {
       const [attributsData, competencesData] = await Promise.all([
@@ -663,8 +665,6 @@ if (!fonction) {
 
       const modal = document.getElementById('modalSkills');
       const container = modal.querySelector('.modal-content');
-      
-
       container.innerHTML = `
         <span class="close" id="closeSkills">&times;</span>
         <h2>Compétences du personnage</h2>
@@ -701,11 +701,11 @@ if (!fonction) {
   };
 
   // ❌ Fermeture des modaux
-document.querySelectorAll(".close").forEach(closeBtn => {
-  closeBtn.onclick = function () {
-   const modal = this.closest(".modal");
-if (modal) modal.style.display = "none"
-  };
+  document.querySelectorAll(".close").forEach(closeBtn => {
+    closeBtn.onclick = function () {
+      const modal = this.closest(".modal");
+      if (modal) modal.style.display = "none";
+    };
   });
 
   // ❌ Clic en dehors d’un modal = fermeture
@@ -731,93 +731,84 @@ if (modal) modal.style.display = "none"
       if (iframe) iframe.src = page;
     });
   });
-
-  let data = {}; // On suppose que `data` est initialisé quelque part avec les données utilisateur récupérées de Firestore
-
-
 </script>
-  <script>
 
-   // Fonction d'ouverture
-function ouvrirPopupEpargne() {
-  const popup = document.getElementById("popup-epargne");
-  popup.style.display = "block";
-  popup.classList.add("active");
-}
-
-// Fonction de fermeture
-function fermerPopupEpargne() {
-  const popup = document.getElementById("popup-epargne");
-  popup.classList.remove("active");
-  popup.style.display = "none";
-}
-
-// Fonction de confirmation (à adapter selon ta logique de dépôt)
-async function confirmerDepotEpargne() {
-  const montant = parseInt(document.getElementById("montant-epargne").value, 10);
-  if (isNaN(montant) || montant <= 0) {
-    alert("Veuillez entrer un montant valide.");
-    return;
+<script>
+  // 💰 Gestion de l'épargne (popup)
+  function ouvrirPopupEpargne() {
+    const popup = document.getElementById("popup-epargne");
+    popup.style.display = "block";
+    popup.classList.add("active");
   }
 
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Utilisateur non connecté.");
-    return;
+  function fermerPopupEpargne() {
+    const popup = document.getElementById("popup-epargne");
+    popup.classList.remove("active");
+    popup.style.display = "none";
   }
 
-  const userRef = doc(db, "players", user.uid);
-  const userSnap = await getDoc(userRef);
+  // Fonction de confirmation pour le dépôt d'épargne
+  async function confirmerDepotEpargne() {
+    const montant = parseInt(document.getElementById("montant-epargne").value, 10);
+    if (isNaN(montant) || montant <= 0) {
+      alert("Veuillez entrer un montant valide.");
+      return;
+    }
 
-  if (!userSnap.exists()) {
-    alert("Données utilisateur introuvables.");
-    return;
+    const user = auth.currentUser;
+    if (!user) {
+      alert("Utilisateur non connecté.");
+      return;
+    }
+
+    const userRef = doc(db, "players", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      alert("Données utilisateur introuvables.");
+      return;
+    }
+
+    const data = userSnap.data();
+    if (data.solde < montant) {
+      alert("Crédits insuffisants pour ce dépôt.");
+      return;
+    }
+
+    // Mise à jour des valeurs en mémoire
+    data.solde -= montant;
+    data.epargne += montant;
+
+    // Sauvegarde dans Firestore
+    try {
+      await updateDoc(userRef, {
+        solde: data.solde,
+        epargne: data.epargne
+      });
+
+      // Mise à jour de l'interface utilisateur
+      document.getElementById("solde-text").textContent = data.solde;
+      document.getElementById("epargne-text").textContent = data.epargne;
+
+      fermerPopupEpargne();
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour de l'épargne :", error);
+      alert("Erreur lors de l'opération. Réessayez.");
+    }
   }
 
-  const data = userSnap.data(); // ✅ On définit enfin `data`
+  // Événements de gestion des popups et de confirmation
+  document.getElementById("ouvrir-popup-epargne").addEventListener("click", ouvrirPopupEpargne);
+  document.getElementById("fermer-popup-epargne").addEventListener("click", fermerPopupEpargne);
+  document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
 
-  if (data.solde < montant) {
-    alert("Crédits insuffisants pour ce dépôt.");
-    return;
-  }
-
-  // Mise à jour des valeurs en mémoire
-  data.solde -= montant;
-  data.epargne += montant;
-
-  // Sauvegarde Firebase
-  try {
-    await updateDoc(userRef, {
-      solde: data.solde,
-      epargne: data.epargne
-    });
-
-    // Mise à jour UI
-    document.getElementById("solde-text").textContent = data.solde;
-    document.getElementById("epargne-text").textContent = data.epargne;
-
-    fermerPopupEpargne();
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour de l'épargne :", error);
-    alert("Erreur lors de l'opération. Réessayez.");
-  }
-}
-
-
-// Événements
-document.getElementById("ouvrir-popup-epargne").addEventListener("click", ouvrirPopupEpargne);
-document.getElementById("fermer-popup-epargne").addEventListener("click", fermerPopupEpargne);
-document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
-
-
+  // Mise à jour des données utilisateur dans Firestore
   function updateUserData() {
-    // Fonction pour sauvegarder les données mises à jour dans Firestore
     const userRef = doc(db, "players", user.uid); // Assure-toi que `user.uid` est bien défini
     updateDoc(userRef, {
       solde: data.solde,
       epargne: data.epargne
     }).then(() => {
-      // Met à jour l'affichage après la sauvegarde
       document.getElementById("solde-text").innerText = data.solde;
       document.getElementById("epargne-text").innerText = data.epargne;
     }).catch(error => {
@@ -825,16 +816,17 @@ document.getElementById("confirmer-depot-epargne").addEventListener("click", con
     });
   }
 
+  // Fonction de gestion de la dette
   function reglerDette() {
     if (data.solde >= data.dette) {
       data.solde -= data.dette;
       data.dette = 0;
-      updateUserData(); // Sauvegarde Firebase
+      updateUserData(); // Sauvegarde dans Firestore
     } else {
       alert("Vous n'avez pas assez de crédits");
     }
   }
-  </script>
+</script>
   <!-- FOOTER -->
   <footer>
     <p>&copy; 2025 Wireless: Overdrive. Tous droits réservés.</p>
