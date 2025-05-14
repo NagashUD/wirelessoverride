@@ -136,47 +136,7 @@
 
 
 
-     .buttonconfirm {
-        background-color: rgba(51, 51, 51, 0.8);
-            color: #fff;
-            border: 2px solid #ff00ff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-            width: 250px;
-            height: 40px;
-            
-          
-        }
 
-        .buttonconfirm:hover {
-            background-color: #ff00ff;
-            color: #000;
-        }
-        
-            .buttonconfirm:after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: #00fff7;
-            bottom: -5px;
-            left: 0;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
-
-       
-          .buttonconfirm:hover:after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
 
 
 
@@ -270,7 +230,8 @@
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
-            
+             position: relative;
+             
         }
 
   .modal {
@@ -424,6 +385,8 @@ th {
   background-color: rgba(0, 0, 0, 0.4); /* Fond noir semi-transparent */
   color: #ff00ff;
     border-radius: 2px;
+      justify-content: center;
+  align-items: center;
     
 }
 
@@ -439,8 +402,54 @@ th {
   border: 1px solid #888;
   width: 80%;
   max-width: 400px;
-  
+   position: relative;
+   text-align: center;
+ 
 }
+
+
+     .buttonconfirm {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 250px;
+            height: 40px;
+            display: inline-block;
+            margin: 20px auto 0 auto;
+        }
+
+        .buttonconfirm:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttonconfirm:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttonconfirm:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
 
 /* Bouton de fermeture */
 .close-epargne {
@@ -506,6 +515,7 @@ th {
       <div class="profile">
         <h3>Profil</h3>
           <p><strong>Faction :</strong> <span id="faction-text"></span></p>
+          <p><strong>Rôle :</strong> <span id="role-text"></span></p>
           <p><strong>Niveau :</strong> <span id="level-text"></span></p>
           <p><strong>XP :</strong> <span id="xp-text"></span></p>
 
@@ -651,15 +661,17 @@ th {
     let faction = "non définie";
     let level = 1;
     let xp = 0;
+    let role = "non défini";
     let data = {};
 
-    if (userSnap.exists()) {
-      data = userSnap.data();
-      characterName = data.characterName || characterName;
-      faction = data.faction || faction;
-      level = data.level || level;
-      xp = data.xp || xp;
-      window.userData = data;
+ if (userSnap.exists()) {
+  data = userSnap.data();
+  characterName = data.characterName || characterName;
+  faction = data.faction || faction;
+  level = data.level || level;
+  xp = data.xp || xp;
+  role = data.role || "non défini"; // ← AJOUTE CETTE LIGNE
+  window.userData = data;
 
       // Ajoute les données manquantes si elles n'existent pas dans Firestore
       const updates = {};
@@ -683,6 +695,7 @@ th {
 
     // Mise à jour de l'interface utilisateur
     document.getElementById("faction-text").innerText = faction;
+    document.getElementById("role-text").innerText = role;
     document.getElementById("level-text").innerText = level;
     document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
     document.getElementById("xp-bar-fill").style.width = `${progress}%`;
