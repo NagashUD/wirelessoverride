@@ -760,7 +760,22 @@ async function confirmerDepotEpargne() {
     return;
   }
 
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Utilisateur non connecté.");
+    return;
+  }
+
+  const userRef = doc(db, "players", user.uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    alert("Données utilisateur introuvables.");
+    return;
+  }
+
   const data = userSnap.data(); // ✅ On définit enfin `data`
+
   if (data.solde < montant) {
     alert("Crédits insuffisants pour ce dépôt.");
     return;
@@ -772,9 +787,6 @@ async function confirmerDepotEpargne() {
 
   // Sauvegarde Firebase
   try {
-    const user = auth.currentUser;
-    const userRef = doc(db, "players", user.uid);
-
     await updateDoc(userRef, {
       solde: data.solde,
       epargne: data.epargne
