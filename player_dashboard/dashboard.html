@@ -570,6 +570,7 @@ th {
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
+
   // 🔧 Configuration Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
@@ -580,10 +581,12 @@ th {
     appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
   };
 
-  // Initialisation Firebase
+ // Initialisation Firebase
   const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+  window.auth = getAuth(app);
+  window.db = getFirestore(app);
+  window.userData = userSnap.data();
+
 
   // Fonction pour calculer l'XP nécessaire pour le niveau suivant
   function calculXpPourNiveau(level) {
@@ -591,9 +594,9 @@ th {
   }
 
   // 🔐 Authentification & Chargement des données utilisateur
-  onAuthStateChanged(auth, async (user) => {
+ onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      window.location.href = "../index.html"; // Rediriger si non authentifié
+      window.location.href = "../index.html";
       return;
     }
 
@@ -615,8 +618,9 @@ th {
       xp = data.xp || xp;
       window.userData = data;
 
-      // Mise à jour des données manquantes dans Firestore
+      // Ajoute les données manquantes si elles n'existent pas dans Firestore
       const updates = {};
+
       if (!("level" in data)) updates.level = level;
       if (!("xp" in data)) updates.xp = xp;
       if (!("reputation" in data)) updates.reputation = 0;
@@ -627,10 +631,11 @@ th {
 
       if (Object.keys(updates).length > 0) {
         await updateDoc(userRef, updates);
+        Object.assign(window.userData, updates);
       }
     }
 
-    const xpNext = calculXpPourNiveau(level);
+   const xpNext = calculXpPourNiveau(level);
     const progress = Math.min((xp / xpNext) * 100, 100);
 
     // Mise à jour de l'interface utilisateur
@@ -641,10 +646,14 @@ th {
     document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
     document.getElementById("reputation-text").innerText = data.reputation || 0;
     document.getElementById("etat-text").innerText = data.etat || "100%";
-    document.getElementById("solde-text").innerText = data.solde || 0;
+    document.getElementById("solde-text").innerText = data.solde || 500;
     document.getElementById("epargne-text").innerText = data.epargne || 0;
     document.getElementById("dette-text").innerText = data.dette || 0;
   });
+
+
+window.userData = userSnap.data();
+
 
   // 📜 Gestion du bouton compétences (modal skills)
   document.getElementById("openSkills").addEventListener("click", async () => {
