@@ -12,32 +12,31 @@
         /* Corps de la page */
         body {
            
-            background: url('images/background.jpg') no-repeat center center fixed;
-   
-    background-size: cover;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    color: #00ffff; /* bleu néon par défaut */
-    font-family: 'Orbitron', sans-serif;
-    padding: 2rem;
+           background: url('images/background.jpg') no-repeat center center fixed;
+           background-size: cover;
+           margin: 0;
+           padding: 0;
+           overflow-x: hidden;
+           color: #ff00ff; /* bleu néon par défaut */
+           font-family: 'Orbitron', sans-serif;
+           padding: 2rem;
 
         }
 
         body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
-    z-index: -1;
-}
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+            z-index: -1;
+        }
 
         /* Header */
         header {
-          background-color: rgba(0, 0, 0, 0.5); /* Transparent pour l'effet */
+            background-color: rgba(0, 0, 0, 0.5); /* Transparent pour l'effet */
             color: #ff00ff;
             text-shadow: 0 0 10px #ff00ff;
             padding: 15px 30px;
@@ -89,12 +88,100 @@
             transform-origin: bottom right;
             transition: transform 0.25s ease-out;
         }
-
        
         nav button:hover:after {
             transform: scaleX(1);
             transform-origin: bottom left;
         }
+
+
+     .buttongauche {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+          
+        }
+
+        .buttongauche:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttongauche:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttongauche:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
+
+     .buttonconfirm {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            width: 250px;
+            height: 40px;
+            
+          
+        }
+
+        .buttonconfirm:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttonconfirm:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttonconfirm:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
+
+        
+
 
         /* Tableau de bord */
         #dashboard {
@@ -109,50 +196,30 @@
             background-color: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 10px;
-           box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-              background-size: cover;
-
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            background-size: cover;
 
         }
 
         
 
-        .profile, #container-bank {
-               background-color: rgba(0, 0, 0, 0.5);
+        .profile {
+           background-color: rgba(0, 0, 0, 0.5);
            border: 1px  #ff00ff; /* bordure néon */
-  box-shadow: 0 0 20px #ff00ff88; /* glow */
-  border-radius: 6px;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+           border-radius: 6px;
 
   
         }
 
-        .profile p {
-            color: #ff00ff;
+         #container-bank {
+           background-color: rgba(0, 0, 0, 0.5);
+           border: 1px  #ff00ff; /* bordure néon */
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+           border-radius: 6px;
+  
         }
-
-        #missions li {
-            background-color: #444;
-            padding: 10px;
-            margin-bottom: 1px;
-            border-radius: 6px;
-        }
-
-        #missions button {
-            background-color: #00fff7;
-            border: none;
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        #missions button:hover {
-            background-color: #ff00ff;
-            color: #fff;
-  box-shadow: 0 0 15px #ff00ff;
-        }
+  
 
         /* Iframe */
         #iframe-container {
@@ -162,10 +229,8 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            
-
+           
         }
-
         
         iframe {
             width: 100%;
@@ -205,6 +270,7 @@
             max-width: 90%;
             max-height: 90%;
             overflow-y: auto;
+            
         }
 
   .modal {
@@ -277,14 +343,7 @@ th {
   border: 1px solid #00faff66;
   box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
 }
-.perso-img {
-  width: 100%;
-  max-width: 140px;
-  margin: 1em auto;
-  border: 2px solid #ff00ff80;
-  border-radius: 6px;
-  box-shadow: 0 0 8px #ff00ff66;
-}
+
 
 @keyframes neonPulse {
   0%, 100% {
@@ -365,6 +424,7 @@ th {
   background-color: rgba(0, 0, 0, 0.4); /* Fond noir semi-transparent */
   color: #ff00ff;
     border-radius: 2px;
+    
 }
 
 /* Contenu du popup */
@@ -379,6 +439,7 @@ th {
   border: 1px solid #888;
   width: 80%;
   max-width: 400px;
+  
 }
 
 /* Bouton de fermeture */
@@ -406,46 +467,11 @@ th {
 
 
 
-     .buttongauche {
-            font-family: 'Orbitron', sans-serif;
-              background-color: rgba(51, 51, 51, 0.8);
-            color: #fff;
-            border: 2px solid #ff00ff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-              width: 240px;
-  height: 40px;
-        }
 
-        .buttongauche:hover {
-              background-color: #ff00ff;
-            color: #000;
-        }
-        
-            .buttongauche:after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 3px;
-            background-color: #00fff7;
-            bottom: -5px;
-            left: 0;
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.25s ease-out;
-        }
 
-       
-          .buttongauche:hover:after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
-        }
+
+
+
 
 
 
@@ -517,20 +543,20 @@ th {
       <h3>Ajouter de l'épargne</h3>
       <label for="montant-epargne">Montant à ajouter :</label>
       <input type="number" id="montant-epargne" class="input-epargne" />
-      <button class="buttongauche" id="confirmer-depot-epargne">Confirmer</button>
+      <button class="buttonconfirm" id="confirmer-depot-epargne">Confirmer</button>
     </div>
   </div>
 
   <!-- Popup de retrait d’épargne -->
-  <div id="popup-retrait-epargne" class="popup-epargne">
-    <div class="popup-epargne-content">
-      <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>
-      <h3>Retirer depuis l'épargne</h3>
-      <label for="montant-retrait-epargne">Montant à retirer :</label>
-      <input type="number" id="montant-retrait-epargne" class="input-epargne" />
-      <button id="retirer-epargne-bouton" class="buttongauche">Confirmer le retrait</button>
-    </div>
-  </div>
+<div id="popup-retrait-epargne" class="popup-epargne">  
+    <div class="popup-epargne-content">  
+        <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>  
+        <h3>Retirer depuis l'épargne</h3>  
+        <label for="montant-retrait-epargne">Montant à retirer :</label>  
+        <input type="number" id="montant-retrait-epargne" class="input-epargne" />  
+        <button id="confirmer-retrait-epargne" class="buttonconfirm">Confirmer le retrait</button>  
+    </div>  
+</div>
 </section>
 
 
@@ -880,51 +906,93 @@ th {
 
 
 
-onAuthStateChanged(auth, (user) => {
-  if (user) {
-    const userDocRef = doc(db, "utilisateurs", user.uid);
+async function confirmerRetraitEpargne() {
+    const montant = parseInt(document.getElementById("montant-retrait-epargne").value, 10);
+    
+    if (isNaN(montant) || montant <= 0) {
+        alert("Veuillez entrer un montant valide.");
+        return;
+    }
 
-    document.getElementById("retirer-epargne-bouton").addEventListener("click", async function () {
-      const montant = parseFloat(document.getElementById("montant-retrait-epargne").value);
+    const user = auth.currentUser;
+    if (!user) {
+        alert("Utilisateur non connecté.");
+        return;
+    }
 
-      if (!isNaN(montant) && montant > 0) {
-        try {
-          const snapshot = await getDoc(userDocRef);
-          const data = snapshot.data();
+    const userRef = doc(db, "players", user.uid);
+    const userSnap = await getDoc(userRef);
 
-          let solde = data.solde || 0;
-          let epargne = data.epargne || 0;
+    if (!userSnap.exists()) {
+        alert("Données utilisateur introuvables.");
+        return;
+    }
 
-          if (montant <= epargne) {
-            solde += montant;
-            epargne -= montant;
+    const data = userSnap.data();
+    if (data.epargne < montant) {
+        alert("Montant supérieur à l'épargne disponible.");
+        return;
+    }
 
-            await updateDoc(userDocRef, {
-              solde: solde,
-              epargne: epargne
-            });
+    // Mise à jour des valeurs en mémoire
+    data.epargne -= montant;
+    data.solde += montant;
 
-            document.getElementById("solde-text").textContent = solde.toFixed(2);
-            document.getElementById("epargne-text").textContent = epargne.toFixed(2);
-            document.getElementById("popup-retrait-epargne").style.display = "none";
-          } else {
-            alert("Montant invalide ou supérieur à l'épargne disponible.");
-          }
-        } catch (error) {
-          console.error("Erreur Firebase :", error);
-          alert("Erreur lors de la mise à jour. Vérifie ta connexion ou les droits Firebase.");
-        }
-      } else {
-        alert("Montant invalide.");
-      }
+    // Sauvegarde dans Firestore
+    try {
+        await updateDoc(userRef, {
+            solde: data.solde,
+            epargne: data.epargne
+        });
+
+        // Mise à jour de l'interface utilisateur
+        document.getElementById("solde-text").textContent = data.solde;
+        document.getElementById("epargne-text").textContent = data.epargne;
+
+        fermerPopupRetraitEpargne();
+    } catch (error) {
+        console.error("Erreur lors du retrait de l'épargne :", error);
+        alert("Erreur lors de l'opération. Réessayez.");
+    }
+}
+
+// Ouvrir et fermer les popups
+function ouvrirPopupRetraitEpargne() {
+    const popup = document.getElementById("popup-retrait-epargne");
+    popup.style.display = "block";
+}
+
+function fermerPopupRetraitEpargne() {
+    const popup = document.getElementById("popup-retrait-epargne");
+    popup.style.display = "none";
+}
+
+// Événements de gestion des popups et de confirmation
+document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", ouvrirPopupRetraitEpargne);
+document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", fermerPopupRetraitEpargne);
+document.getElementById("confirmer-retrait-epargne").addEventListener("click", confirmerRetraitEpargne);
+
+  window.onload = function () {
+    // Ouvrir popup dépôt
+    document.getElementById("ouvrir-popup-epargne").addEventListener("click", function () {
+      document.getElementById("popup-epargne").style.display = "block";
     });
-  } else {
-    console.warn("Utilisateur non connecté.");
-  }
-});
+
+    document.getElementById("fermer-popup-epargne").addEventListener("click", function () {
+      document.getElementById("popup-epargne").style.display = "none";
+    });
+
+    // Ouvrir popup retrait
+    document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", function () {
+      document.getElementById("popup-retrait-epargne").style.display = "block";
+    });
+
+    document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", function () {
+      document.getElementById("popup-retrait-epargne").style.display = "none";
+    });
  }
    
-  
+}
 </script>
   <!-- FOOTER -->
   <footer>
