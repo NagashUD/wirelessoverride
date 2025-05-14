@@ -41,6 +41,22 @@
       position: relative;
     }
 
+   .closingconnectionbutton {
+         color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  float: right;
+    cursor: pointer;
+        }
+
+        .closingconnectionbutton:hover {
+          background-color: #00fff7;
+    color: #fff;
+    box-shadow: 0 0 15px #ff00ff;
+      transform: scale(1.05);
+        }
+
+
     .logo h1 {
       font-size: 4rem;
       color: #ff00ff;
@@ -343,7 +359,7 @@
             transform-origin: bottom left;
         }
 
-
+   
 
   </style>
 </head>
@@ -385,7 +401,7 @@
   <!-- Modal Login -->
 <div class="modal" id="loginModal">
   <div class="modal-content">
-    <button class="close-btn" id="close-login-modal">&times;</button>
+    <button class="closingconnectionbutton" id="close-login-modal">&times;</button>
     <h2>Connexion</h2>
     <form id="modal-login-form">
 <label for="modal-email">Email :</label>

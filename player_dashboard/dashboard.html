@@ -875,19 +875,41 @@ th {
     });
 
     // Retirer depuis épargne
-    document.getElementById("retirer-epargne-bouton").addEventListener("click", function () {
-      const montant = parseFloat(document.getElementById("montant-retrait-epargne").value);
-      if (!isNaN(montant) && montant > 0 && montant <= epargne) {
-        epargne -= montant;
+document.getElementById("retirer-epargne-bouton").addEventListener("click", async function () {
+  const montant = parseFloat(document.getElementById("montant-retrait-epargne").value);
+  
+  if (!isNaN(montant) && montant > 0) {
+    try {
+      const snapshot = await getDoc(userDocRef);
+      const data = snapshot.data();
+
+      let solde = data.solde || 0;
+      let epargne = data.epargne || 0;
+
+      if (montant <= epargne) {
         solde += montant;
+        epargne -= montant;
+
+        await updateDoc(userDocRef, {
+          solde: solde,
+          epargne: epargne
+        });
+
         document.getElementById("solde-text").textContent = solde.toFixed(2);
         document.getElementById("epargne-text").textContent = epargne.toFixed(2);
         document.getElementById("popup-retrait-epargne").style.display = "none";
       } else {
         alert("Montant invalide ou supérieur à l'épargne disponible.");
       }
-    });
-  };
+    } catch (error) {
+      console.error("Erreur Firebase :", error);
+      alert("Erreur lors de la mise à jour. Vérifie ta connexion ou les droits Firebase.");
+    }
+  } else {
+    alert("Montant invalide.");
+  }
+});
+ }
    
   
 </script>
