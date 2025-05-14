@@ -713,9 +713,9 @@ th {
 
   // 📜 Gestion du bouton compétences (modal skills)
   document.getElementById("openSkills").addEventListener("click", async () => {
-    const fonction = window.userData?.fonction;
-    if (!fonction) {
-      alert("Fonction inconnue. Veuillez définir une fonction pour accéder aux compétences.");
+    const role = window.userData?.role;
+    if (!role) {
+      alert("Fonction inconnue. Veuillez définir un rôle pour accéder aux compétences.");
       return;
     }
 
@@ -725,8 +725,8 @@ th {
         fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
       ]);
 
-      const attributs = attributsData[fonction] || {};
-      const competences = competencesData[fonction] || [];
+      const attributs = attributsData[role] || {};
+      const competences = competencesData[role] || [];
 
       const modal = document.getElementById('modalSkills');
       const container = modal.querySelector('.modal-content');

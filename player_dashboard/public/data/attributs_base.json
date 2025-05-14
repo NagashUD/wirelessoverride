@@ -15,7 +15,7 @@
     "Intelligence": 6,
     "Tech-Affinité": 6,
     "Perception": 2,
-    "Chance": 0
+    "Chance": 1
   },
   "hacker": {
     "Force": 1,
@@ -24,7 +24,7 @@
     "Intelligence": 7,
     "Tech-Affinité": 6,
     "Perception": 2,
-    "Chance": 2
+    "Chance": 1
   },
   "medic": {
     "Force": 2,
