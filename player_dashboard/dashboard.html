@@ -494,31 +494,47 @@ th {
       <section>
   <section id="container-bank">
   <h3>Banque</h3>
+
   <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
+  <p>Épargne : <span id="epargne-text">0</span> crédits</p>
+
   <p>
-  Épargne : <span id="epargne-text">0</span> crédits
-  <button class="buttongauche" id="ouvrir-popup-epargne">Ajouter épargne</button></p>
+    <button class="buttongauche" id="ouvrir-popup-epargne">Ajouter épargne</button>
+  </p>
   <p>
-    Dette : <span id="dette-text">0</span> crédits
+    <button class="buttongauche" id="ouvrir-popup-retrait-epargne">Retirer épargne</button>
+  </p>
+
+  <p>Dette : <span id="dette-text">0</span> crédits</p>
+  <p>
     <button class="buttongauche" onclick="reglerDette()">Régler la dette</button>
   </p>
 
-
-<div id="popup-epargne" class="popup-epargne">
-  <div class="popup-epargne-content">
-    <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
-    <h3>Ajouter de l'épargne</h3>
-    <label for="montant-epargne">Montant à ajouter :</label>
- <input type="number" id="montant-epargne" class="input-epargne" />
-    <button class="buttongauche" id="confirmer-depot-epargne">Confirmer</button>
- 
+  <!-- Popup d’ajout d’épargne -->
+  <div id="popup-epargne" class="popup-epargne">
+    <div class="popup-epargne-content">
+      <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
+      <h3>Ajouter de l'épargne</h3>
+      <label for="montant-epargne">Montant à ajouter :</label>
+      <input type="number" id="montant-epargne" class="input-epargne" />
+      <button class="buttongauche" id="confirmer-depot-epargne">Confirmer</button>
+    </div>
   </div>
-</div>
+
+  <!-- Popup de retrait d’épargne -->
+  <div id="popup-retrait-epargne" class="popup-epargne">
+    <div class="popup-epargne-content">
+      <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>
+      <h3>Retirer depuis l'épargne</h3>
+      <label for="montant-retrait-epargne">Montant à retirer :</label>
+      <input type="number" id="montant-retrait-epargne" class="input-epargne" />
+      <button id="retirer-epargne-bouton" class="buttongauche">Confirmer le retrait</button>
+    </div>
+  </div>
 </section>
 
 
-        </section>
-        
+              
       
         </div>
 
@@ -833,6 +849,47 @@ th {
       alert("Vous n'avez pas assez de crédits");
     }
   }
+
+
+
+  let solde = 0;
+  let epargne = 0;
+
+  window.onload = function () {
+    // Ouvrir popup dépôt
+    document.getElementById("ouvrir-popup-epargne").addEventListener("click", function () {
+      document.getElementById("popup-epargne").style.display = "block";
+    });
+
+    document.getElementById("fermer-popup-epargne").addEventListener("click", function () {
+      document.getElementById("popup-epargne").style.display = "none";
+    });
+
+    // Ouvrir popup retrait
+    document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", function () {
+      document.getElementById("popup-retrait-epargne").style.display = "block";
+    });
+
+    document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", function () {
+      document.getElementById("popup-retrait-epargne").style.display = "none";
+    });
+
+    // Retirer depuis épargne
+    document.getElementById("retirer-epargne-bouton").addEventListener("click", function () {
+      const montant = parseFloat(document.getElementById("montant-retrait-epargne").value);
+      if (!isNaN(montant) && montant > 0 && montant <= epargne) {
+        epargne -= montant;
+        solde += montant;
+        document.getElementById("solde-text").textContent = solde.toFixed(2);
+        document.getElementById("epargne-text").textContent = epargne.toFixed(2);
+        document.getElementById("popup-retrait-epargne").style.display = "none";
+      } else {
+        alert("Montant invalide ou supérieur à l'épargne disponible.");
+      }
+    });
+  };
+   
+  
 </script>
   <!-- FOOTER -->
   <footer>
