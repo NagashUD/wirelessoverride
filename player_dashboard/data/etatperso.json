@@ -1,10 +1,10 @@
 {
-  "cerveau": "Contrôle / hack / analyse",
-  "yeux": "Vision / visée",
-  "bras_gauche": "Force / outil / tir secondaire",
-  "bras_droit": "Arme principale / précision",
-  "torse": "Organes vitaux / blindage",
-  "jambes": "Vitesse / déplacement",
-  "colonne": "Interface neurale / stabilité",
-  "module_special": "Capacité unique / bonus actif"
+  "Cerveau": "Contrôle / hack / analyse",
+  "Yeux": "Vision / visée",
+  "Bras gauche": "Force / outil / tir secondaire",
+  "Bras droit": "Arme principale / précision",
+  "Torse": "Organes vitaux / blindage",
+  "Jambes": "Vitesse / déplacement",
+  "Colonne": "Interface neurale / stabilité",
+  "Module special": "Capacité unique / bonus actif"
 }
