@@ -734,8 +734,8 @@ document.getElementById("openSkills").addEventListener("click", async () => {
 
   try {
     const [attributesData, skillsData] = await Promise.all([
-      fetch('./data/attributs_base.json').then(res => res.json()),
-      fetch('./data/competences.json').then(res => res.json())
+      fetch('/player_dashboard/data/attributs_base.json').then(res => res.json()),
+      fetch('/player_dashboard/data/competences.json').then(res => res.json())
     ]);
 
     const attributes = attributesData[role] || {};
