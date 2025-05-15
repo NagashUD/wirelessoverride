@@ -251,7 +251,7 @@
   border-radius: 14px;
   width: 90%;
   max-width: 400px;
-  color: #fff;
+  color:#00faff;
   box-shadow: 0 0 20px #00faff80, 0 0 40px #ff00ff30;
   text-align: center;
 }
@@ -343,7 +343,10 @@ th {
 .malus-icon {
   margin-left: 5px;
 }
-
+.bonus-text {
+  font-size: 0.9em;
+  color: #e7e300;
+}
 
 
 .skills-columns {
@@ -476,9 +479,16 @@ th {
 
 
 
+.skills-columns h2,
+.skills-columns h3 {
+  color: #00faff;
+  margin-top: 15px;
+}
 
+h4{
+ color: #00faff;
 
-
+}
 
 
 
@@ -513,7 +523,7 @@ th {
     <div class="dashboard-left">
       <!-- Profil à gauche -->
       <div class="profile">
-        <h3>Profil</h3>
+        <h4>Profil</h4>
           <p><strong>Faction :</strong> <span id="faction-text"></span></p>
           <p><strong>Rôle :</strong> <span id="role-text"></span></p>
           <p><strong>Niveau :</strong> <span id="level-text"></span></p>
@@ -529,7 +539,7 @@ th {
 
       <section>
   <section id="container-bank">
-  <h3>Banque</h3>
+  <h4>Banque</h4>
 
   <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
   <p>Épargne : <span id="epargne-text">0</span> crédits</p>
@@ -550,7 +560,7 @@ th {
   <div id="popup-epargne" class="popup-epargne">
     <div class="popup-epargne-content">
       <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
-      <h3>Ajouter de l'épargne</h3>
+      <h4>Ajouter de l'épargne</h4>
       <label for="montant-epargne">Montant à ajouter :</label>
       <input type="number" id="montant-epargne" class="input-epargne" />
       <button class="buttonconfirm" id="confirmer-depot-epargne">Confirmer</button>
@@ -561,7 +571,7 @@ th {
 <div id="popup-retrait-epargne" class="popup-epargne">  
     <div class="popup-epargne-content">  
         <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>  
-        <h3>Retirer depuis l'épargne</h3>  
+        <h4>Retirer depuis l'épargne</h4>  
         <label for="montant-retrait-epargne">Montant à retirer :</label>  
         <input type="number" id="montant-retrait-epargne" class="input-epargne" />  
         <button id="confirmer-retrait-epargne" class="buttonconfirm">Confirmer le retrait</button>  
@@ -607,10 +617,11 @@ th {
   <div id="modalSkills" class="modal">
     <div class="modal-content neon-frame">
       <span class="close" id="closeSkills">&times;</span>
-      <h2>Compétences du personnage</h2>
+      <h4>Compétences du personnage</h4>
       <div class="skills-columns">
-        <ul id="attributs-col"></ul> <!-- Liste des attributs -->
-        <ul id="competences-col"></ul> <!-- Liste des compétences -->
+        <h3>Attributs</h3>
+         <ul id="attributs-col"></ul> <!-- Liste des attributs -->
+         <ul id="competences-col"></ul> <!-- Liste des compétences -->
       </div>
     </div>
   </div>
@@ -712,53 +723,70 @@ th {
 
 
   // 📜 Gestion du bouton compétences (modal skills)
-  document.getElementById("openSkills").addEventListener("click", async () => {
-    const role = window.userData?.role;
-    if (!role) {
-      alert("Fonction inconnue. Veuillez définir un rôle pour accéder aux compétences.");
-      return;
-    }
+document.getElementById("openSkills").addEventListener("click", async () => {
+  const role = window.userData?.role;
+  const level = window.userData?.level || 1;
 
-    try {
-      const [attributsData, competencesData] = await Promise.all([
-        fetch('./dashboard/player_dashboard/public/data/attributs_base.json').then(res => res.json()),
-        fetch('./dashboard/player_dashboard/public/data/competences.json').then(res => res.json())
-      ]);
+  if (!role) {
+    alert("Unknown role. Please select a role to access skills.");
+    return;
+  }
 
-      const attributs = attributsData[role] || {};
-      const competences = competencesData[role] || [];
+  try {
+    const [attributesData, skillsData] = await Promise.all([
+      fetch('./public/data/attributs_base.json').then(res => res.json()),
+      fetch('./public/data/competences.json').then(res => res.json())
+    ]);
 
-      const modal = document.getElementById('modalSkills');
-      const container = modal.querySelector('.modal-content');
-      container.innerHTML = `
-        <span class="close" id="closeSkills">&times;</span>
-        <h2>Compétences du personnage</h2>
-        <div class="skills-columns">
-          <ul id="attributs-col"></ul>
-          <ul id="competences-col"></ul>
-        </div>
-      `;
+    const attributes = attributesData[role] || {};
+    const skills = skillsData[role] || [];
 
-      const ulAttr = container.querySelector('#attributs-col');
-      const ulComp = container.querySelector('#competences-col');
+    const modal = document.getElementById('modalSkills');
+    const container = modal.querySelector('.modal-content');
+    container.innerHTML = `
+      <span class="close" id="closeSkills">&times;</span>
+      <h2>Character Skills</h2>
+      <div class="skills-columns">
+        <ul id="attributes-col"></ul>
+        <ul id="skills-col"></ul>
+      </div>
+    `;
 
-      Object.entries(attributs).forEach(([nom, valeur]) => {
+    // Bouton de fermeture généré dynamiquement
+    container.querySelector("#closeSkills").onclick = function () {
+      const modal = this.closest(".modal");
+      if (modal) modal.style.display = "none";
+    };
+
+    const ulAttr = container.querySelector('#attributes-col');
+    const ulSkill = container.querySelector('#skills-col');
+
+    // Affiche les attributs
+    Object.entries(attributes).forEach(([name, value]) => {
+      const li = document.createElement('li');
+      li.textContent = `${name} : ${value}`;
+      ulAttr.appendChild(li);
+    });
+
+    // Affiche uniquement les compétences débloquées par niveau
+    skills
+      .filter(skill => skill.level <= level)
+      .forEach(skill => {
         const li = document.createElement('li');
-        li.textContent = `${nom} : ${valeur}`;
-        ulAttr.appendChild(li);
+        li.innerHTML = `<strong>${skill.nom}</strong> (Lvl ${skill.level})<br><span class="bonus-text">${skill.bonus}</span>`;
+        ulSkill.appendChild(li);
       });
 
-      competences.forEach(skill => {
-        const li = document.createElement('li');
-        li.textContent = skill;
-        ulComp.appendChild(li);
-      });
+    modal.style.display = 'block';
+  } catch (err) {
+    console.error("Error loading JSON data:", err);
+  }
+});
 
-      modal.style.display = 'block';
-    } catch (err) {
-      console.error("Erreur de chargement des données JSON :", err);
-    }
-  });
+
+
+
+
 
   // 🩺 Gestion du bouton santé (modal perso)
   document.getElementById("openModal").onclick = () => {
@@ -773,6 +801,7 @@ th {
     };
   });
 
+
   // ❌ Clic en dehors d’un modal = fermeture
   window.onclick = function (event) {
     document.querySelectorAll(".modal").forEach(modal => {
@@ -782,11 +811,32 @@ th {
     });
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
   // 🚪 Déconnexion Firebase
   document.getElementById("logout").addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "../index.html";
   });
+
+
+
+
+
+
+
+
+
 
   // 🔄 Navigation dans l'interface
   document.querySelectorAll("nav button[data-page]").forEach(button => {
@@ -796,6 +846,15 @@ th {
       if (iframe) iframe.src = page;
     });
   });
+
+
+
+
+
+
+
+
+
 
   // 💰 Gestion de l'épargne (popup)
   function ouvrirPopupEpargne() {

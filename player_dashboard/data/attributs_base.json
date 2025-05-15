@@ -1,11 +1,11 @@
 {
   "Soldat": {
-    "Force": 6,
-    "Endurance": 6,
+    "Force": 5,
+    "Endurance": 5,
     "Agilité": 4,
-    "Intelligence": 4,
+    "Intelligence": 3,
     "Tech-Affinité": 2,
-    "Perception": 0,
+    "Perception": 3,
     "Chance": 1
   },
   "Ingénieur": {
@@ -24,7 +24,7 @@
     "Intelligence": 7,
     "Tech-Affinité": 6,
     "Perception": 2,
-    "Chance": 2
+    "Chance": 1
   },
   "Médecin": {
     "Force": 2,
