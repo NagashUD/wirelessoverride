@@ -3,52 +3,51 @@
     {
       "nom": "soldier",
       "competences": [
-        { "nom": "Tir balistique", "effet": "Bonus précision avec armes à feu classiques" , "niveau": 1 },
-        { "nom": "Armes lourdes", "effet": "Utilisation d’armes lourdes (lance-grenades, tourelles...)" ,"niveau": 5 },
-        { "nom": "Armes énergétiques", "effet": "Dégâts améliorés avec armes laser/plasma" ,"niveau": 10 },
-        { "nom": "Endurance physique", "effet": "Résistance accrue en combat, +10% PV" ,"niveau": 15 },
-        { "nom": "Tactique de terrain", "effet": "Bonus d’initiative et de placement en escouade" ,"niveau": 20 },
-        
+        { "nom": "Tir balistique", "effet": "Bonus précision avec armes à feu classiques", "niveau": 1 },
+        { "nom": "Armes lourdes", "effet": "Utilisation d’armes lourdes (lance-grenades, tourelles...)", "niveau": 5 },
+        { "nom": "Armes énergétiques", "effet": "Dégâts améliorés avec armes laser/plasma", "niveau": 10 },
+        { "nom": "Endurance physique", "effet": "Résistance accrue en combat, +10% PV", "niveau": 15 },
+        { "nom": "Tactique de terrain", "effet": "Bonus d’initiative et de placement en escouade", "niveau": 20 }
       ]
     },
     {
       "nom": "engineer",
       "competences": [
-        { "nom": "Maintenance avancée", "effet": "Répare équipements, drones, robots" ,"niveau": 1 },
-        { "nom": "Démontage / récupération", "effet": "Récupère composants sur objets détruits" ,"niveau": 5 },
-        { "nom": "Construction modulaire", "effet": "Crée abris, tourelles, petits bots" ,"niveau": 10 },
-        { "nom": "Customisation tech", "effet": "Ajoute mods techniques à armes ou implants" ,"niveau": 15 },
-        { "nom": "Analyse technique", "effet": "Détecte failles, pièges ou faibles structures" "niveau": 20 },
+        { "nom": "Maintenance avancée", "effet": "Répare équipements, drones, robots", "niveau": 1 },
+        { "nom": "Démontage / récupération", "effet": "Récupère composants sur objets détruits", "niveau": 5 },
+        { "nom": "Construction modulaire", "effet": "Crée abris, tourelles, petits bots", "niveau": 10 },
+        { "nom": "Customisation tech", "effet": "Ajoute mods techniques à armes ou implants", "niveau": 15 },
+        { "nom": "Analyse technique", "effet": "Détecte failles, pièges ou faibles structures", "niveau": 20 }
       ]
     },
     {
       "nom": "hacker",
       "competences": [
-        { "nom": "Intrusion réseau", "effet": "Pirate systèmes (portes, caméras, alarmes...)" ,"niveau": 1 },
-        { "nom": "Combat cybernétique", "effet": "Hack en temps réel pendant le combat" ,"niveau": 5 },
-        { "nom": "Cryptographie", "effet": "Déchiffre données sécurisées" ,"niveau": 10 },
-        { "nom": "Drone remote", "effet": "Prise de contrôle à distance de drones" ,"niveau": 15 },
-        { "nom": "Contre-mesures", "effet": "Protection contre hacks adverses" ,"niveau": 20 },
+        { "nom": "Intrusion réseau", "effet": "Pirate systèmes (portes, caméras, alarmes...)", "niveau": 1 },
+        { "nom": "Combat cybernétique", "effet": "Hack en temps réel pendant le combat", "niveau": 5 },
+        { "nom": "Cryptographie", "effet": "Déchiffre données sécurisées", "niveau": 10 },
+        { "nom": "Drone remote", "effet": "Prise de contrôle à distance de drones", "niveau": 15 },
+        { "nom": "Contre-mesures", "effet": "Protection contre hacks adverses", "niveau": 20 }
       ]
     },
     {
       "nom": "medic",
       "competences": [
-        { "nom": "Soins d'urgence", "effet": "Stabilise un allié ou lui rend des PV en combat" ,"niveau": 1 },
-        { "nom": "Biotech", "effet": "Soins via implants ou nanobots" },"niveau": 5 ,"niveau": 5 },
-        { "nom": "Connaissance chimique", "effet": "Prépare stimulants, poisons ou antidotes" ,"niveau": 10 },
-        { "nom": "Implants médicaux", "effet": "Pose implants médicaux sécurisés" ,"niveau": 15 },
-        { "nom": "Anatomie", "effet": "Bonus contre cibles vivantes (points faibles connus)", "niveau": 20 },
+        { "nom": "Soins d'urgence", "effet": "Stabilise un allié ou lui rend des PV en combat", "niveau": 1 },
+        { "nom": "Biotech", "effet": "Soins via implants ou nanobots", "niveau": 5 },
+        { "nom": "Connaissance chimique", "effet": "Prépare stimulants, poisons ou antidotes", "niveau": 10 },
+        { "nom": "Implants médicaux", "effet": "Pose implants médicaux sécurisés", "niveau": 15 },
+        { "nom": "Anatomie", "effet": "Bonus contre cibles vivantes (points faibles connus)", "niveau": 20 }
       ]
     },
     {
       "nom": "scout",
       "competences": [
-        { "nom": "Camouflage actif", "effet": "Furtivité, invisibilité partielle ou camouflage" ,"niveau": 1 },
-        { "nom": "Analyse environnementale", "effet": "Détecte ressources, pièges, ennemis","niveau": 5 },
-        { "nom": "Marquage cible", "effet": "Donne bonus d’équipe sur une cible désignée" ,"niveau": 10 },
-        { "nom": "Mobilité augmentée", "effet": "Sprint, parkour, esquives rapides" ,"niveau": 15 },
-        { "nom": "Vision augmentée", "effet": "Capteurs thermiques, vibrations, électromagnétique", "niveau": 20 },
+        { "nom": "Camouflage actif", "effet": "Furtivité, invisibilité partielle ou camouflage", "niveau": 1 },
+        { "nom": "Analyse environnementale", "effet": "Détecte ressources, pièges, ennemis", "niveau": 5 },
+        { "nom": "Marquage cible", "effet": "Donne bonus d’équipe sur une cible désignée", "niveau": 10 },
+        { "nom": "Mobilité augmentée", "effet": "Sprint, parkour, esquives rapides", "niveau": 15 },
+        { "nom": "Vision augmentée", "effet": "Capteurs thermiques, vibrations, électromagnétique", "niveau": 20 }
       ]
     }
   ]
