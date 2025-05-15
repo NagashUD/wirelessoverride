@@ -250,8 +250,8 @@
   padding: 20px;
   border-radius: 14px;
   width: 90%;
-  max-width: 400px;
-  color:#00faff;
+  max-width: 600px;
+  color:#ff00ff;
   box-shadow: 0 0 20px #00faff80, 0 0 40px #ff00ff30;
   text-align: center;
 }
@@ -485,11 +485,20 @@ th {
   margin-top: 15px;
 }
 
-h4{
- color: #00faff;
-
+h3 {
+  color: #ff00cc;       /* bleu néon */
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  border-bottom: 1px solid #ff00cc;
+  padding-bottom: 4px;
 }
 
+h4 {
+  color: #00f0ff;       /* rose néon */
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px #00f0ff;
+}
 
 
 
@@ -595,9 +604,6 @@ h4{
   <div id="modalPerso" class="modal">
     <div class="modal-content neon-frame">
       <span class="close">&times;</span>
-
-
-
       <h2>État du personnage</h2>
       <table>
         <thead>
@@ -617,9 +623,9 @@ h4{
   <div id="modalSkills" class="modal">
     <div class="modal-content neon-frame">
       <span class="close" id="closeSkills">&times;</span>
-      <h4>Compétences du personnage</h4>
+ 
       <div class="skills-columns">
-        <h3>Attributs</h3>
+   
          <ul id="attributs-col"></ul> <!-- Liste des attributs -->
          <ul id="competences-col"></ul> <!-- Liste des compétences -->
       </div>
@@ -733,7 +739,6 @@ document.getElementById("openSkills").addEventListener("click", async () => {
   }
 
   try {
-    // Chargement asynchrone des fichiers JSON d'attributs et compétences
     const [attributesData, skillsData] = await Promise.all([
       fetch('./data/attributs_base.json').then(res => {
         if (!res.ok) throw new Error("Échec du chargement des attributs");
@@ -746,50 +751,50 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     ]);
 
     const attributes = attributesData[role] || {};
-    const skills = skillsData[role] || [];
+
+    // Trouver la classe correspondant au rôle dans le JSON
+    const classData = skillsData.classes.find(c => c.nom === role);
+    const skills = classData ? classData.competences : [];
 
     const modal = document.getElementById('modalSkills');
     const container = modal.querySelector('.modal-content');
 
-    // Génération dynamique du contenu de la modal
     container.innerHTML = `
       <span class="close" id="closeSkills">&times;</span>
-      <h2>Compétences</h2>
+      <h4>Compétences</h4>
       <div class="skills-columns">
-        <ul id="attributes-col" class="skills-list"></ul>
-        <ul id="skills-col" class="skills-list"></ul>
+        <ul id="attributs-col" class="skills-list"></ul>
+        <ul id="competences-col" class="skills-list"></ul>
       </div>
     `;
 
-    // Ajout de l'action au bouton de fermeture
     container.querySelector("#closeSkills").onclick = function () {
       const modal = this.closest(".modal");
       if (modal) modal.style.display = "none";
     };
 
-    const ulAttr = container.querySelector('#attributes-col');
-    const ulSkill = container.querySelector('#skills-col');
+    const ulAttr = container.querySelector('#attributs-col');
+    const ulSkill = container.querySelector('#competences-col');
 
-    // 🔸 Affichage des attributs
+    // Affichage attributs
     Object.entries(attributes).forEach(([name, value]) => {
       const li = document.createElement('li');
       li.textContent = `${name} : ${value}`;
       ulAttr.appendChild(li);
     });
 
-    // 🔸 Affichage des compétences disponibles selon le niveau
+    // Affichage compétences selon niveau
     skills
-      .filter(skill => skill.level <= level)
+      .filter(skill => skill.niveau <= level)
       .forEach(skill => {
         const li = document.createElement('li');
         li.innerHTML = `
-          <strong>${skill.nom}</strong> (Lvl ${skill.level})<br>
-          <span class="bonus-text">${skill.bonus}</span>
+          <strong>${skill.nom}</strong> (Lvl ${skill.niveau})<br>
+          <span class="bonus-text">${skill.effet}</span>
         `;
         ulSkill.appendChild(li);
       });
 
-    // Ouverture de la modal
     modal.style.display = 'block';
 
   } catch (err) {
@@ -803,10 +808,47 @@ document.getElementById("openSkills").addEventListener("click", async () => {
 
 
 
-  // 🩺 Gestion du bouton santé (modal perso)
-  document.getElementById("openModal").onclick = () => {
-    document.getElementById("modalPerso").style.display = "block";
-  };
+// 🔁 Chargement des parties statiques depuis le .json
+async function loadEtatPerso() {
+  const res = await fetch('./data/etatperso.json');
+  const data = await res.json();
+
+  // 🔥 Récupération des données dynamiques depuis Firebase
+  const userId = firebase.auth().currentUser.uid;
+  const dbRef = firebase.database().ref('users/' + userId + '/etat');
+
+  dbRef.once('value').then(snapshot => {
+    const etatData = snapshot.val(); // état par partie
+    const tbody = document.getElementById('etat-body');
+    tbody.innerHTML = ''; // reset table
+
+    Object.entries(data).forEach(([partie, description]) => {
+      const etat = etatData?.[partie]?.etat ?? '100%';
+      const implant = etatData?.[partie]?.implant ?? 'Aucun';
+      const implantEtat = etatData?.[partie]?.implant_etat ?? '100%';
+      const bonus = etatData?.[partie]?.bonus ?? '';
+
+      tbody.innerHTML += `
+        <tr>
+          <td><strong>${partie}</strong><br><small>${description}</small></td>
+          <td>${etat}</td>
+          <td>${implant}<br><small>${implantEtat}% ${bonus}</small></td>
+        </tr>
+      `;
+    });
+  });
+}
+
+
+
+
+
+
+
+  
+
+
+
 
   // ❌ Fermeture des modaux
   document.querySelectorAll(".close").forEach(closeBtn => {
@@ -827,29 +869,11 @@ document.getElementById("openSkills").addEventListener("click", async () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-  // 🚪 Déconnexion Firebase
+// 🚪 Déconnexion Firebase
   document.getElementById("logout").addEventListener("click", async () => {
     await signOut(auth);
     window.location.href = "../index.html";
   });
-
-
-
-
-
-
-
 
 
 

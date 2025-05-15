@@ -469,6 +469,16 @@ body::before {
 const currentUser = auth.currentUser;
 if (currentUser) {
   const userRef = doc(db, "players", currentUser.uid);
+   const etatInitial = {
+    cerveau: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    yeux: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    bras_gauche: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    bras_droit: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    torse: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    jambes: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    colonne: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
+    module_special: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" }
+  };
   await setDoc(userRef, {
     characterSelected: true,
     faction: faction,

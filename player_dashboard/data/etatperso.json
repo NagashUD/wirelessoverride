@@ -1,0 +1,10 @@
+{
+  "cerveau": "Contrôle / hack / analyse",
+  "yeux": "Vision / visée",
+  "bras_gauche": "Force / outil / tir secondaire",
+  "bras_droit": "Arme principale / précision",
+  "torse": "Organes vitaux / blindage",
+  "jambes": "Vitesse / déplacement",
+  "colonne": "Interface neurale / stabilité",
+  "module_special": "Capacité unique / bonus actif"
+}
