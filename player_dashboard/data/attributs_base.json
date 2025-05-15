@@ -1,5 +1,5 @@
 {
-  "Soldat": {
+  "soldier": {
     "Force": 5,
     "Endurance": 5,
     "Agilité": 4,
@@ -8,7 +8,7 @@
     "Perception": 3,
     "Chance": 1
   },
-  "Ingénieur": {
+  "engineer": {
     "Force": 3,
     "Endurance": 3,
     "Agilité": 2,
@@ -17,7 +17,7 @@
     "Perception": 2,
     "Chance": 0
   },
-  "Hacker": {
+  "hacker": {
     "Force": 1,
     "Endurance": 2,
     "Agilité": 4,
@@ -26,7 +26,7 @@
     "Perception": 2,
     "Chance": 1
   },
-  "Médecin": {
+  "medic": {
     "Force": 2,
     "Endurance": 4,
     "Agilité": 4,
@@ -35,7 +35,7 @@
     "Perception": 3,
     "Chance": 1
   },
-  "Éclaireur": {
+  "scout": {
     "Force": 2,
     "Endurance": 3,
     "Agilité": 7,

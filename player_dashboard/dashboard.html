@@ -745,7 +745,7 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     const container = modal.querySelector('.modal-content');
     container.innerHTML = `
       <span class="close" id="closeSkills">&times;</span>
-      <h2>Character Skills</h2>
+      <h2>Compétences</h2>
       <div class="skills-columns">
         <ul id="attributes-col"></ul>
         <ul id="skills-col"></ul>
@@ -759,7 +759,7 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     };
 
     const ulAttr = container.querySelector('#attributes-col');
-    const ulSkill = container.querySelector('#skills-col');
+    const ulSkill = container.querySelector('#competences-col');
 
     // Affiche les attributs
     Object.entries(attributes).forEach(([name, value]) => {
