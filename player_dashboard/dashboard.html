@@ -722,20 +722,27 @@ h4{
 
 
 
-  // 📜 Gestion du bouton compétences (modal skills)
+ // 📜 Gestion du bouton compétences (ouverture de la modal)
 document.getElementById("openSkills").addEventListener("click", async () => {
   const role = window.userData?.role;
-  const level = window.userData?.level || 1;
+  const level = window.userData?.level ?? 1;
 
   if (!role) {
-    alert("Unknown role. Please select a role to access skills.");
+    alert("Rôle inconnu. Veuillez sélectionner un rôle pour accéder aux compétences.");
     return;
   }
 
   try {
+    // Chargement asynchrone des fichiers JSON d'attributs et compétences
     const [attributesData, skillsData] = await Promise.all([
-      fetch('/player_dashboard/data/attributs_base.json').then(res => res.json()),
-      fetch('/player_dashboard/data/competences.json').then(res => res.json())
+      fetch('./data/attributs_base.json').then(res => {
+        if (!res.ok) throw new Error("Échec du chargement des attributs");
+        return res.json();
+      }),
+      fetch('./data/competences.json').then(res => {
+        if (!res.ok) throw new Error("Échec du chargement des compétences");
+        return res.json();
+      })
     ]);
 
     const attributes = attributesData[role] || {};
@@ -743,16 +750,18 @@ document.getElementById("openSkills").addEventListener("click", async () => {
 
     const modal = document.getElementById('modalSkills');
     const container = modal.querySelector('.modal-content');
+
+    // Génération dynamique du contenu de la modal
     container.innerHTML = `
       <span class="close" id="closeSkills">&times;</span>
       <h2>Compétences</h2>
       <div class="skills-columns">
-        <ul id="attributes-col"></ul>
-        <ul id="skills-col"></ul>
+        <ul id="attributes-col" class="skills-list"></ul>
+        <ul id="skills-col" class="skills-list"></ul>
       </div>
     `;
 
-    // Bouton de fermeture généré dynamiquement
+    // Ajout de l'action au bouton de fermeture
     container.querySelector("#closeSkills").onclick = function () {
       const modal = this.closest(".modal");
       if (modal) modal.style.display = "none";
@@ -761,25 +770,31 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     const ulAttr = container.querySelector('#attributes-col');
     const ulSkill = container.querySelector('#skills-col');
 
-    // Affiche les attributs
+    // 🔸 Affichage des attributs
     Object.entries(attributes).forEach(([name, value]) => {
       const li = document.createElement('li');
       li.textContent = `${name} : ${value}`;
       ulAttr.appendChild(li);
     });
 
-    // Affiche uniquement les compétences débloquées par niveau
+    // 🔸 Affichage des compétences disponibles selon le niveau
     skills
       .filter(skill => skill.level <= level)
       .forEach(skill => {
         const li = document.createElement('li');
-        li.innerHTML = `<strong>${skill.nom}</strong> (Lvl ${skill.level})<br><span class="bonus-text">${skill.bonus}</span>`;
+        li.innerHTML = `
+          <strong>${skill.nom}</strong> (Lvl ${skill.level})<br>
+          <span class="bonus-text">${skill.bonus}</span>
+        `;
         ulSkill.appendChild(li);
       });
 
+    // Ouverture de la modal
     modal.style.display = 'block';
+
   } catch (err) {
-    console.error("Error loading JSON data:", err);
+    console.error("Erreur lors du chargement des données JSON :", err);
+    alert("Impossible de charger les compétences ou attributs. Vérifie que les fichiers JSON sont bien accessibles.");
   }
 });
 
