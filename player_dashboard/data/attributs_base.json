@@ -1,21 +1,21 @@
 {
   "soldier": {
-    "Force": 5,
-    "Endurance": 5,
-    "Agilité": 4,
-    "Intelligence": 3,
-    "Tech-Affinité": 2,
-    "Perception": 3,
-    "Chance": 1
+    "Force" : 5,
+    "Endurance" : 5,
+    "Agilité" : 4,
+    "Intelligence" : 3,
+    "Tech-Affinité" : 2,
+    "Perception" : 3,
+    "Chance" : 1
   },
   "engineer": {
-    "Force": 3,
-    "Endurance": 3,
-    "Agilité": 2,
-    "Intelligence": 6,
-    "Tech-Affinité": 6,
-    "Perception": 2,
-    "Chance": 0
+    "Force" : 3,
+    "Endurance" : 3,
+    "Agilité" : 2,
+    "Intelligence" : 6,
+    "Tech-Affinité" : 6,
+    "Perception" : 2,
+    "Chance" : 1
   },
   "hacker": {
     "Force": 1,

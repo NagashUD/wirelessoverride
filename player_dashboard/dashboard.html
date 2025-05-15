@@ -734,8 +734,8 @@ document.getElementById("openSkills").addEventListener("click", async () => {
 
   try {
     const [attributesData, skillsData] = await Promise.all([
-      fetch('./public/data/attributs_base.json').then(res => res.json()),
-      fetch('./public/data/competences.json').then(res => res.json())
+      fetch('./data/attributs_base.json').then(res => res.json()),
+      fetch('./data/competences.json').then(res => res.json())
     ]);
 
     const attributes = attributesData[role] || {};
@@ -759,7 +759,7 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     };
 
     const ulAttr = container.querySelector('#attributes-col');
-    const ulSkill = container.querySelector('#competences-col');
+    const ulSkill = container.querySelector('#skills-col');
 
     // Affiche les attributs
     Object.entries(attributes).forEach(([name, value]) => {
