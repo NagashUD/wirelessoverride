@@ -6,8 +6,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body
-    
-    {
+       {
       background: url('images/store.jpg') no-repeat center center fixed;
     background-size: cover;
     text-align: center;
@@ -137,6 +136,120 @@ button:hover {
     background-color: #00fff7;
 }
 
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  padding: 10px;
+}
+
+.item {
+  background: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+}
+
+.item:hover::after {
+  content: attr(data-info);
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.9);
+  padding: 8px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  width: max-content;
+  max-width: 200px;
+  z-index: 10;
+}
+
+
+
+
+.buy-btn {
+  margin-top: 5px;
+  background: #0a0;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.buy-btn:hover {
+  background: #0f0;
+}
+.item-card {
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  background-color: #111;
+  color: #eee;
+  max-width: 400px;
+  box-shadow: 0 0 8px #ff00ff88;
+}
+
+.icone-item {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.item-card .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  color: white;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.modal-content img {
+  width: 80px;
+  height: 80px;
+  float: left;
+  margin-right: 15px;
+}
   </style>
 </head>
 <body>
@@ -152,50 +265,181 @@ button:hover {
     <button class="tab" data-onglet="marche">Marché</button>
   </div>
 
-  <div id="armes" class="tab-content active">
+<!-- 🛒 Magasin d'Armes -->
+ 
+<div id="armes" class="tab-content active">
     <h2>Magasin d'Armes</h2>
-    <p>Liste d'armes disponibles à l'achat.</p>
-  </div>
+    <div class="stock-list item-grid" data-categorie="armes"></div>
+ </div>
 
-  <div id="armures" class="tab-content">
-    <h2>Magasin d'Armures</h2>
-    <p>Choisissez des protections adaptées à votre style de combat.</p>
-  </div>
+<!-- 🛡️ Magasin d'Armures -->
+<div id="armures" class="tab-content">
+  <h2>Magasin d'Armures</h2>
+  <div class="stock-list" data-categorie="armures"></div>
+</div>
 
-  <div id="cyber" class="tab-content">
-    <h2>Cybernétiques</h2>
-    <p>Implants cybernétiques à acheter (installation médicale requise).</p>
-  </div>
+<!-- 🧠 Cybernétiques -->
+<div id="cyber" class="tab-content">
+  <h2>Cybernétiques</h2>
+  <div class="stock-list" data-categorie="cyber"></div>
+</div>
 
-  <div id="transport" class="tab-content">
-    <h2>Transport</h2>
-    <p>Véhicules terrestres disponibles (voiture, moto, camion, etc).</p>
-  </div>
+<!-- 🚗 Transport -->
+<div id="transport" class="tab-content">
+  <h2>Transport</h2>
+  <div class="stock-list" data-categorie="transport"></div>
+</div>
 
-  <div id="revendre" class="tab-content">
-    <h2>Revendre des Objets</h2>
-    <p>Sélectionnez les objets que vous souhaitez revendre.</p>
-  </div>
+<!-- ♻️ Revendre -->
+<div id="revendre" class="tab-content">
+  <h2>Revendre des Objets</h2>
+  <div class="stock-list" data-categorie="revente"></div>
+</div>
 
-  <div id="marche" class="tab-content">
-    <h2>Marché des Joueurs</h2>
-    <p>Proposez des objets ou échangez avec d'autres survivants.</p>
-  </div>
+<!-- 🌐 Marché des Joueurs -->
+<div id="marche" class="tab-content">
+  <h2>Marché des Joueurs</h2>
+  <div class="stock-list" data-categorie="marche"></div>
+</div>
+</div>
 
+
+<!-- 🕶️ Modal détaillé -->
+<div class="overlay hidden" id="overlay"></div>
+<div class="modal hidden" id="item-modal">
+  <div class="modal-content">
+    <span class="close-btn" id="modal-close">&times;</span>
+    <div id="modal-body">
+      <!-- Contenu dynamique : description détaillée, stats, munitions, etc. -->
+    </div>
+    <div class="modal-footer">
+      <button id="confirmer">Confirmer</button>
+      <button id="annuler">Annuler</button>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+
+// ==============================
+// Fonction pour afficher le modal avec les détails d'un item
+// ==============================
+function showModal(item) {
+  const modal = document.getElementById('item-modal');
+  const overlay = document.getElementById('overlay');
+  const modalBody = document.getElementById('modal-body');
+
+  modalBody.innerHTML = `
+    <h3>${item.nom}</h3>
+    <p><strong>Description :</strong> ${item.description}</p>
+    ${item.dégâts ? `<p><strong>Dégâts :</strong> ${item.dégâts}</p>` : ''}
+    ${item.précision ? `<p><strong>Précision :</strong> ${item.précision}%</p>` : ''}
+    ${item.munitions ? `<p><strong>Type de munitions :</strong> ${item.munitions}</p>` : ''}
+    ${item.rarete ? `<p><strong>Rareté :</strong> ${item.rarete}</p>` : ''}
+    ${item.valeur ? `<p><strong>Valeur :</strong> ${item.valeur} crédits</p>` : ''}
+  `;
+
+  modal.classList.remove('hidden');
+  overlay.classList.remove('hidden');
+}
+
+// ==============================
+// Fonction pour fermer le modal
+// ==============================
+function closeModal() {
+  document.getElementById('item-modal').classList.add('hidden');
+  document.getElementById('overlay').classList.add('hidden');
+}
+
+// ==============================
+// Écouteurs pour les éléments de fermeture du modal
+// ==============================
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('annuler').addEventListener('click', closeModal);
+document.getElementById('overlay').addEventListener('click', closeModal);
+
+// ==============================
+// Bouton de confirmation (achat)
+// ==============================
+document.getElementById('confirmer').addEventListener('click', () => {
+  console.log('Achat confirmé');
+  closeModal();
+});
+
+// ==============================
+// Gestion des clics sur les items
+// ==============================
+document.querySelectorAll('.stock-list').forEach(stockList => {
+  stockList.addEventListener('click', event => {
+    const itemElement = event.target.closest('.item');
+    if (!itemElement) return;
+
+    const itemId = itemElement.dataset.id;
+    const category = stockList.dataset.categorie;
+    const item = Items[category]?.[itemId];
+
+    if (item) {
+      showModal(item);
+    }
+  });
+});
+
+// ==============================
+// Initialisation
+// ==============================
+
+</script>
   <script>
-    const boutons = document.querySelectorAll('.tab');
-    const contenus = document.querySelectorAll('.tab-content');
 
-    boutons.forEach(bouton => {
-      bouton.addEventListener('click', () => {
-        boutons.forEach(b => b.classList.remove('active'));
-        contenus.forEach(c => c.classList.remove('active'));
+ const buttons = document.querySelectorAll('.tab');
+    const tabs = document.querySelectorAll('.tab-content');
 
-        bouton.classList.add('active');
-        document.getElementById(bouton.dataset.onglet).classList.add('active');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buttons.forEach(b => b.classList.remove('active'));
+        tabs.forEach(tab => tab.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      
+      })
+      });
+
+
+     </script>
+     
+  <script type="module">
+  import Items, { getItem } from './items.js';
+
+  function afficherItems() {
+    Object.entries(Items).forEach(([categorie, items]) => {
+      const container = document.querySelector(`.stock-list[data-categorie="${categorie}"]`);
+      if (!container) return;
+
+      container.innerHTML = ''; // Vide le contenu existant
+
+      Object.entries(items).forEach(([id, item]) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.dataset.id = id;
+        itemDiv.innerHTML = `
+          <div class="item-card">
+            <img class="icone-item" src="${item.icon}" alt="${item.nom}">
+            <div class="info">
+              <strong>${item.nom}</strong>
+              <span>${item.prix} ₵</span>
+              <button class="buy-btn">Acheter</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(itemDiv);
       });
     });
-  </script>
+  }
 
+  afficherItems();
+</script>
 </body>
 </html>

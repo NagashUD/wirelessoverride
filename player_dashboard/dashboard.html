@@ -201,12 +201,12 @@
 
         /* Footer */
         footer {
-            background-color: rgba(17, 17, 17, 0.9);
+            background-color: rgba(0, 0, 0, 0.7);
             color: #fff;
             text-align: center;
             padding: 15px;
             font-size: 14px;
-            box-shadow: 0 -2px 10px rgba(255, 0, 255, 0.4);
+        
         }
 
         /* Popup */
@@ -696,6 +696,7 @@ h4 {
       if (!data.solde) updates.solde = 500;
       if (!data.epargne) updates.epargne = 0;
       if (!data.dette) updates.dette = 0;
+      
 
       if (Object.keys(updates).length > 0) {
         await updateDoc(userRef, updates);
@@ -797,6 +798,7 @@ document.getElementById("openSkills").addEventListener("click", async () => {
     console.error("Erreur lors du chargement des données JSON :", err);
     alert("Impossible de charger les compétences ou attributs. Vérifie que les fichiers JSON sont bien accessibles.");
   }
+  
 });
 
 
@@ -807,68 +809,56 @@ document.getElementById("openSkills").addEventListener("click", async () => {
 async function loadEtatPerso() {
   const modal = document.getElementById("modalPerso");
   const tbody = modal.querySelector("tbody");
-  tbody.innerHTML = ''; // vide le contenu existant
+  tbody.innerHTML = ''; // On vide l'existant
 
   try {
-    const [jsonRes, userSnap] = await Promise.all([
-      fetch('./data/etatperso.json').then(res => {
-        if (!res.ok) throw new Error("Échec du chargement du JSON");
-        return res.json();
-      }),
-      getDoc(doc(db, "players", auth.currentUser.uid))
-    ]);
+    const userSnap = await getDoc(doc(db, "players", auth.currentUser.uid));
+    if (!userSnap.exists()) throw new Error("Utilisateur non trouvé");
 
-    const etatData = userSnap.exists() ? userSnap.data().etatParPartie || {} : {};
+    // Récupération de l'objet "etat"
+    const etatData = userSnap.data().etat || {};
 
-    let zonesEndommagees = 0;
+    if (Object.keys(etatData).length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:gray;">Aucun état enregistré</td></tr>`;
+    } else {
+      Object.entries(etatData).forEach(([partie, info]) => {
+        const etat = info.etat || '100%';
+        const implant = info.implant || 'Aucun';
+        const etatNum = parseFloat(etat.replace('%', ''));
 
-    Object.entries(jsonRes).forEach(([partie, description]) => {
-      const etat = etatData[partie]?.etat || '100%';
-      const implant = etatData[partie]?.implant || 'Aucun';
+        let color;
+        if (etatNum >= 50) color = "limegreen";
+        else if (etatNum >= 25) color = "orange";
+        else color = "red";
 
-      // Numérisation du pourcentage
-      const etatNum = parseFloat(etat.replace('%', ''));
-
-      // Détection des dégâts
-      if (etatNum < 100) zonesEndommagees++;
-
-      // Détermination de la couleur
-      let color;
-      if (etatNum >= 50) {
-        color = "limegreen";
-      } else if (etatNum >= 25) {
-        color = "orange";
-      } else {
-        color = "red";
-      }
-
-      // Création de la ligne
-      const row = document.createElement("tr");
-      row.innerHTML = `
-         <td style="color: #00faff; text-shadow: 0 0 5px #00f0ff;"><strong>${partie}</strong></td>
-        <td style="color: ${color};"><strong>${etat}</strong></td>
-        <td>${implant}</td>
-      `;
-      tbody.appendChild(row);
-    });
-
-    
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td style="color: #00faff; text-shadow: 0 0 5px #00f0ff;"><strong>${partie}</strong></td>
+          <td style="color: ${color};"><strong>${etat}</strong></td>
+          <td>${implant}</td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
 
     modal.style.display = "block";
 
   } catch (err) {
-    console.error("Erreur lors du chargement de l'état du personnage :", err);
+    console.error("Erreur Firebase - état du perso :", err);
     alert("Impossible de charger l'état du personnage.");
   }
+
+  const ordre = [
+  { key: "cerveau", label: "Cerveau" },
+  { key: "yeux", label: "Yeux" },
+  { key: "torse", label: "Torse" },
+  { key: "bras_droit", label: "Bras droit" },
+  { key: "bras_gauche", label: "Bras gauche" },
+  { key: "colonne", label: "Colonne" },
+  { key: "jambes", label: "Jambes" },
+  { key: "module_special", label: "Module spécial" },
+];
 }
-
-
-
-
-
-
-
-  
 
 
 

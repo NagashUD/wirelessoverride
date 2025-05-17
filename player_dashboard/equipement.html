@@ -137,6 +137,162 @@ button:hover {
     background-color: #00fff7;
 }
 
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: rgba(20, 20, 20, 0.8);
+  border: 2px solid #ff00ff;
+  border-radius: 10px;
+  box-shadow: 0 0 12px #ff00ff88;
+}
+
+.item-card {
+  border: 2px solid #ff00ff;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 0 10px #ff00ff88;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  font-size: 0.9rem;
+}
+
+.coffre-generic {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.coffre-slot {
+  width: 140px;
+  min-height: 100px;
+  border: 2px dashed;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  font-size: 0.85rem;
+  text-align: center;
+}
+.slot {
+  width: 64px;
+  height: 64px;
+  border: 2px solid rgba(255, 255, 255, 0.2); /* contour léger */
+  border-radius: 8px;
+  margin: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #fff;
+  transition: border-color 0.2s ease;
+  cursor: grab;
+  transition: transform 0.2s;
+
+
+
+
+}
+
+.slot.filled {
+  background-color: rgba(80, 150, 200, 0.3);
+  border-color: #66ccff;
+}
+
+.slot.empty {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.slot:hover {
+  border-color: #ff00ff;
+  cursor: grab;
+  
+}
+
+.slot-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 2px solid #444;
+  padding: 10px;
+  min-height: 80px;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+}
+.slot-section {
+  margin-bottom: 20px;
+}
+
+.inventory-grid, .coffre-generic {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+
+  .container {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+   flex: 1;
+
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+
+    
+}
+
+  .container2 {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 10px;
+  padding: 15px;
+   flex: 1;
+height: 50px;
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  text-align: center;
+     justify-content: center; 
+       display: flex;
+  align-items: center; 
+}
+
+    h1 {
+        text-align: center;
+       font-size: 1.2rem;
+        color: #ff00ff; /* rose néon */
+        
+        margin-bottom: 2rem;
+    }
+        h2 {
+        text-align: center;
+      font-size: 2.0rem;
+        color: #00ffff; 
+               text-shadow: 0 0 5px #00ffff;
+        
+        margin-bottom: 2rem;
+    }
+
+    .equipement-wrapper {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.colonne-gauche,
+.colonne-droite {
+  flex: 1;
+}
   </style>
 </head>
 <body>
@@ -149,36 +305,239 @@ button:hover {
   </div>
 
   <div id="equip" class="tab-content active">
-    <h2>Équipements Actuels</h2>
-    <p><strong>Armes équipées :</strong> …</p>
-    <p><strong>Armures équipées :</strong> …</p>
-    <p><strong>Cybernétiques installées :</strong> …</p>
+    <div class= "container2">
+      <h2>Équipements Actuels</h2>
+    </div>
+<div class="equipement-wrapper">
+  <!-- Colonne gauche : équipements équipés -->
+  <div class="colonne-gauche">
+
+    
+   
+    <div class= "container">
+   <h1> Armes équipées :</h1>
+      <div id="arme-equipee-container" class="coffre-generic"></div>
+      </div>
+          <div class= "container">
+    <h1>Armures équipées :</h1> 
+      <div id="armure-equipee-container" class="coffre-generic"></div>
+      </div>
+          <div class= "container">
+   <h1>Cybernétiques installées :</h1> 
+    <div id="cybernetiques-installees-container" class="coffre-generic"></div>
   </div>
+</div>
+
+  <div class="colonne-droite">
+          <div class= "container">
+     <h1> Armes :</h1>
+      <div id="coffre-armes-container" class="coffre-generic"></div>
+      </div>
+      <div class= "container">
+    <h1>Armures :</h1>
+     <div id="coffre-armures-container" class="coffre-generic"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+
 
   <div id="base" class="tab-content">
+        <div class= "container2">
     <h2>Stock en Base</h2>
-    <p><strong>Armes :</strong> …</p>
-    <p><strong>Armures :</strong> …</p>
+    </div>
+     <div class= "container">
+<div id="coffre-safe-container">
+  <h1>Coffre personnel sécurisé</h1>
+  <div id="coffre-safe" class="inventory-grid">
+    </div>
+    <!-- Objets du coffre_safe ici -->
   </div>
+</div>
+
+<div id="coffre-base-container">
+  <div class= "container">
+  <h1>Inventaire de base</h1>
+  <div id="coffre-base" class="inventory-grid">
+   </div>
+  </div>
+</div>
+</div>
+
 
   <div id="cyber" class="tab-content">
-    <h2>Cybernétiques disponibles</h2>
-    <p>Installables uniquement via un spécialiste médical. Liste des implants disponibles :</p>
-    <ul>
-      <li>Œil bionique MkII</li>
-      <li>Amplificateur neural</li>
-      <!-- ... -->
-    </ul>
+    <div id="base" class="tab-content">
+      <h2>Implants cybernétiques (non installés)</h2>
+      </div>
+        
+          <div class= "container2">
+   <h2>Installables uniquement via un spécialiste médical.</h2>
+   </div>
+   <div class= "container">
+    <h1>Liste des implants disponibles :</h1></div>
+    <div class= "container"> <div id="coffre-cyber-container" class="coffre-generic"></div>
+     </div>
   </div>
+</div>
 
   <div id="vehicule" class="tab-content">
+    <div class= "container2">
     <h2>Transport</h2>
-    <p><strong>Véhicule actif :</strong> Aucun</p>
-    <p><strong>Véhicules en base :</strong> Moto cross modifiée, camion blindé désactivé</p>
+ </div>
+   <div class= "container">
+  <h1> Véhicules en base : Moto cross modifiée, camion blindé désactivé</h1>
+ </div>
+  <div class= "container">
+    <div id="coffre-vehicules-container" class="coffre-generic"></div>
+    </div>
+    </div>
   </div>
+</div>
 
+
+  
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+const mapping = {
+
+  "arme-equipee-container": "arme_equipee",
+  "armure-equipee-container": "armure_equipee",
+  "cybernetiques-installees-container": "cybernetiques_installees",
+  "coffre-safe": "coffre_safe",
+  "coffre-base": "coffre_base",
+  "coffre-armes-container": "coffre_armes",
+  "coffre-armures-container": "coffre_armures",
+  "coffre-cyber-container": "coffre_cyber",
+  "coffre-vehicules-container": "coffre_vehicules"
+};
+
+// 🔄 Charge les données du joueur et remplit l'inventaire
+auth.onAuthStateChanged(async (user) => {
+  if (user) {
+    const docRef = doc(db, "players", user.uid);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      for (const [containerId, key] of Object.entries(mapping)) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Clear existing
+        const items = data[key] || [];
+        items.forEach((item, index) => {
+          const slot = createSlot(item, key, index);
+          container.appendChild(slot);
+        });
+      }
+    }
+  }
+});
+
+// 🔧 Crée un slot drag & droppable
+function createSlot(item, key, index) {
+  const div = document.createElement("div");
+  div.className = "slot";
+  div.dataset.originKey = key;
+  div.dataset.index = index;
+  div.draggable = true;
+
+  if (item) {
+    div.textContent = item;
+    div.classList.add("filled");
+  } else {
+    div.classList.add("empty");
+  }
+
+  div.addEventListener("dragstart", dragStart);
+  div.addEventListener("dragover", dragOver);
+  div.addEventListener("drop", drop);
+  return div;
+}
+
+// 📥 Drag functions
+let draggedItem = null;
+function dragStart(e) {
+  draggedItem = {
+    originKey: e.target.dataset.originKey,
+    originIndex: e.target.dataset.index,
+    content: e.target.textContent
+  };
+}
+
+function dragOver(e) {
+  e.preventDefault();
+}
+
+async function drop(e) {
+  e.preventDefault();
+  if (!draggedItem) return;
+
+  const destKey = e.target.dataset.originKey;
+  const destIndex = e.target.dataset.index;
+
+  if (!destKey || destIndex === undefined) return;
+
+  // Vérifie compatibilité : même type de tableau
+  if (!isCompatible(draggedItem.originKey, destKey)) {
+    alert("Incompatible !");
+    return;
+  }
+
+  const user = auth.currentUser;
+  if (!user) return;
+  const docRef = doc(db, "players", user.uid);
+  const docSnap = await getDoc(docRef);
+  if (!docSnap.exists()) return;
+
+  const data = docSnap.data();
+  const sourceArray = data[draggedItem.originKey];
+  const targetArray = data[destKey];
+
+  // Échange si cible occupée, sinon transfert
+  const temp = targetArray[destIndex];
+  targetArray[destIndex] = draggedItem.content;
+  sourceArray[draggedItem.originIndex] = temp || null;
+
+  await updateDoc(docRef, {
+    [draggedItem.originKey]: sourceArray,
+    [destKey]: targetArray
+  });
+
+  // Recharge l’inventaire
+  location.reload();
+}
+
+// ✅ Définit les combinaisons compatibles
+function isCompatible(from, to) {
+  const equipables = ["arme_equipee", "coffre_armes"];
+  const armures = ["armure_equipee", "coffre_armures"];
+  const cybers = ["cybernetiques_installees", "coffre_cyber"];
+  const transports = ["coffre_vehicules"];
+  const stocks = ["coffre_base", "coffre_safe"];
+
+  const sets = [equipables, armures, cybers, transports, stocks];
+  return sets.some(set => set.includes(from) && set.includes(to));
+}
+</script>
   <script>
-    const buttons = document.querySelectorAll('.tab');
+
+ const buttons = document.querySelectorAll('.tab');
     const tabs = document.querySelectorAll('.tab-content');
 
     buttons.forEach(btn => {
@@ -188,9 +547,10 @@ button:hover {
 
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab).classList.add('active');
+      
+      })
       });
-    });
-  </script>
 
+     </script>
 </body>
 </html>

@@ -444,6 +444,16 @@ body::before {
     const roleSelected = document.getElementById("role").value;
     const genre = document.getElementById("genre").value;
     const characterName = document.getElementById("character-name").value.trim();
+    const coffre_safe = [null, null, null]; // pour équipement sécurisé
+    const coffre_base = [null, null, null, null, null, null, null]; // équipement généra
+    const coffre_safe_cyber = [null, null, null]; // 3 places sécurisées
+    const coffre_cyber = [null, null, null, null, null, null, null];
+const coffre_armures = [null, null, null, null];
+const coffre_armes = [null, null, null, null];
+const arme_equipee = [null, null];
+const armure_equipee = [null, null];
+const cybernetiques_installees = [null, null, null, null];
+const coffre_vehicules = [null, null, null];
 
     if (characterName === "") {
       alert("Le nom de votre personnage ne peut pas être vide.");
@@ -455,7 +465,7 @@ body::before {
       return;
     }
 
-    // Sauvegarde dans localStorage
+
     
 
     // Sauvegarde dans Firestore
@@ -480,7 +490,21 @@ await setDoc(userRef, {
   characterName: characterName,
   level: 1,
   xp: 0,
-  etat: etatInitial // ← AJOUT ICI
+  etat: etatInitial, // ← AJOUT ICI
+  vehicle: "aucun" ,
+  coffre_safe: coffre_safe,
+  coffre_base: coffre_base,
+  coffre_safe_cyber: coffre_safe_cyber,
+  coffre_cyber: coffre_cyber,
+  coffre_armures: coffre_armures,
+ coffre_armes: coffre_armes,
+arme_equipee : arme_equipee,
+armure_equipee : armure_equipee,
+cybernetiques_installees : cybernetiques_installees,
+coffre_vehicules : coffre_vehicules
+
+
+
 }, { merge: true });
 
       // Redirection vers le tableau de bord
