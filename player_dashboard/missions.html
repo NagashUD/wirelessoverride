@@ -75,8 +75,12 @@
 
 .mission-info {
   flex: 1;
-  
+    color: #fff;
+
 }
+
+
+
 
     .mission-card {
     display: grid;
@@ -87,12 +91,16 @@
       border-radius: 10px;
       text-align: center;
     box-shadow: 0 0 12px #ff00ff88;
+       transition: all 0.3s;
+       
+    
 }
+ .mission-card:hover {
+            background-color: #ff00ff;
+            
+        }
 
 
-.mission-card:hover {
-  transform: scale(1.02);
-}
 
 .mission-card img {
  width: 100%;
@@ -100,6 +108,7 @@
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 12px;
+
 }
 
 .mission-card h3 {
@@ -119,7 +128,8 @@
   padding: 0;
   margin: 0.5rem 0;
   font-size: 0.9rem;
-}
+  
+  }
 
         .mission-card button {
             background-color: rgba(51, 51, 51, 0.8);
@@ -176,12 +186,14 @@
   flex-wrap: wrap;
   gap: 1.5rem;
   justify-content: center;
+  
 }
 
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+  
 }
 .vehicle-container {
   display: flex;
@@ -245,9 +257,231 @@
   padding: 10px;
   max-width: 1200px;
 }
+.tabs {
+            display: flex;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .tab {
+            background-color: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    border: 2px solid #ff00ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    margin-right: 10px;
+        }
+
+        .tab:hover {
+            background-color: #ff00ff;
+    color: #000;
+        }
+
+        .tab.active {
+            background-color: #ff00ff;
+        }
+
+        nav .tab:after {
+             content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00fff7;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+        }
+
+        nav .tab:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        label {
+    display: block;
+    margin-top: 1.5rem;
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 6px #ff00ff;
+}
+
+
+.popup-overlay {
+  
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+   background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 450px;
+   height: 570px;
+    animation: neonPulse 2.5s ease-in-out infinite;
+      display: none;
+    justify-content: absolute;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+
+.popup-content {
+  
+   background: rgba(0,0,0,0.7);
+     box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  padding: 20px;
+  width: 420px;
+  max-width: 90%;
+  color: white;
+  position: relative;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #000;
+      margin-bottom: 20px;
+}
+
+
+
+
+
+       .popup-buttons {
+        
+   background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            margin-inline: 10px;
+}
+.popup-buttons:hover {
+             background-color: #ff00ff;
+            color: #000;
+              
+}
+         .popup-buttons:after {
+                 content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+               .popup-buttons:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+.close-btn{
+   background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+}
+.close-btn:hover {
+             background-color: #ff00ff;
+            color: #000;
+              
+}
+         .close-btn:after {
+                 content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+               .popup-buttonsclose-btn:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+.popup-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px #00faff,
+      0 0 12px #00faff,
+      0 0 20px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 2px #00faff,
+      0 0 4px #00faff,
+      0 0 6px #ff00ff,
+      0 0 8px #ff00ff;
+  }
+  
+}
+.popup-equipements h4 {
+  margin: 0.3rem 0 0.1rem;
+  font-size: 12px;
+  font-weight: bold;
+}
+.popup-equipements p {
+  margin: 0 0 0.5rem;
+  font-size: 12px;
+  font-style: italic;
+  color: #ccc;
+}
+
   </style>
 </head>
 <body>
+
+
+<div class="tabs">
+   <button class="tab active" data-tab="missions-standard">Routine</button>
+  <button class="tab" data-tab="missions-role">Core Ops</button>
+  <button class="tab"data-tab="missions-special">Overdrive</button>
+</div>
+<!-- Titre Missions -->
+<div class="containernouveau">
+  <h1 style="text-align: center;">Missions disponibles</h1>
+</div>
 
 <!-- Conteneur véhicule -->
 <div id="vehicle-container" class="vehicle-container">
@@ -273,24 +507,37 @@
     </div>
   </div>
 </div>
+<div id="missions-standard" class="missions-list-grid"></div>
+<div id="missions-role" class="missions-list-grid" ></div>
+<div id="missions-special" class="missions-list-grid" ></div>
 
-<!-- Titre Missions -->
-<div class="containernouveau">
-  <h1 style="text-align: center;">Missions disponibles</h1>
-</div>
+
+
 
 <!-- Cartes de missions EN DEHORS -->
 <div id="missions-list" class="missions-list-grid">
   <!-- Les missions générées dynamiquement -->
 </div>
 
-
+<!-- Popup -->
+<div id="mission-popup" class="popup-overlay" style="display: none;">
+  <div class="popup-content">
+    <h2 id="popup-title"></h2>
+       <img id="popup-image" src="" alt="Image mission" style="width: 100%; max-height: 200px; object-fit: cover;  border: 2px solid #ff00ff; border-radius: 8px;   box-shadow: 0 0 10px rgba(0, 255, 255, 0.8);">
+    <div id="popup-equipements" class="popup-equipements" style="margin-top: 1rem;"></div>
+       <div class="popup-buttons-container">
+      <button id="cancel-mission" class="close-btn">Annuler</button>
+      <button id="confirm-mission" class="popup-buttons">Accepter</button>
+    </div>
+  </div>
+</div>
 
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth,  onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, collection,   getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
   const firebaseConfig = {
     apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
@@ -302,60 +549,60 @@
   };
 
 
-
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+   const firestore = getFirestore(app);
 
   let playerRole = "";
   let rotationTimer = 600;
+  let availableVehicles = [];
   const specialCooldowns = {};
+let playerEquippedItems = {}; 
+const missions = [
+  {
+    id: "routine-001",
+    titre: "Livraison locale",
+    description: "Apporte un colis sécurisé à un contact dans le même secteur.",
+    recompense: 150,
+    roles: ["soldier", "engineer", "medic", "scout", "hacker"], // accessible à tous
+    special: false,
+    image: "imgages/missions/livraison.png",
+     type: "missions-standard"
+  },
+    {
+    id: "routine-002",
+    titre: "Attaque d'un convoi",
+    description: "Attaque d'un convoi en centre ville.",
+    recompense: 150,
+    roles: ["soldier", "engineer"], // accessible à tous
+    special: false,
+    image: "images/missions/convoy.png",
+       type: "missions-standard"
+  },
+  {
+    id: "coreops-001",
+    titre: "Exfiltration tactique",
+    description: "Extraire un agent de terrain sous surveillance ennemie.",
+    recompense: 600,
+    roles: ["scout"], // lié à des rôles spécifiques
+    special: false,
+    image: "images/missions/exfiltration.png",
+    type: "missions-role"
+  },
+  {
+    id: "overdrive-001",
+    titre: "Assaut sur serveur Nexus",
+    description: "Infiltre le serveur Nexus pour détourner une IA stratégique.",
+    recompense: 1200,
+    roles: ["hacker"], // nécessite certains rôles
+    special: true,
+    image: "img/missions/nexus.png",
+     type: "missions-special"
+  },
+];
 
-  const missions = [
-    {
-      id: 1,
-      titre: "Patrouille urbaine",
-      description: "Surveillez les rues et signalez toute activité suspecte.",
-            image: "images/missions/convoy.jpg",
-      roles: ["soldier", "engineer", "medic", "scout", "hacker"],
-      baseDuree: 30,
-      baseRisque: 10,
-      recompense: 100,
-      usure: 5,
-      special: false
-      
-    },
-    {
-      id: 2,
-      titre: "Course de livraison",
-      description: "Livrer une cargaison dans le temps imparti.",
-            image: "images/missions/convoy.jpg",
-      roles: ["soldier", "engineer", "medic", "scout", "hacker"],
-      baseDuree: 45,
-      baseRisque: 15,
-      recompense: 150,
-      usure: 8,
-      special: false
-    },
-    {
-      id: 3,
-      titre: "Sauvetage d'urgence",
-      description: "Secourir un groupe en danger, mission spéciale à haut risque.",
-            image: "images/missions/convoy.jpg",
-      roles: ["medic", "scout"],
-      baseDuree: 60,
-      baseRisque: 30,
-      recompense: 300,
-      usure: 12,
-      special: true
-    }
-  ];
-
-  const vehicles = [
-    { id: "aucun", nom: "Aucun", modDuree: 4.0, modRisque: 8.0, fuel: 0, wear: 0 },
-    { id: "car1", nom: "Moto légère", modDuree: 0.8, modRisque: 1.2, fuel: 80, wear: 10 },
-    { id: "car2", nom: "Camion robuste", modDuree: 1.3, modRisque: 0.7, fuel: 150, wear: 30 }
-  ];
+ 
 
   const vehicleSelect = document.getElementById("vehicle-select");
   const missionsList = document.getElementById("missions-list");
@@ -363,135 +610,306 @@
   const missionTimerEl = document.getElementById("mission-timer");
   const fuelEl = document.getElementById("fuel");
   const wearEl = document.getElementById("wear");
+  document.addEventListener("DOMContentLoaded", () => {
+  setupTabs();
+  displayMissions(getSelectedVehicle());
+});
 
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const uid = user.uid;
-      const userDocRef = doc(db, "players", uid);
-      const userDocSnap = await getDoc(userDocRef);
 
-      if (userDocSnap.exists()) {
-        const userData = userDocSnap.data();
-        playerRole = userData.role || "";
-        if (!userData.role) console.warn("Aucun rôle détecté, valeur par défaut appliquée !");
+let playerId = null;
 
-        await initVehicles();
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    console.warn("❌ Aucun utilisateur connecté !");
+    return;
+  }
 
-    
-// On sélectionne le véhicule "aucun" par défaut
-vehicleSelect.value = "aucun";
-setTimeout(() => {
-  renderMissions();
-}, 0);
-      } else {
-        console.error("Aucune donnée utilisateur trouvée !");
-      }
+    playerId = user.uid;
+  localStorage.setItem("playerId", playerId);
+  console.log("✅ playerId stocké :", playerId);
+
+  try {
+    const playerDocRef = doc(firestore, "players", playerId);
+    const playerDocSnap = await getDoc(playerDocRef);
+console.log("🪪 UID Firebase Auth :", auth.currentUser?.uid);
+console.log("🆔 PlayerID utilisé :", playerId);
+    if (playerDocSnap.exists()) {
+      playerRole = playerDocSnap.data().role || null;
+      console.log("✅ Rôle du joueur :", playerRole);
+console.log("🚧 Tentative de rendu avec playerId =", playerId);
+      // ✅ Lancer le rendu ICI (quand playerId et playerRole sont prêts)
+      displayMissions(playerId, playerRole); // Ou displayMissions(currentSelectedVehicle);
     } else {
-      window.location.href = "index.html";
+      console.warn("⚠️ Document joueur introuvable");
     }
+
+  } catch (e) {
+    console.error("❌ Erreur lors de la récupération du rôle :", e);
+  }
+});
+
+
+
+ // -------------------------
+  // Récupération coffres joueurs 
+  // -------------------------
+const coffresConfig = {
+  coffre_armes: { max: 4 },
+  coffre_armures: { max: 4 },
+  coffre_base: { max: 7 },
+  coffre_cyber: { max: 5 },
+  coffre_drones: { max: 2 },
+  coffre_munitions: { max: 3 },
+  coffre_safe: { max: 3 },
+  coffre_safe_cyber: { max: 3 },
+  coffre_vehicules: { max: 3 },
+  coffre_arme_equipee: { max: 2 },
+  coffre_armure_equipee: { max: 4 },
+  coffre_munitions_equipee: { max: 2 },
+  coffre_drones_equipee: { max: 1 },
+  coffre_cybernetiques_installees: { max: 4 }
+};
+
+
+async function getEquippedInventory(playerID) {
+  const coffres = {};
+
+  const playerRef = doc(db, "players", playerID);
+  const playerSnap = await getDoc(playerRef);
+
+  if (!playerSnap.exists()) {
+    console.error(`❌ Le joueur avec l'ID ${playerID} n'existe pas.`);
+    return coffres;
+  }
+
+  const data = playerSnap.data();
+  console.log("📄 Données brutes Firestore :", data);
+
+  for (const [categorie, config] of Object.entries(coffresConfig)) {
+    coffres[categorie] = [];
+
+    const slots = data[categorie] || {};
+    console.log("📦 Catégories dans Firestore :", Object.keys(data));
+    console.log("📚 Catégories attendues :", Object.keys(coffresConfig));
+
+    for (let i = 0; i < config.max; i++) {
+      const slotName = `slot${i}`;
+      const itemData = slots[slotName];
+
+      if (itemData && itemData.id) {
+        coffres[categorie].push({
+          slot: slotName,
+          ...itemData
+        });
+
+        console.log(`✅ Item "${itemData.id}" trouvé dans ${categorie} - ${slotName}`);
+      } else if (itemData) {
+        console.warn(`⚠️ Item partiel ou sans ID dans ${categorie} - ${slotName}`, itemData);
+        coffres[categorie].push({
+          slot: slotName,
+          ...itemData,
+          vide: true
+        });
+      } else {
+        coffres[categorie].push({
+          slot: slotName,
+          vide: true
+        });
+      }
+    }
+  }
+
+  console.log("🧠 Résultat final des coffres :", coffres);
+  return coffres;
+}
+
+
+
+
+ // -------------------------
+  // 🎯 Missions
+  // -------------------------
+
+function displayMissions(vehicle) {
+  const auth = getAuth();
+  const playerId = auth.currentUser?.uid;
+
+  if (!playerId) {
+    console.warn("❌ Aucun utilisateur connecté !");
+    return;
+  }
+
+  const allTabs = ["missions-standard", "missions-role", "missions-special"];
+  allTabs.forEach(id => {
+    const container = document.getElementById(id);
+    if (container) container.innerHTML = "";
   });
 
-  async function initVehicles() {
-    const currentUser = auth.currentUser;
-    if (!currentUser) return;
+  const activeTabId = document.querySelector('.tab.active').dataset.tab;
+  const missionsList = document.getElementById(activeTabId);
 
-    const userRef = doc(db, "players", currentUser.uid);
-    const userSnap = await getDoc(userRef);
+  let filtered = missions.filter(m => m.type === activeTabId);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const vehicleName = userData.vehicle || "aucun";
-
-      if (vehicleName === "aucun") {
-        document.getElementById("vehicle-info").textContent = "Pas de véhicule équipé.";
-      } else {
-        const vehicleQuery = query(collection(db, "vehicles"),
-          where("owner", "==", currentUser.uid),
-          where("name", "==", vehicleName)
-        );
-        const querySnapshot = await getDocs(vehicleQuery);
-        if (!querySnapshot.empty) {
-          const vehicleData = querySnapshot.docs[0].data();
-          document.getElementById("vehicle-info").textContent = `Véhicule équipé : ${vehicleData.name}`;
-        }
+  // 🔍 Filtrage basé sur le rôle du joueur pour les missions qui le nécessitent
+  filtered = filtered.filter(m => {
+    if (m.roles && m.roles.length > 0) {
+      if (!playerRole) {
+        console.log(`❌ Mission "${m.titre}" ignorée car aucun rôle défini pour le joueur.`);
+        return false;
       }
+      const match = m.roles.includes(playerRole);
+      console.log(`🔎 Mission "${m.titre}" requiert rôle(s) ${m.roles.join(", ")}, joueur: ${playerRole} => ${match ? "✅ OK" : "❌ NON"}`);
+      return match;
     }
+    return true; // Aucune restriction de rôle => mission valide
+  });
+
+  filtered.forEach(m => {
+    const stats = calcMissionStats(m, vehicle);
+
+    const missionCard = document.createElement("div");
+    missionCard.className = "mission-card";
+    missionCard.innerHTML = `
+      <img src="${m.image || 'https://via.placeholder.com/150'}" alt="${m.titre}">
+      <div class="mission-info">
+        <h3>${m.titre}</h3>
+        <p>${m.description}</p>
+        <ul class="mission-details">
+          <li><strong>⏳ Durée :</strong> ${stats.duree} min</li>
+          <li><strong>⚠️ Risque :</strong> ${stats.risque} %</li>
+          <li><strong>💰 Récompense :</strong> ${m.recompense} crédits</li>
+          <li><strong>🔧 Usure :</strong> ${stats.usure} %</li>
+        </ul>
+      </div>
+    `;
+
+// 💡 Clic direct sur la carte entière pour ouvrir le popup
+missionCard.style.cursor = "pointer";
+missionCard.addEventListener("click", () => handleMissionPopup(playerId, m));
+
+missionsList.appendChild(missionCard);
+  });
+
+  if (!vehicle) {
+    console.warn("Aucun véhicule sélectionné pour afficher les missions !");
+  }
+}
+
+
+
+function setupMissionButtons(missions) {
+  const playerId = auth.currentUser?.uid;
+
+  if (!playerId) {
+    console.warn("❌ Aucun utilisateur connecté !");
+    return;
   }
 
-  function getSelectedVehicle() {
-    return vehicles.find(v => v.id === vehicleSelect.value) || vehicles[0];
+  missions.forEach((m, index) => {
+    const button = document.getElementById(`mission-button-${index}`);
+
+    if (button) {
+      button.addEventListener("click", () => handleMissionPopup(playerId, m));
+    }
+  });
+}
+async function handleMissionPopup(playerId, mission) {
+  const playerEquippedItems = await getEquippedInventory(playerId);
+  openMissionPopup(mission, playerEquippedItems);
+}
+
+
+async function openMissionPopup(mission) {
+ const popup = document.getElementById("mission-popup");
+  const equipContainer = popup.querySelector("#popup-equipements");
+  equipContainer.innerHTML = "";
+
+const playerId = localStorage.getItem("playerId") || auth.currentUser?.uid;
+
+  if (!playerId) {
+    console.error("❌ Aucun playerId trouvé dans le localStorage !");
+    equipContainer.innerHTML = "<p><em>Erreur : joueur non identifié.</em></p>";
+    return;
   }
 
-  function displayVehicleStats(vehicle) {
-    fuelEl.textContent = `${vehicle.fuel} litres`;
-    wearEl.textContent = `${vehicle.wear} %`;
+  const playerEquippedItems = await getEquippedInventory(playerId);
+
+const renderItemList = (items) => {
+  return items.map(item => {
+    if (!item || !item.id) return ''; // skip les items vides ou invalides
+
+    const attaque = item.stats?.attaque ?? "-";
+    const ammotype = item.stats?.ammotype ?? "-";
+    const image = item.image || "https://via.placeholder.com/32";
+
+    return `
+      <div class="equip-line" style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+        <img src="${image}" alt="${item.nom}" style="width: 32px; height: 32px; object-fit: contain;">
+        <div>
+          <strong>${item.nom}</strong><br>
+          ⚔️ Attaque : ${attaque} | 🧨 Munition : ${ammotype}
+        </div>
+      </div>
+    `;
+  }).join("");
+};
+
+
+  // 🧱 Injection du contenu HTML
+  const equipHTML = `
+    <h4>⚔️ Armes équipées :</h4>
+    ${renderItemList(playerEquippedItems.coffre_arme_equipee)}
+
+    <h4>🛡️ Armures équipées :</h4>
+    ${renderItemList(playerEquippedItems.coffre_armure_equipee)}
+
+    <h4>🎯 Munitions équipées :</h4>
+    ${renderItemList(playerEquippedItems.coffre_munitions_equipee)}
+
+    <h4>📡 Drones actifs :</h4>
+    ${renderItemList(playerEquippedItems.coffre_drones_equipee)}
+
+    <h4>🧬 Cybernétiques installés :</h4>
+    ${renderItemList(playerEquippedItems.coffre_cybernetiques_installees)}
+  `;
+
+  equipContainer.innerHTML = equipHTML;
+
+  // 🎯 Mise à jour du contenu mission
+  popup.querySelector("#popup-title").textContent = mission.titre;
+  popup.querySelector("#popup-image").src = mission.image || 'https://via.placeholder.com/150';
+
+  popup.style.display = "flex";
+  popup.addEventListener("click", closeOnOverlayClick);
+
+  // 🎮 Boutons
+  document.getElementById('cancel-mission').onclick = closeMissionPopup;
+  document.getElementById('confirm-mission').onclick = () => {
+    alert(`Mission acceptée : ${mission.titre}`);
+    closeMissionPopup();
+  };
+}
+
+
+function closeOnOverlayClick(event) {
+  // Ne ferme que si on clique *sur* l'overlay (le fond noir), pas sur le contenu
+  if (event.target.classList.contains("popup-overlay")) {
+    closeMissionPopup();
   }
+}
+
+function closeMissionPopup() {
+  const popup = document.getElementById("mission-popup");
+  popup.style.display = "none";
+  popup.removeEventListener("click", closeOnOverlayClick);
+}
 
   function calcMissionStats(mission, vehicle) {
     return {
-      duree: Math.round(mission.baseDuree * vehicle.modDuree),
-      risque: Math.round(mission.baseRisque * vehicle.modRisque),
-      usure: mission.usure
+    //  duree: Math.round(mission.baseDuree * vehicle.modDuree),
+    //  risque: Math.round(mission.baseRisque * vehicle.modRisque),
+    //  usure: mission.usure
     };
-  }
-
-  function displayMissions(vehicle) {
-    missionsList.innerHTML = "";
-
-    if (!playerRole) {
-      console.warn("Rôle joueur non défini, impossible d'afficher les missions !");
-      return;
-    }
-
-    const filtered = missions.filter(m => m.roles.includes(playerRole) && !m.special);
-
-    filtered.forEach(m => {
-      const stats = calcMissionStats(m, vehicle);
-      const missionCard = document.createElement("div");
-      missionCard.className = "mission-card";
-      missionCard.innerHTML = `
-        <img src="${m.image || 'https://via.placeholder.com/150'}" alt="${m.titre}">
-        <div class="mission-info">
-          <h3>${m.titre}</h3>
-          <p>${m.description}</p>
-          <ul class="mission-details">
-            <li><strong>⏳ Durée :</strong> ${stats.duree} min</li>
-            <li><strong>⚠️ Risque :</strong> ${stats.risque} %</li>
-            <li><strong>💰 Récompense :</strong> ${m.recompense} crédits</li>
-            <li><strong>🔧 Usure :</strong> ${stats.usure} %</li>
-          </ul>
-          <button onclick="alert('Mission acceptée : ${m.titre}')">Accepter</button>
-        </div>
-      `;
-      missionsList.appendChild(missionCard);
-    });
-  }
-
-  function displaySpecialMissions(vehicle) {
-    specialMissionsList.innerHTML = "";
-    const specials = missions.filter(m => m.special && m.roles.includes(playerRole));
-
-    specials.forEach(m => {
-      const stats = calcMissionStats(m, vehicle);
-      const cd = specialCooldowns[m.id] || 0;
-      const btnDisabled = cd > 0 ? "disabled" : "";
-      const btnText = cd > 0 ? `Débloquable dans ${cd}s` : "Accepter";
-
-      const specialDiv = document.createElement("div");
-      specialDiv.className = "special-mission";
-      specialDiv.innerHTML = `
-        <h3>${m.titre}</h3>
-        <p>${m.description}</p>
-        <ul>
-          <li>Durée : ${stats.duree} minutes</li>
-          <li>Risque : ${stats.risque} %</li>
-          <li>Récompense : ${m.recompense} crédits</li>
-          <li>Usure véhicule : ${stats.usure} %</li>
-        </ul>
-        <button ${btnDisabled} onclick="alert('Mission spéciale acceptée : ${m.titre}')">${btnText}</button>
-      `;
-      specialMissionsList.appendChild(specialDiv);
-    });
   }
 
   function updateTimer() {
@@ -507,6 +925,49 @@ setTimeout(() => {
       rotationTimer = 600;
     }
   }
+function setupTabs() {
+  document.querySelectorAll('.tab').forEach(button => {
+    button.addEventListener('click', () => {
+      document.querySelector('.tab.active').classList.remove('active');
+      button.classList.add('active');
+      displayMissions(getSelectedVehicle());  // mets bien ta fonction qui affiche les missions
+    });
+  });
+}
+
+
+  // -------------------------
+  // 🔧 Données véhicules
+  // -------------------------
+  let playerVehicles = [];
+
+  function getSelectedVehicle() {
+    const select = document.getElementById("vehicle-select");
+    const selectedId = select.value;
+    return playerVehicles.find(v => v.id === selectedId) || null;
+  }
+
+  function displayVehicleStats(vehicle) {
+    // Ton code ici pour afficher les stats du véhicule
+  }
+
+  function initVehicleSelector() {
+    const select = document.getElementById("vehicle-select");
+    select.innerHTML = "";
+
+    playerVehicles.forEach(vehicle => {
+      const option = document.createElement("option");
+      option.value = vehicle.id;
+      option.textContent = vehicle.nom;
+      select.appendChild(option);
+    });
+
+    select.addEventListener("change", () => {
+      const vehicle = getSelectedVehicle();
+      displayVehicleStats(vehicle);
+      renderMissions(vehicle); // Rafraîchit les missions avec le nouveau véhicule
+    });
+  }
 
   vehicleSelect.addEventListener("change", () => {
     const vehicle = getSelectedVehicle();
@@ -515,28 +976,37 @@ setTimeout(() => {
     displaySpecialMissions(vehicle);
   });
 
-  // Chargement des véhicules dès que le DOM est prêt
-document.addEventListener("DOMContentLoaded", () => {
-  vehicles.forEach(vehicle => {
-    const option = document.createElement("option");
-    option.value = vehicle.id;
-    option.textContent = vehicle.nom;
-    vehicleSelect.appendChild(option);
+
+
+
+
+
+
+
+
+
+
+
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Retire la classe active des onglets et contenus
+      tabs.forEach(t => t.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      // Active l'onglet cliqué et son contenu correspondant
+      tab.classList.add('active');
+      const selectedTab = tab.dataset.tab;
+      const contentToShow = document.getElementById(selectedTab);
+      if (contentToShow) {
+        contentToShow.classList.add('active');
+      } else {
+        console.warn(`⚠️ Contenu introuvable pour l'onglet : ${selectedTab}`);
+      }
+    });
   });
-
-
-});
-
-function renderMissions() {
-  if (!playerRole) {
-    console.warn("Impossible d'afficher les missions : rôle non encore défini.");
-    return;
-  }
-  const vehicle = getSelectedVehicle();
-  displayVehicleStats(vehicle);
-  displayMissions(vehicle);
-  displaySpecialMissions(vehicle);
-}
 </script>
 
 </body>

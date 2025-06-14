@@ -104,7 +104,7 @@ textarea {
     width: 100%;
     padding: 0.8rem;
     margin-top: 0.5rem;
-    background-color: #1a1a1a;
+      background: rgba(0, 0, 0, 0.7);
     color: #00ffff;
     border: 2px solid #ff00ff;
     border-radius: 8px;
@@ -136,310 +136,1762 @@ button:hover {
     background-color: #00fff7;
 }
 
-.item-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 12px;
-  padding: 10px;
-}
 
 .item {
-  background: #1f1f1f;
-  border: 1px solid #444;
-  border-radius: 8px;
-  padding: 10px;
-  text-align: center;
-  color: #fff;
-  cursor: pointer;
-  position: relative;
-}
-
-.item:hover::after {
-  content: attr(data-info);
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.9);
-  padding: 8px;
-  border-radius: 4px;
-  white-space: pre-wrap;
-  width: max-content;
-  max-width: 200px;
-  z-index: 10;
+         background: rgba(0, 0, 0, 0.7);
+            color:#ff00ff;
+            border: 2px solid #ff00ff;
+            padding: 1px 2px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            height: 325px;
+            width: 250px;
+              box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+             flex: 0 1 calc(25% - 1rem); 
+      
 }
 
 
+.item:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+
+        .item img {
+               width: 150px;
+  height: 150px;
+  margin: 10px 0;
+    border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */ 
+            border-radius: 8px;
+        }
+        
+        
+
+#btn-acheter {
+background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+}
+#btn-acheter:hover {
+       background-color: #ff00ff;
+            color: #000;
+}
+#btn-acheter:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
 
 
-.buy-btn {
-  margin-top: 5px;
-  background: #0a0;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.buy-btn:hover {
-  background: #0f0;
-}
-.item-card {
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 10px;
-  display: flex;
-  align-items: center;
-  background-color: #111;
-  color: #eee;
-  max-width: 400px;
-  box-shadow: 0 0 8px #ff00ff88;
-}
+     #btn-acheter:hover:after {
+       transform: scaleX(1);
+            transform-origin: bottom left;
+        }
 
-.icone-item {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
 
-.item-card .info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
 
-.modal {
+
+
+
+
+#popup-item {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+   background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 380px;
+   height: 600px;
+    animation: neonPulse 2.5s ease-in-out infinite;
+      display: none;
+      
 }
+#popup-content {
 
-.modal.hidden {
-  display: none;
-}
-
-.modal-content {
-  background-color: #1a1a1a;
   padding: 20px;
   border-radius: 10px;
-  max-width: 500px;
-  color: white;
-  position: relative;
+  text-align: center;
 }
 
-.close-btn {
+#popup-item img {
+  max-width: 120px;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 20px;
+   border: 2px solid #ff00ff;
+     border-radius: 8px;
+}
+
+
+
+.popup button {
+  margin: 10px 5px 0 0;
+          background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            
+}
+ .popup button:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .popup button:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .popup button:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
+  .container {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+   flex: 1;
+
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+
+    
+}
+
+  .container2 {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 10px;
+  padding: 15px;
+   flex: 1;
+height: 40px;
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  text-align: center;
+     justify-content: center; 
+       display: flex;
+  align-items: center; 
+  
+}
+  .container3 {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 10px;
+  padding: 15px;
+   flex: 1;
+height: 20px;
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  text-align: center;
+     justify-content: center; 
+       display: flex;
+  align-items: center; 
+  
+}
+
+    h1 {
+        text-align: center;
+       font-size: 1.2rem;
+        color: #ff00ff; /* rose néon */
+        
+        margin-bottom: 2rem;
+    }
+        h2 {
+        text-align: center;
+      font-size: 2.0rem;
+        color: #00ffff; 
+               text-shadow: 0 0 5px #00ffff;
+        
+        margin-bottom: 2rem;
+    }
+.rupture {
+  color: red;
+  font-weight: bold;
+}
+.item.epuise {
+   pointer-events: none; /* empêche le clic */
+  cursor: not-allowed;
+}
+
+
+.stock-timer {
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.stock-timer .countdown {
+  font-weight: bold;
+  color: #ff5555;
+}
+
+
+  .stock-timer-container {
+ background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 15px;
+   flex: 1;
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  color: #fff
+}
+
+
+
+.achat-feedback {
   position: absolute;
-  right: 15px;
   top: 10px;
-  cursor: pointer;
-  font-size: 20px;
+  left: 10px;
+  background: rgba(0, 200, 0, 0.85);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  z-index: 999;
+  animation: fadeOut 2s forwards;
 }
 
-.modal-content img {
-  width: 80px;
-  height: 80px;
-  float: left;
-  margin-right: 15px;
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.neon-frame {
+  border: 1px solid #00faff66;
+  box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
+}
+
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px #00faff,
+      0 0 12px #00faff,
+      0 0 20px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 2px #00faff,
+      0 0 4px #00faff,
+      0 0 6px #ff00ff,
+      0 0 8px #ff00ff;
+  }
+}
+.stock-list {
+
+  flex-wrap: wrap; /* Permet de passer à la ligne si trop d’éléments */
+  gap: 1rem; /* Espacement entre les items */
+  justify-content: flex-start; /* ou center, space-between, etc. */
+  align-items: flex-start;
+  padding: 1rem 0;
+    display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* responsive */
+  gap: 2rem;
+}
+
+        h3 {
+        text-align: center;
+      font-size: 1.2rem;
+        color: #00ffff; 
+               text-shadow: 0 0 5px #00ffff;
+        
+        margin-bottom: 1.2rem;
+    }
+
+        h4 {
+        text-align: center;
+      font-size: 1.2rem;
+        color: #ff00ff; 
+               text-shadow: 0 0 5px #ff00ff;
+        
+        margin-bottom: 1.2rem;
+    }
+
+.popup-vente {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+   background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 1000;
+  width: 380px;
+   height: 550px;
+    animation: neonPulse 2.5s ease-in-out infinite;
+      display: none;
+}
+
+
+.popup-vente.show {
+
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+
+}
+
+
+.popup-vente img {
+  max-width: 100px;
+  max-height: 100px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 20px;
+   border: 2px solid #ff00ff;
+     border-radius: 8px;
+}
+.item-card {
+           background: rgba(0, 0, 0, 0.8);
+            color:white;
+            border: 2px solid #ff00ff;
+            padding: 1px 2px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            height: 400px;
+            width: 250px;
+              box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+             flex: 0 1 calc(25% - 1rem); 
+              flex-wrap: wrap; /* Permet de passer à la ligne si trop d’éléments */
+
+      
+}
+     .item-card img {
+               width: 100px;
+  height: 100px;
+  margin: 10px 0;
+    border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */ 
+            border-radius: 8px;
+        }
+        .item-card:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        .item-card.epuise {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: not-allowed;
+  border: 2px solid red;
+  border-radius: 8px;
+  background-color:  #000;;
+}
+
+.items-container {
+ flex-wrap: wrap; /* Permet de passer à la ligne si trop d’éléments */
+  gap: 1rem; /* Espacement entre les items */
+  justify-content: flex-start; /* ou center, space-between, etc. */
+  align-items: flex-start;
+  padding: 1rem 0;
+    display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* responsive */
+  gap: 2rem;
+
+}
+
+#btn-annuler {
+   background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+}
+#btn-annuler:hover {
+                background-color: #ff00ff;
+            color: #000;
+}
+          #btn-annuler:after {
+                      content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+     #btn-annuler:hover:after {
+       transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+       
+   
+       .validerventebtn {
+   background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+}
+.validerventebtn:hover {
+             background-color: #ff00ff;
+            color: #000;
+              
+}
+         .validerventebtn:after {
+                 content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+               .validerventebtn:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+.achat-feedback {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.achat-feedback.visible {
+  opacity: 1;
 }
   </style>
 </head>
 <body>
 
-  <h1>Magasins – Wireless Override</h1>
+
 
   <div class="tabs">
     <button class="tab active" data-onglet="armes">Armes</button>
     <button class="tab" data-onglet="armures">Armures</button>
     <button class="tab" data-onglet="cyber">Cybernétiques</button>
-    <button class="tab" data-onglet="transport">Transport</button>
+       <button class="tab" data-onglet="ressources">Ressources</button>
+    <button class="tab" data-onglet="transport">Transports</button>
     <button class="tab" data-onglet="revendre">Revendre</button>
-    <button class="tab" data-onglet="marche">Marché</button>
+
   </div>
 
-<!-- 🛒 Magasin d'Armes -->
- 
+<!-- 🔫 Magasin d'Armes -->
 <div id="armes" class="tab-content active">
+  <div class="container2">
     <h2>Magasin d'Armes</h2>
-    <div class="stock-list item-grid" data-categorie="armes"></div>
- </div>
+  </div>
+
+  <form>
+    <label for="sous-categorie-armes"></label>
+    <select id="sous-categorie-armes" class="sous-categorie-select" data-categorie="armes">
+      <option value="">Toutes</option>
+      <option value="armes_feu">Armes à feu</option>
+      <option value="armes_lourdes">Armes lourdes</option>
+      <option value="armes_munitions">Munitions</option>
+      <option value="armes_munitions_lourdes">Munitions pour armes lourdes</option>
+      <option value="armes_melee">Armes de mélée</option>
+      <option value="armes_lancees">Armes de lancer</option>
+    </select>
+  </form>
+
+  <div id="armes" class="tab-content active"></div>
+  <div class="stock-timer" style="margin: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+  <div class="countdown-label" style="font-weight: bold; font-size: 1.2rem;">Chargement du timer...</div>
+  <div class="countdown" style="font-size: 2rem; margin-top: 8px;">--:--:--</div>
+</div>
+
+  <div id="conteneur-armes" class="stock-list" data-categorie="armes"></div>
+
+
+
+
+</div>
 
 <!-- 🛡️ Magasin d'Armures -->
 <div id="armures" class="tab-content">
-  <h2>Magasin d'Armures</h2>
-  <div class="stock-list" data-categorie="armures"></div>
+  <div class="container2">
+    <h2>Magasin d'Armures</h2>
+  </div>
+
+
+  <form>
+    <label for="sous-categorie-armures"></label>
+    <select id="sous-categorie-armures" class="sous-categorie-select" data-categorie="armures">
+      <option value="">Toutes</option>
+      <option value="armures_tete">Tête</option>
+      <option value="armures_torse">Torse</option>
+      <option value="armures_bras">Bras</option>
+      <option value="armures_jambes">Jambes</option>
+    </select>
+  </form>
+  <div id="armures" class="tab-content active"></div>
+  <div class="stock-timer" style="margin: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+  <div class="countdown-label" style="font-weight: bold; font-size: 1.2rem;">Chargement du timer...</div>
+  <div class="countdown" style="font-size: 2rem; margin-top: 8px;">--:--:--</div>
+</div>
+
+
+  <div id="conteneur-armures" class="stock-list" data-categorie="armures"></div>
 </div>
 
 <!-- 🧠 Cybernétiques -->
 <div id="cyber" class="tab-content">
-  <h2>Cybernétiques</h2>
-  <div class="stock-list" data-categorie="cyber"></div>
+  <div class="container2">
+    <h2>Cybernétiques</h2>
+  </div>
+
+  <form>
+    <label for="sous-categorie-cyber"></label>
+    <select id="sous-categorie-cyber" class="sous-categorie-select" data-categorie="cyber">
+      <option value="">Tous</option>
+      <option value="cyber_drones">Drones</option>
+      <option value="cyber_optique">Optiques cybernétiques</option>
+      <option value="cyber_neurals">Implants Neuronaux</option>
+      <option value="cyber_colonne">Colonne Vertébrale Cybernétique</option>
+      <option value="cyber_bras">Bras Bioniques</option>
+      <option value="cyber_jambes">Jambes Bioniques</option>
+         </select>
+  </form>
+
+  <div id="cyber" class="tab-content active"></div>
+  <div class="stock-timer" style="margin: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+  <div class="countdown-label" style="font-weight: bold; font-size: 1.2rem;">Chargement du timer...</div>
+  <div class="countdown" style="font-size: 2rem; margin-top: 8px;">--:--:--</div>
+</div>
+
+  <div id="conteneur-cyber" class="stock-list" data-categorie="cyber"></div>
+</div>
+
+<!-- 🌐 Ressources -->
+<div id="ressources" class="tab-content">
+  <div class="container2">
+    <h2>Ressources</h2>
+  </div>
+
+  <form>
+    <label for="sous-categorie-ressources"></label>
+    <select id="sous-categorie-ressources" class="sous-categorie-select" data-categorie="ressources">
+      <option value="">Toutes</option>
+      <option value="ressources_energie">Énergie</option>
+      <option value="ressources_bricabrac">Bric-à-brac</option>
+    </select>
+  </form>
+
+  <div id="ressources" class="tab-content active"></div>
+  <div class="stock-timer" style="margin: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+  <div class="countdown-label" style="font-weight: bold; font-size: 1.2rem;">Chargement du timer...</div>
+  <div class="countdown" style="font-size: 2rem; margin-top: 8px;">--:--:--</div>
+</div>
+
+  <div id="conteneur-ressources" class="stock-list" data-categorie="ressources"></div>
 </div>
 
 <!-- 🚗 Transport -->
 <div id="transport" class="tab-content">
-  <h2>Transport</h2>
-  <div class="stock-list" data-categorie="transport"></div>
+  <div class="container2">
+    <h2>Transports</h2>
+  </div>
+
+  <form>
+    <label for="sous-categorie-transport"></label>
+    <select id="sous-categorie-transport" class="sous-categorie-select" data-categorie="transport">
+      <option value="">Tous</option>
+      <option value="transport_voitures">Voitures</option>
+      <option value="transport_motos">Motos</option>
+      <option value="transport_camions">Camions</option>
+      <option value="transport_blindes">Blindés</option>
+      <option value="transport_helicos">Hélicoptères</option>
+    </select>
+  </form>
+
+  <div id="transport" class="tab-content active"></div>
+  <div class="stock-timer" style="margin: 20px; padding: 10px; background-color: rgba(0, 0, 0, 0.8); color: #fff; border: 1px solid #444; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">
+  <div class="countdown-label" style="font-weight: bold; font-size: 1.2rem;">Chargement du timer...</div>
+  <div class="countdown" style="font-size: 2rem; margin-top: 8px;">--:--:--</div>
 </div>
+
+  <div id="conteneur-transport"  class="stock-list" data-categorie="transport"></div>
+</div>
+
+
+
 
 <!-- ♻️ Revendre -->
+
 <div id="revendre" class="tab-content">
-  <h2>Revendre des Objets</h2>
-  <div class="stock-list" data-categorie="revente"></div>
-</div>
-
-<!-- 🌐 Marché des Joueurs -->
-<div id="marche" class="tab-content">
-  <h2>Marché des Joueurs</h2>
-  <div class="stock-list" data-categorie="marche"></div>
-</div>
-</div>
-
-
-<!-- 🕶️ Modal détaillé -->
-<div class="overlay hidden" id="overlay"></div>
-<div class="modal hidden" id="item-modal">
-  <div class="modal-content">
-    <span class="close-btn" id="modal-close">&times;</span>
-    <div id="modal-body">
-      <!-- Contenu dynamique : description détaillée, stats, munitions, etc. -->
-    </div>
-    <div class="modal-footer">
-      <button id="confirmer">Confirmer</button>
-      <button id="annuler">Annuler</button>
-    </div>
+  <div class="container2">
+    <h2>Revendre</h2>
   </div>
-</div>
+
+  <label for="categorie-select"></label>
+  <select id="categorie-select" onchange="chargerItems()">
+    <option value="">Veuillez choisir une catégorie</option>
+    <option value="coffre_armes">Armes</option>
+    <option value="coffre_munitions">Munitions</option>
+    <option value="coffre_armures">Armures</option>
+    <option value="coffre_cyber">Cybernétiques</option>
+       <option value="coffre_drones">Drones</option>
+     <option value="coffre_base">Ressources</option>
+    <option value="coffre_vehicules">Transports</option>
+  </select>
+
+  <div id="items-container" class="items-container"></div>
 
 
 
-<script>
 
-// ==============================
-// Fonction pour afficher le modal avec les détails d'un item
-// ==============================
-function showModal(item) {
-  const modal = document.getElementById('item-modal');
-  const overlay = document.getElementById('overlay');
-  const modalBody = document.getElementById('modal-body');
+  <!-- 🔁 Popup VENTE -->
+<div class="popup-vente">
+  <div class="popup-content" onclick="event.stopPropagation()">
+    <h2 id="popup-nom-revente">Objet</h2>
+    <p>Quantité à vendre : <span id="quantite-valeur-revente">1</span></p>
+    <input type="range" min="1" max="1" value="1" id="slider-revente" oninput="updateQuantiteRevente(this.value)">
+    <p>Crédits gagnés : <span id="gain-valeur-revente">0</span></p>
+    <button onclick="validerVente()" class="validerventebtn">Valider la vente</button>
+    <button onclick="fermerPopupRevente()" class="validerventebtn" id="btn-fermer-popup">Annuler</button>
+  </div>
+  </div>
+ </div>
 
-  modalBody.innerHTML = `
-    <h3>${item.nom}</h3>
-    <p><strong>Description :</strong> ${item.description}</p>
-    ${item.dégâts ? `<p><strong>Dégâts :</strong> ${item.dégâts}</p>` : ''}
-    ${item.précision ? `<p><strong>Précision :</strong> ${item.précision}%</p>` : ''}
-    ${item.munitions ? `<p><strong>Type de munitions :</strong> ${item.munitions}</p>` : ''}
-    ${item.rarete ? `<p><strong>Rareté :</strong> ${item.rarete}</p>` : ''}
-    ${item.valeur ? `<p><strong>Valeur :</strong> ${item.valeur} crédits</p>` : ''}
-  `;
 
-  modal.classList.remove('hidden');
-  overlay.classList.remove('hidden');
-}
 
-// ==============================
-// Fonction pour fermer le modal
-// ==============================
-function closeModal() {
-  document.getElementById('item-modal').classList.add('hidden');
-  document.getElementById('overlay').classList.add('hidden');
-}
 
-// ==============================
-// Écouteurs pour les éléments de fermeture du modal
-// ==============================
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('annuler').addEventListener('click', closeModal);
-document.getElementById('overlay').addEventListener('click', closeModal);
 
-// ==============================
-// Bouton de confirmation (achat)
-// ==============================
-document.getElementById('confirmer').addEventListener('click', () => {
-  console.log('Achat confirmé');
-  closeModal();
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, get, set, update, onValue, child } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteField, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // Configuration Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+     databaseURL: "https://wirelessoverride-default-rtdb.europe-west1.firebasedatabase.app/",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+  // Initialisation Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+  const firestore = getFirestore(app);
+const realtimeDB = getDatabase();
+   // ✅ ici la vraie initialisation Firestore
+// Initialisation Firebase
+  let currentCategorie = "";
+  let currentItemID = "";
+  let currentPrixUnitaire = 0;
+  let itemSelectionne = null;
+  let quantite = 1;
+  let itemMax = 1;
+  let itemPrix = 0;
+
+
+const mappingCategorieToCoffre = {
+  armes: "coffre_armes",
+  armures: "coffre_armures",
+  cyber: "coffre_cyber",
+  ressources: "coffre_base",
+  transport: "coffre_vehicules",
+  munitions: "coffre_munitions",
+   drones: "coffre_drones"
+};
+
+const sousCategories = {
+  armes: ["armes_feu","armes_lourdes", "armes_melee", "armes_munitions", "armes_munitions_lourdes","armes_lancees"],
+  armures: ["armures_tete", "armures_torse", "armures_bras", "armures_jambes"],
+  cyber: ["cyber_drones", "cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"],
+  ressources: ["ressources_energie", "ressources_bricabrac"],
+  transport: ["transport_voitures", "transport_motos", "transport_camions", "transport_blindes", "transport_helicos"],
+};
+
+const labels = {
+  armes_feu: "Armes à Feu",
+  armes_lourdes: "Armes lourdes",
+  armes_melee: "Armes de mélée",
+  armes_munitions: "Munitions",
+  armes_munitions_lourdes: "Munitions pour armes lourdes",
+  armes_lancees: "Armes de lancement",
+  armures_tete: "Tête",
+  armures_torse: "Torse",
+  armures_bras: "Bras",
+  armures_jambes: "Jambes",
+  cyber_drones: "Drones",
+  cyber_optique: "Optiques cybernétiques", 
+  cyber_neurals: "Implants Neuronaux",
+  cyber_colonne: "Colonne Vertébrale Cybernétique",
+  cyber_bras: "Bras Bioniques",
+  cyber_jambes: "Jambes Bioniques",
+  ressources_energie: "Énergie",
+  ressources_bricabrac: "Bric-à-brac",
+  transport_voitures: "Voitures",
+  transport_motos: "Motos",
+  transport_camions: "Camions",
+  transport_blindes: "Blindés",
+  transport_helicos: "Hélicoptères",
+};
+
+
+
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    currentUID = user.uid;
+    console.log("🔐 Utilisateur connecté :", currentUID);
+
+    // Sélecteurs de sous-catégorie
+    const selects = document.querySelectorAll(".sous-categorie-select");
+
+    selects.forEach(select => {
+      const categorie = select.dataset.categorie;
+
+      // Écoute le changement de sous-catégorie
+      select.addEventListener("change", () => {
+        const sousCategorie = select.value;
+        afficherItemsCategorie(categorie, sousCategorie);
+      });
+
+      // Affiche les items dès l'ouverture (par défaut "toutes" ou la valeur actuelle)
+      afficherItemsCategorie(categorie, select.value);
+      chargerItems(currentUID);
+    });
+  }
 });
 
-// ==============================
-// Gestion des clics sur les items
-// ==============================
-document.querySelectorAll('.stock-list').forEach(stockList => {
-  stockList.addEventListener('click', event => {
-    const itemElement = event.target.closest('.item');
-    if (!itemElement) return;
+// 🔁 Fonction pour charger dynamiquement les options d’un <select>
+function chargerSousCategories(selectElement, categorie) {
+  const chemin = `stock-list/${categorie}`;
+  const refSousCat = ref(db, chemin);
 
-    const itemId = itemElement.dataset.id;
-    const category = stockList.dataset.categorie;
-    const item = Items[category]?.[itemId];
-
-    if (item) {
-      showModal(item);
+  get(refSousCat).then(snapshot => {
+    if (!snapshot.exists()) {
+      selectElement.innerHTML = `<option value="${categorie}">Toutes</option>`;
+      afficherItemsCategorie(categorie); // afficher tous les items
+      return;
     }
+
+    const data = snapshot.val();
+    const sousCategories = Object.keys(data);
+
+    // Cas où il n’y a pas de sous-catégories, juste des items
+    const contientItemsDirectement = sousCategories.some(key => typeof data[key] === "object" && "nom" in data[key]);
+
+    if (contientItemsDirectement) {
+      selectElement.innerHTML = `<option value="${categorie}">Toutes</option>`;
+      afficherItemsCategorie(categorie); // afficher tous les items
+    } else {
+      // Ajoute chaque sous-catégorie
+      let options = `<option value="${categorie}">Toutes</option>`;
+      sousCategories.forEach(sousCat => {
+        options += `<option value="${sousCat}">${labels[sousCat] || sousCat}</option>`;
+      });
+      selectElement.innerHTML = options;
+
+      // On affiche les items de la première option
+      const defaultSousCat = selectElement.value;
+      afficherItemsCategorie(categorie, defaultSousCat);
+    }
+  }).catch(error => {
+    console.error(`Erreur lors du chargement des sous-catégories de ${categorie} :`, error);
+  });
+}
+
+
+
+// 🔒 Échappe les caractères HTML pour éviter les injections
+function escapeHtml(text) {
+  const map = {
+    '&': '&amp;', '<': '&lt;', '>': '&gt;',
+    '"': '&quot;', "'": '&#039;'
+  };
+  return text?.toString().replace(/[&<>"']/g, m => map[m]) || '';
+}
+
+// 🔁 Fonction principale de chargement et d'affichage
+
+
+
+async function afficherItemsCategorie(categorie, sousCategorie = "toutes") {
+  console.log(`🔍 Chargement des items - Catégorie : "${categorie}", Sous-catégorie : "${sousCategorie}"`);
+
+  const displayZone = document.querySelector(`.stock-list[data-categorie="${categorie}"]`);
+  if (!displayZone) {
+    console.warn(`⚠️ Zone d'affichage introuvable pour la catégorie : ${categorie}`);
+    return;
+  }
+
+  displayZone.innerHTML = `<p>Chargement des items...</p>`;
+
+  const db = getDatabase();
+  const chemin = `stock-list/${categorie}`;
+
+  try {
+    const snapshot = await get(ref(db, chemin));
+    if (!snapshot.exists()) {
+      displayZone.innerHTML = `<p>Aucun item trouvé.</p>`;
+      return;
+    }
+
+    const data = snapshot.val();
+    const items = [];
+
+    // 🔎 Filtrage des items selon la sous-catégorie sélectionnée
+    Object.entries(data).forEach(([id, item]) => {
+      const itemSousCat = item.sous_categorie || "";
+      if (
+        sousCategorie === "toutes" ||
+        !sousCategorie ||
+        itemSousCat === sousCategorie
+      ) {
+        items.push({ id, ...item });
+      }
+    });
+
+    if (items.length === 0) {
+      displayZone.innerHTML = `<p>Aucun item disponible dans cette sous-catégorie.</p>`;
+      return;
+    }
+
+    // 📦 Récupération des stocks pour chaque item
+    const stocks = await Promise.all(
+      items.map(item => getStockItem(categorie, item.id))
+    );
+
+    // 🧱 Construction du HTML des cartes
+    displayZone.innerHTML = items.map((item, index) => {
+      const stock = stocks[index] ?? 0;
+      const estEpuise = stock <= 0;
+      const classes = `item-card${estEpuise ? " epuise" : ""}`;
+      const nomClasse = estEpuise ? "rupture" : "";
+
+      return `
+        <div class="${classes}" data-item-id="${escapeHtml(item.id)}" style="pointer-events: ${estEpuise ? "none" : "auto"};">
+          ${item.image ? `<img src="${escapeHtml(item.image)}" alt="${escapeHtml(item.nom)}" />` : ""}
+          <h3 class="${nomClasse}">${escapeHtml(item.nom || "Objet sans nom")}</h3>
+          <p>${escapeHtml(item.description || "Pas de description.")}</p>
+          <p><strong>${escapeHtml(item.prix || 0)} crédits</strong></p>
+          <p><small>Stock restant : <strong>${stock}</strong></small></p>
+        </div>
+      `;
+    }).join('');
+
+    // 🖱️ Ajout des événements de clic (sauf pour les items épuisés)
+    const cartes = displayZone.querySelectorAll(".item-card:not(.epuise)");
+    cartes.forEach(carte => {
+      const itemId = carte.getAttribute("data-item-id");
+      const itemData = items.find(it => it.id === itemId);
+      carte.addEventListener("click", () => {
+        afficherPopupItem(itemData, itemId, categorie);
+      });
+    });
+
+    console.log(`✅ ${cartes.length} items affichés (sur ${items.length} au total).`);
+  } catch (error) {
+    console.error("❌ Erreur lors du chargement :", error);
+    displayZone.innerHTML = `<p>Erreur de chargement des items.</p>`;
+  }
+}
+
+
+let currentUID = null;
+
+async function afficherPopupItem(item, itemId, categorie) {
+  console.log("📦 afficherPopupItem appelé avec :", item, itemId, categorie);
+
+  const popup = document.getElementById("popup-item");
+  if (!popup) {
+    console.warn("⚠️ Popup introuvable dans le DOM !");
+    return;
+  }
+
+  const contenu = popup.querySelector(".popup-contenu");
+  if (!contenu) {
+    console.warn("⚠️ Élément .popup-contenu introuvable !");
+    return;
+  }
+
+  const prix = item.prix ?? 0;
+  const stock = item.stock ?? 0;
+
+  // Charge le solde du joueur via Firestore
+  await chargerCreditsViaFirestore();
+
+  // Injection du contenu HTML dans la popup
+  contenu.innerHTML = `
+    <img src="${escapeHtml(item.icone || item.image || 'images/default.png')}" alt="${escapeHtml(item.nom || 'Objet')}" />
+    <h3>${escapeHtml(item.nom || '')}</h3>
+    <p>${escapeHtml(item.description || '')}</p>
+    <p><strong>Prix unitaire :</strong> ${escapeHtml(prix)} crédits</p>
+    <p id="solde-joueur"><strong>Votre solde :</strong> ${joueurCredits ?? 0} crédits</p>
+    <p>Stock restant : <strong>${stock}</strong></p>
+
+    <label for="slider-achat">Quantité : <span id="quantite-valeur-achat">1</span></label>
+    <input type="range" id="slider-achat" min="1" max="${stock}" value="1" />
+
+    <p><strong>Prix total :</strong> <span id="prix-total-achat">${prix}</span> crédits</p>
+
+    <button id="btn-acheter">Acheter</button>
+    <button id="btn-annuler">Annuler</button>
+  `;
+
+  // Sélection des éléments HTML
+  const slider = contenu.querySelector("#slider-achat");
+  const quantiteValeur = contenu.querySelector("#quantite-valeur-achat");
+  const prixTotal = contenu.querySelector("#prix-total-achat");
+
+  // Gestion du slider de quantité
+  slider.addEventListener("input", (e) => {
+    const quantite = parseInt(e.target.value);
+    quantiteValeur.textContent = quantite;
+    prixTotal.textContent = quantite * prix;
+  });
+
+  // Clic sur le bouton "Acheter"
+  contenu.querySelector("#btn-acheter").addEventListener("click", async (e) => {
+    e.target.disabled = true;
+    const quantite = parseInt(slider.value);
+
+    await acheterItem(itemId, categorie, quantite);
+
+    await chargerCreditsViaFirestore();
+    afficherFeedbackAchat(categorie, item.nom);
+
+    // Mise à jour du solde dans la popup
+    const soldeElement = contenu.querySelector("#solde-joueur");
+    if (soldeElement) {
+      soldeElement.innerHTML = `<strong>Votre solde :</strong> ${joueurCredits ?? 0} crédits`;
+    }
+
+    // Mise à jour de la liste (si nécessaire)
+    afficherItemsCategorie(categorie);
+
+    fermerPopup();
+  });
+
+  // Clic sur le bouton "Annuler"
+  contenu.querySelector("#btn-annuler").addEventListener("click", () => {
+    console.log("❌ Clic sur Annuler");
+    fermerPopup();
+  });
+
+  // Clic en dehors de la popup => fermeture
+  if (popup._listenerClick) {
+    popup.removeEventListener("click", popup._listenerClick);
+  }
+
+  popup._listenerClick = (e) => {
+    if (!popup.querySelector(".popup-contenu").contains(e.target)) {
+      console.log("🧊 Clic en dehors du contenu => fermeture");
+      fermerPopup();
+    }
+  };
+
+  popup.addEventListener("click", popup._listenerClick);
+
+  // Affiche la popup
+  popup.style.display = "block";
+  document.body.classList.add("popup-active");
+  console.log("✅ Popup affichée");
+}
+
+// 🔁 Mise à jour des items lors du changement de sous-catégorie
+document.querySelectorAll(".sous-categorie-select").forEach(select => {
+  select.addEventListener("change", e => {
+    const categorie = e.target.dataset.categorie;
+    const sousCategorie = e.target.value;
+    afficherItemsCategorie(categorie, sousCategorie);
   });
 });
 
-// ==============================
-// Initialisation
-// ==============================
 
-</script>
-  <script>
+function fermerPopup() {
+  const popup = document.getElementById("popup-item");
+  if (popup) {
+    popup.style.display = "none";
+    document.body.classList.remove("popup-active");
+    console.log("🧹 Popup fermée");
+  }
+}
 
- const buttons = document.querySelectorAll('.tab');
-    const tabs = document.querySelectorAll('.tab-content');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        tabs.forEach(tab => tab.classList.remove('active'));
-
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
-      
-      })
-      });
+window.afficherPopupItem = afficherPopupItem;
 
 
-     </script>
-     
-  <script type="module">
-  import Items, { getItem } from './items.js';
-
-  function afficherItems() {
-    Object.entries(Items).forEach(([categorie, items]) => {
-      const container = document.querySelector(`.stock-list[data-categorie="${categorie}"]`);
-      if (!container) return;
-
-      container.innerHTML = ''; // Vide le contenu existant
-
-      Object.entries(items).forEach(([id, item]) => {
-        const itemDiv = document.createElement('div');
-        itemDiv.classList.add('item');
-        itemDiv.dataset.id = id;
-        itemDiv.innerHTML = `
-          <div class="item-card">
-            <img class="icone-item" src="${item.icon}" alt="${item.nom}">
-            <div class="info">
-              <strong>${item.nom}</strong>
-              <span>${item.prix} ₵</span>
-              <button class="buy-btn">Acheter</button>
-            </div>
-          </div>
-        `;
-        container.appendChild(itemDiv);
-      });
-    });
+  // Fonction d’achat (placeholder pour le moment)
+async function acheterItem(itemId, categorie, quantite = 1) {
+  console.log(`Achat de ${quantite} x item ${itemId} dans catégorie ${categorie}`);
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Non connecté");
+    return;
   }
 
-  afficherItems();
+  const uid = user.uid;
+  const playerDoc = doc(firestore, "players", uid);
+
+  const coffres = {
+    ressources: { nom: "coffre_base", max: 7 },
+    armes: { nom: "coffre_armes", max: 4 },
+    armures: { nom: "coffre_armures", max: 4 },
+    cyber: { nom: "coffre_cyber", max: 7 },
+    transport: { nom: "coffre_vehicules", max: 3 },
+    munitions: { nom: "coffre_munitions", max: 3 },
+    drones: { nom: "coffre_drones", max: 2 }
+  };
+
+  const coffreInfo = coffres[categorie];
+  if (!coffreInfo) {
+    alert("❌ Catégorie inconnue");
+    return;
+  }
+
+  try {
+    const docSnap = await getDoc(playerDoc);
+    const data = docSnap.exists() ? docSnap.data() : {};
+    let solde = data.solde ?? 9999;
+
+    // Récupération item magasin
+    const itemRef = ref(db, `stock-list/${categorie}/${itemId}`);
+    const itemSnap = await get(itemRef);
+    if (!itemSnap.exists()) {
+      alert("❌ Item introuvable");
+      return;
+    }
+
+    const fetchedItem = itemSnap.val();
+    const sousCategorie = fetchedItem.sous_categorie;
+
+    // Choix coffre selon sous-catégorie
+    let coffreNom = coffreInfo.nom;
+    let coffreMax = coffreInfo.max;
+
+    if (["armes_munitions", "armes_munitions_lourdes"].includes(sousCategorie)) {
+      coffreNom = "coffre_munitions";
+      coffreMax = coffres.munitions.max;
+    } else if (sousCategorie === "cyber_drones") {
+      coffreNom = "coffre_drones";
+      coffreMax = coffres.drones.max;
+    }
+
+    let coffre = data[coffreNom] ?? {};
+
+    if ((fetchedItem.stock ?? 0) < quantite) {
+      alert("❌ Stock insuffisant");
+      return;
+    }
+    if (solde < (fetchedItem.prix ?? 0) * quantite) {
+      alert("❌ Pas assez de crédits");
+      return;
+    }
+
+    const estStockable = fetchedItem.estStockable ?? false;
+    const stockageLimites = fetchedItem.stockage ?? {};
+    const limiteDansCeCoffre = stockageLimites[coffreNom] ?? null;
+
+    // Base item pour ajout dans coffre
+    const baseItem = {
+    id: itemId,
+  nom: fetchedItem.nom ?? "Objet inconnu",
+  image: fetchedItem.image ?? null,
+  prix: fetchedItem.prix ?? 0,
+  rarete: fetchedItem.rarete ?? null,
+  type: fetchedItem.type ?? null,
+  description: fetchedItem.description ?? null,
+  estStockable: estStockable,
+  stockage: stockageLimites,
+  sous_categorie: fetchedItem.sous_categorie ?? null,
+  stats: fetchedItem.stats ?? null,
+  quantite: 1 // à ajuster selon le contexte
+    };
+
+    let slotTrouve = null;
+    let dejaLa = false;
+
+    // 1) Recherche slot contenant item identique (pour stacker si possible)
+    for (let i = 0; i < coffreMax; i++) {
+      const slot = `slot${i}`;
+      const contenu = coffre[slot];
+
+      if (contenu?.id === itemId && estStockable) {
+        slotTrouve = slot;
+        dejaLa = true;
+        break;
+      }
+
+      // Sinon repérer premier slot vide possible
+      if (!contenu && slotTrouve === null) {
+        slotTrouve = slot;
+      }
+    }
+
+    // 2) Si pas déjà là et plus de place -> alerte
+    if (!dejaLa) {
+      const slotsUtilises = Object.values(coffre).filter(obj => obj && typeof obj === "object").length;
+      if (slotsUtilises >= coffreMax) {
+        alert(`❌ Vous ne pouvez pas posséder plus de ${coffreMax} types d’${categorie}.`);
+        return;
+      }
+    }
+
+    // 3) Calcul solde restant après achat
+    solde -= (fetchedItem.prix ?? 0) * quantite;
+    const majData = { solde };
+
+    // 4) Si stackable et item déjà dans un slot -> ajouter quantité en respectant limite
+    if (dejaLa && estStockable) {
+      const quantiteActuelle = coffre[slotTrouve].quantite ?? 0;
+      const nouvelleQuantite = quantiteActuelle + quantite;
+
+      if (limiteDansCeCoffre !== null && nouvelleQuantite > limiteDansCeCoffre) {
+        alert(`❌ Limite de stockage (${limiteDansCeCoffre}) atteinte pour cet item.`);
+        return;
+      }
+
+      majData[coffreNom] = {
+        ...coffre,
+        [slotTrouve]: {
+          ...coffre[slotTrouve],
+          quantite: nouvelleQuantite
+        }
+      };
+
+    } else if (!estStockable) {
+      // 5) Si NON stackable, chaque item occupe un slot : on doit créer autant de slots que quantité
+      // Vérifier si assez de slots libres :
+      const slotsLibres = [];
+      for (let i = 0; i < coffreMax; i++) {
+        const slot = `slot${i}`;
+        if (!coffre[slot]) slotsLibres.push(slot);
+      }
+      if (slotsLibres.length < quantite) {
+        alert(`❌ Pas assez de place dans le coffre pour ${quantite} items non stackables.`);
+        return;
+      }
+
+      // Construire nouvel objet coffre avec ajout de chaque item dans un slot libre
+      const nouveauCoffre = { ...coffre };
+      for (let j = 0; j < quantite; j++) {
+        const slotAjout = slotsLibres[j];
+        nouveauCoffre[slotAjout] = {
+          ...baseItem,
+          quantite: 1 // toujours 1 car non stackable
+        };
+      }
+
+      majData[coffreNom] = nouveauCoffre;
+
+    } else {
+      // 6) Item stackable mais pas encore en coffre -> on ajoute en un slot
+      if (limiteDansCeCoffre !== null && quantite > limiteDansCeCoffre) {
+        alert(`❌ Limite de stockage (${limiteDansCeCoffre}) atteinte pour cet item.`);
+        return;
+      }
+
+      majData[coffreNom] = {
+        ...coffre,
+        [slotTrouve]: {
+          ...baseItem,
+          quantite: quantite
+        }
+      };
+    }
+
+    // 7) Mise à jour Firestore
+    await setDoc(playerDoc, majData, { merge: true });
+
+    // 8) Mise à jour stock magasin
+    const stockRestant = Math.max((fetchedItem.stock ?? 1) - quantite, 0);
+    await update(itemRef, { stock: stockRestant });
+
+    afficherItemsCategorie(categorie);
+
+  } catch (e) {
+    console.error("❌ Erreur pendant l'achat :", { e, itemId, categorie, uid });
+    alert("Erreur pendant l'achat.");
+  }
+}
+
+async function getStockItem(categorie, itemId) {
+  const itemRef = ref(db, `stock-list/${categorie}/${itemId}`);
+  const snapshot = await get(itemRef);
+  if (!snapshot.exists()) return 0;
+  const data = snapshot.val();
+  return data.stock ?? 0;
+}
+
+
+
+function afficherFeedbackAchat(categorie, nomItem) {
+  const container = document.querySelector(`.stock-list[data-categorie="${categorie}"]`);
+  if (!container) return;
+
+  // Supprime feedbacks précédents pour éviter accumulation
+  const anciens = container.querySelectorAll(".achat-feedback");
+  anciens.forEach(el => el.remove());
+
+  const feedback = document.createElement("div");
+  feedback.className = "achat-feedback";
+  feedback.innerText = `✅ ${nomItem} acheté !`;
+
+  container.appendChild(feedback);
+
+  // Forcer un reflow pour déclencher la transition CSS
+  void feedback.offsetWidth;
+
+  feedback.classList.add("visible");
+
+  setTimeout(() => {
+    feedback.classList.remove("visible");
+    setTimeout(() => feedback.remove(), 300); // temps du fade out
+  }, 2000);
+}
+
+
+
+
+function getImagePath(nomImage) {
+  const chemin = nomImage?.startsWith("http")
+    ? nomImage
+    : `images/assets/${nomImage}`;
+
+  // Optionnel — retour fallback si image ne charge pas
+  const img = new Image();
+  img.src = chemin;
+  img.onerror = () => {
+    img.src = "images/default.png";
+  };
+
+  return chemin;
+}
+
+
+
+//argent joueur
+let joueurCredits = 0;
+
+// 🔄 Charger le crédit du joueur
+async function chargerCreditsViaFirestore() {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const userRef = doc(firestore, "players", user.uid);
+  const snap = await getDoc(userRef);
+
+  if (snap.exists()) {
+    const data = snap.data();
+    joueurCredits = data.solde || 0;
+    console.log("💰 Crédit joueur (Firestore) :", joueurCredits ?? "inconnu");
+    mettreAJourAffichageCredits();
+  } else {
+    joueurCredits = 0;
+    console.warn("❌ Utilisateur sans données dans Firestore");
+    mettreAJourAffichageCredits();
+  }
+}
+
+// Fonction pour ouvrir le pop-up avec les informations de l'item
+
+
+
+// 🔁 Mise à jour de l'affichage dans l'UI
+function mettreAJourAffichageCredits() {
+  const creditElement = document.querySelector('#credit-affiche');
+  if (creditElement) {
+    creditElement.textContent = joueurCredits + " crédits";
+
+    // 💥 Ajout de l'effet visuel "pulse"
+    creditElement.classList.add("neonPulse");
+    setTimeout(() => creditElement.classList.remove("neonPulse"), 500);
+  }
+}
+
+
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const onglet = tab.dataset.onglet;
+
+    // Retirer active sur tous les onglets et contenus
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+
+    // Ajouter active sur l'onglet cliqué
+    tab.classList.add("active");
+    document.getElementById(onglet).classList.add("active");
+  });
+});
+
+function clearActiveTabs() {
+  buttons.forEach(b => b.classList.remove('active'));
+  tabs   .forEach(t => t.classList.remove('active'));
+}
+
+
+
+
+
+// Appelle une fois pour charger la catégorie par défaut au démarrage
+const coffres = {
+  ressources: { nom: "coffre_base", max: 7 },
+  armes: { nom: "coffre_armes", max: 4 },
+  armures: { nom: "coffre_armures", max: 4 },
+  cyber: { nom: "coffre_cyber", max: 7 },
+  transport: { nom: "coffre_vehicules", max: 3 },
+  munitions: { nom:"coffre_munitions", max: 3}  ,
+  drones: { nom:"coffre_drones", max: 2}
+};
+
+
+
+
+async function chargerItems() {
+  const playerID = currentUID; 
+  const select = document.getElementById("categorie-select");
+  const coffreNom = select.value;
+  const container = document.getElementById("items-container");
+
+  console.log("🔎 Chargement des items pour :", playerID);
+  console.log("📦 Coffre sélectionné :", coffreNom);
+
+  container.innerHTML = "<p>Chargement...</p>";
+
+  if (!coffreNom) {
+    container.innerHTML = "<p>Veuillez choisir une catégorie.</p>";
+    return;
+  }
+
+  try {
+    // Récupère le document complet du joueur
+    const docRef = doc(firestore, "players", playerID);
+    const snapshot = await getDoc(docRef);
+
+    if (!snapshot.exists()) {
+      console.log("📭 Document joueur introuvable :", playerID);
+      container.innerHTML = "<p>Impossible de charger l'inventaire.</p>";
+      return;
+    }
+
+    const data = snapshot.data();
+    const coffre = data[coffreNom]; // Ex: data["coffre_armes"]
+
+    if (!coffre || Object.keys(coffre).length === 0) {
+      console.log("📭 Coffre vide :", coffreNom);
+      container.innerHTML = "<p>Aucun objet dans ce coffre.</p>";
+      return;
+    }
+
+    container.innerHTML = "";
+
+    Object.entries(coffre).forEach(([slot, item]) => {
+      if (!item || item.quantite <= 0) return;
+
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "item-card";
+      itemDiv.innerHTML = `
+        <img src="${item.icone || item.image}" alt="${item.nom}" />
+        <h3>${item.nom}</h3>
+        
+        <p>Quantité : ${item.quantite}</p>
+        <p>Type : ${coffreNom.replace("coffre_", "")}</p>
+      `;
+
+      itemDiv.addEventListener("click", () => {
+        ouvrirPopupRevente(item.nom, item.id, slot, item.prix, item.quantite, coffreNom.replace("coffre_", ""));
+      });
+
+      container.appendChild(itemDiv);
+    });
+
+  } catch (error) {
+    console.error("🔥 Erreur Firestore :", error);
+    container.innerHTML = "<p>Erreur lors du chargement des objets.</p>";
+  }
+}
+
+
+window.chargerItems = chargerItems;
+
+(() => {
+
+
+function ouvrirPopupRevente(nom, id, slot, prix, max, categorie) {
+  console.log("Tentative d'ouverture popup pour l'item :", id);
+  
+  currentItemID = id;
+  currentCategorie = categorie;
+  currentPrixUnitaire = prix;
+  itemMax = max;
+  quantite = 1;
+
+  document.getElementById("popup-nom-revente").textContent = nom;
+  document.getElementById("quantite-valeur-revente").textContent = quantite;
+  document.getElementById("slider-revente").max = itemMax;
+  document.getElementById("slider-revente").value = quantite;
+
+  const gain = Math.floor(quantite * currentPrixUnitaire * 0.7);
+  document.getElementById("gain-valeur-revente").textContent = gain;
+
+  document.querySelector(".popup-vente").style.display = "block";
+}
+
+window.ouvrirPopupRevente = ouvrirPopupRevente;
+window.validerVente = validerVente;
+
+
+
+let currentItemID = null;
+let currentCategorie = "";
+let currentPrixUnitaire = 0;
+let itemMax = 0;
+let quantite = 1;
+
+const coffres = {
+  armes: { nom: "coffre_armes" },
+  armures: { nom: "coffre_armures" },
+  cyber: { nom: "coffre_cyber" },
+  ressources: { nom: "coffre_ressources" },
+  transports: { nom: "coffre_vehicules" },
+  base: { nom: "coffre_base" },
+  safe: { nom: "coffre_safe" },
+   munitions: { nom:"coffre_munitions"},
+   drones: { nom:"coffre_drones"}
+};
+
+async function validerVente() {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Utilisateur non connecté !");
+    return;
+  }
+
+  const uid = user.uid;
+  const quantiteVendue = parseInt(document.getElementById("slider-revente").value);
+  if (isNaN(quantiteVendue) || quantiteVendue <= 0) {
+    alert("Quantité invalide !");
+    return;
+  }
+
+  try {
+    console.log("🧠 currentItemID :", currentItemID);
+    console.log("📦 currentCategorie :", currentCategorie);
+
+    // 1. 🔥 Récupération des données joueur
+    const playerRef = doc(firestore, "players", uid);
+    const playerSnap = await getDoc(playerRef);
+    if (!playerSnap.exists()) throw new Error("Joueur introuvable");
+
+    const data = playerSnap.data();
+    console.log("📦 Données joueur :", data);
+
+    // 2. 🔐 Vérifie la catégorie
+    if (!coffres[currentCategorie]) {
+      alert("Catégorie inconnue : " + currentCategorie);
+      return;
+    }
+
+    const coffreNom = coffres[currentCategorie].nom;
+    const coffre = data[coffreNom];
+    console.log("📁 Coffre sélectionné :", coffreNom, coffre);
+
+if (!coffre || typeof coffre !== 'object') {
+  alert("Coffre vide ou invalide !");
+  return;
+}
+
+let slotTrouve = null;
+for (const [slot, item] of Object.entries(coffre)) {
+  if (!item) continue;
+  if (item.id === currentItemID) {
+    slotTrouve = slot;
+    break;
+  }
+}
+
+if (slotTrouve === null) {
+  alert("Item introuvable dans votre inventaire !");
+  console.warn("❌ Aucun item avec l'id", currentItemID, "dans", coffreNom);
+  return;
+}
+
+    // 4. ✂️ Maj quantité ou suppression
+const newQuantite = coffre[slotTrouve].quantite - quantiteVendue;
+if (newQuantite <= 0) {
+  delete coffre[slotTrouve];
+} else {
+  coffre[slotTrouve].quantite = newQuantite;
+}
+
+    // 5. ✅ Mise à jour dans Firestore
+    await updateDoc(playerRef, { [coffreNom]: coffre });
+    console.log("📤 Coffre mis à jour dans Firestore");
+
+    // 6. 💾 Mise à jour dans Realtime DB (stock magasin)
+    
+const itemPath = `stock-list/${currentCategorie}/${currentItemID}`;
+const itemRef = ref(realtimeDB, itemPath);
+const itemSnap = await get(itemRef);
+const ancienneQuantite = itemSnap.exists() ? itemSnap.val().stock || 0 : 0;
+const nouvelleQuantite = ancienneQuantite + quantiteVendue;
+
+console.log("💾 Mise à jour de RealtimeDB à :", itemPath, "→", {
+  stock: nouvelleQuantite,
+  prix: currentPrixUnitaire
+});
+
+await update(itemRef, {
+  stock: nouvelleQuantite,
+  prix: currentPrixUnitaire
+});
+
+    console.log("📊 Mise à jour Realtime DB :", itemPath, "->", nouvelleQuantite, "au prix de", currentPrixUnitaire);
+
+    alert("Vente effectuée !");
+    fermerPopupRevente();
+    chargerItems();
+
+  } catch (error) {
+    console.error("🚨 Erreur durant la vente :", error);
+    alert("Erreur pendant la vente.");
+  }
+}
+
+function updateQuantiteRevente(valeur) {
+  quantite = parseInt(valeur);
+  document.getElementById("quantite-valeur-revente").textContent = quantite;
+
+  const gain = Math.floor(quantite * currentPrixUnitaire * 0.7);
+  document.getElementById("gain-valeur-revente").textContent = gain;
+}
+
+window.updateQuantiteRevente = updateQuantiteRevente;
+
+
+
+
+function fermerPopupRevente() {
+  document.querySelector(".popup-vente").style.display = "none";
+  currentItemID = null;
+  currentCategorie = null;
+  currentPrixUnitaire = null;
+  itemMax = 1;
+  quantite = 1;
+}
+window.fermerPopupRevente = fermerPopupRevente;
+
+// 👇 Ajoute ceci juste après, toujours dans le même bloc principal
+document.addEventListener("click", function (event) {
+  const popup = document.querySelector(".popup-vente");
+  const content = document.querySelector(".popup-content");
+
+  if (
+    popup.classList.contains("show") &&
+    !content.contains(event.target) &&
+  
+    !event.target.closest("[data-ignore-popup-close]")
+    
+  ) {
+     
+    fermerPopupRevente();
+  }
+});
+
+})(); // ← C'était cette parenthèse + accolade finale qui manquait
+
+       
+
+async function demarrerCountdownReset() {
+  const resetRef = ref(db, "stockReset/lastReset");
+  const snapshot = await get(resetRef);
+
+  if (!snapshot.exists()) {
+    console.error("⛔ Aucun lastReset trouvé dans stockReset !");
+    return;
+  }
+
+  const lastReset = snapshot.val();
+  console.log("⏲️ Last reset timestamp:", lastReset);
+  const countdownElements = document.querySelectorAll('.stock-timer .countdown');
+  const labelElements = document.querySelectorAll('.stock-timer .countdown-label');
+
+
+
+console.warn("⛔ Pas d'éléments countdown trouvés !")
+  if (!countdownElements.length || !labelElements.length) return;
+
+  labelElements.forEach(el => el.textContent = "⏳ Prochain réapprovisionnement dans :");
+
+  let resetEffectue = false;
+
+  function updateCountdown() {
+    const now = Date.now();
+    const prochainReset = lastReset + 3 * 24 * 60 * 60 * 1000;
+    const diff = prochainReset - now;
+
+    let timeStr = "00:00:00";
+
+    if (diff > 0) {
+      const heures = Math.floor(diff / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+      const format = n => n.toString().padStart(2, "0");
+      timeStr = `${format(heures)}:${format(minutes)}:${format(secondes)}`;
+    } else if (!resetEffectue) {
+      resetEffectue = true;
+      effectuerResetStock();
+    }
+
+    countdownElements.forEach(el => el.textContent = timeStr);
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  demarrerCountdownReset();
+});
+
+ async function effectuerResetStock() {
+  const db = getDatabase();
+  const stockRef = ref(db, "stock-list");
+
+  try {
+    const snapshot = await get(stockRef);
+    if (!snapshot.exists()) {
+      console.warn("Aucun stock à réinitialiser.");
+      return;
+    }
+
+    const updates = {};
+    const stockData = snapshot.val();
+
+    for (const categorie in stockData) {
+      const items = stockData[categorie];
+
+      for (const itemID in items) {
+        const item = items[itemID];
+        if (item.stockMax !== undefined) {
+          updates[`stock-list/${categorie}/${itemID}/stock`] = item.stockMax;
+          console.log(`🔄 ${itemID} (${categorie}) → stockMax: ${item.stockMax}`);
+        }
+      }
+    }
+
+    console.log("Mise à jour en cours :", updates);
+
+    await update(ref(db), updates);
+
+    await set(ref(db, "stockReset/lastReset"), Date.now());
+
+    console.log("✅ Stock réinitialisé !");
+  } catch (error) {
+    console.error("❌ Erreur lors du reset du stock :", error);
+  }
+}
+
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = prochainReset - now;
+
+  let timeStr;
+  if (diff <= 0) {
+    timeStr = "00:00:00";
+
+    // Déclenche le reset une seule fois
+    if (!resetEffectue) {
+      resetEffectue = true;
+      effectuerResetStock(); // Tu dois avoir cette fonction quelque part dans un <script type="module">
+    }
+
+  } else {
+    const heures = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const format = n => n.toString().padStart(2, "0");
+    timeStr = `${format(heures)}:${format(minutes)}:${format(secondes)}`;
+  }
+
+  countdownElements.forEach(el => el.textContent = timeStr);
+}
+
+
+
 </script>
 </body>
+
+
+ <div id="popup-item" style="display: none">
+    <div class="popup-contenu"></div>
+  </div>
 </html>

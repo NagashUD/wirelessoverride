@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Fusion Items</title>
+  <style>
+    .slot {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #aaa;
+      display: inline-block;
+      margin: 10px;
+      vertical-align: top;
+      text-align: center;
+      font-family: sans-serif;
+      padding: 10px;
+    }
+    .item {
+      width: 100px;
+      height: 100px;
+      background-color: #eee;
+      border: 1px solid #999;
+      cursor: grab;
+      user-select: none;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Test de Fusion Items</h2>
+
+<div class="slot" id="slot-0" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <div class="item" id="item-apple" draggable="true" ondragstart="drag(event)"
+       data-id="apple" data-quantity="5" data-max="20">
+    🍎 Pomme x5
+  </div>
+</div>
+
+<div class="slot" id="slot-1" ondrop="drop(event)" ondragover="allowDrop(event)">
+  <div class="item" id="item-apple-2" draggable="true" ondragstart="drag(event)"
+       data-id="apple" data-quantity="10" data-max="20">
+    🍎 Pomme x10
+  </div>
+</div>
+
+<script>
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function drag(event) {
+  event.dataTransfer.setData("text/plain", event.target.id);
+}
+
+function drop(event) {
+  event.preventDefault();
+  const draggedId = event.dataTransfer.getData("text/plain");
+  const draggedEl = document.getElementById(draggedId);
+  const dropZone = event.currentTarget;
+
+  const existingItem = dropZone.querySelector(".item");
+  if (!existingItem) {
+    dropZone.appendChild(draggedEl);
+    return;
+  }
+
+  const draggedItemId = draggedEl.dataset.id;
+  const existingItemId = existingItem.dataset.id;
+
+  if (draggedItemId === existingItemId) {
+    const draggedQty = parseInt(draggedEl.dataset.quantity);
+    const existingQty = parseInt(existingItem.dataset.quantity);
+    const maxQty = parseInt(existingItem.dataset.max);
+
+    const totalQty = draggedQty + existingQty;
+
+    if (totalQty <= maxQty) {
+      existingItem.dataset.quantity = totalQty;
+      existingItem.textContent = `🍎 Pomme x${totalQty}`;
+      draggedEl.remove();
+    } else {
+      const remaining = maxQty - existingQty;
+      if (remaining > 0) {
+        existingItem.dataset.quantity = maxQty;
+        existingItem.textContent = `🍎 Pomme x${maxQty}`;
+        draggedEl.dataset.quantity = draggedQty - remaining;
+        draggedEl.textContent = `🍎 Pomme x${draggedEl.dataset.quantity}`;
+      }
+    }
+  } else {
+    // échange
+    dropZone.appendChild(draggedEl);
+  }
+}
+</script>
+
+</body>
+</html>

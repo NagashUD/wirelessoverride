@@ -446,14 +446,18 @@ body::before {
     const characterName = document.getElementById("character-name").value.trim();
     const coffre_safe = [null, null, null]; // pour équipement sécurisé
     const coffre_base = [null, null, null, null, null, null, null]; // équipement généra
-    const coffre_safe_cyber = [null, null, null]; // 3 places sécurisées
-    const coffre_cyber = [null, null, null, null, null, null, null];
-const coffre_armures = [null, null, null, null];
+    const coffre_safe_cyber = [null, null, null]; 
+    const coffre_cyber = [null, null, null, null, null];
+const coffre_armures = [null, null, null, null, null];
 const coffre_armes = [null, null, null, null];
-const arme_equipee = [null, null];
-const armure_equipee = [null, null];
-const cybernetiques_installees = [null, null, null, null];
+const coffre_arme_equipee = [null, null];
+const coffre_armure_equipee = [null, null, null, null];
+const coffre_cybernetiques_installees = [null, null, null, null];
 const coffre_vehicules = [null, null, null];
+const coffre_munitions = [null, null, null, null];
+const coffre_munitions_equipee = [null, null];
+const coffre_drones = [null, null, null];
+const coffre_drones_equipee = [null];
 
     if (characterName === "") {
       alert("Le nom de votre personnage ne peut pas être vide.");
@@ -464,7 +468,7 @@ const coffre_vehicules = [null, null, null];
       alert("Le nom ne peut contenir que des lettres, chiffres et espaces.");
       return;
     }
-
+  
 
     
 
@@ -472,7 +476,8 @@ const coffre_vehicules = [null, null, null];
 const currentUser = auth.currentUser;
 if (currentUser) {
   const userRef = doc(db, "players", currentUser.uid);
-   const etatInitial = {
+
+  const etatInitial = {
     cerveau: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
     yeux: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
     bras_gauche: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
@@ -482,39 +487,38 @@ if (currentUser) {
     colonne: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" },
     module_special: { etat: "100%", implant: "Aucun", implant_etat: "100", bonus: "" }
   };
-await setDoc(userRef, {
-  characterSelected: true,
-  faction: faction,
-  role: roleSelected,
-  genre: genre,
-  characterName: characterName,
-  level: 1,
-  xp: 0,
-  etat: etatInitial, // ← AJOUT ICI
-  vehicle: "aucun" ,
-  coffre_safe: coffre_safe,
-  coffre_base: coffre_base,
-  coffre_safe_cyber: coffre_safe_cyber,
-  coffre_cyber: coffre_cyber,
-  coffre_armures: coffre_armures,
- coffre_armes: coffre_armes,
-arme_equipee : arme_equipee,
-armure_equipee : armure_equipee,
-cybernetiques_installees : cybernetiques_installees,
-coffre_vehicules : coffre_vehicules
 
+  await setDoc(userRef, {
+    characterSelected: true,
+    faction,
+    role: roleSelected,
+    genre,
+    characterName,
+    level: 1,
+    xp: 0,
+    etat: etatInitial,
+    autravail: false,
+     coffre_safe,
+    coffre_base,
+    coffre_safe_cyber,
+    coffre_cyber,
+    coffre_armures,
+    coffre_armes,
+    coffre_arme_equipee,
+    coffre_armure_equipee,
+    coffre_cybernetiques_installees,
+    coffre_vehicules,
+    coffre_munitions,
+    coffre_drones,
+    coffre_munitions_equipee,
+    coffre_drones_equipee
+  }, { merge: true });
 
+  window.location.href = "dashboard.html";
+}
+    
+});
 
-}, { merge: true });
-
-      // Redirection vers le tableau de bord
-      window.location.href = "dashboard.html";
-    }
-  });
-</script>
-
-
-  <script>
 
 
     // Gérer la description selon les choix

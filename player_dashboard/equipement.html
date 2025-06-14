@@ -138,6 +138,8 @@ button:hover {
 }
 
 
+
+
 .inventory-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -150,7 +152,9 @@ button:hover {
   box-shadow: 0 0 12px #ff00ff88;
 }
 
-.item-card {
+.item-coffre-icon{
+    width: 64px;
+  height: 64px;
   border: 2px solid #ff00ff;
   padding: 10px;
   border-radius: 10px;
@@ -159,7 +163,29 @@ button:hover {
   color: #00ffff;
   text-shadow: 0 0 5px #00ffff;
   font-size: 0.9rem;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
+
+.item-card {
+    width: 64px;
+  height: 64px;
+  border: 2px solid #ff00ff;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 0 10px #ff00ff88;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  font-size: 0.9rem;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .coffre-generic {
   display: flex;
@@ -169,8 +195,8 @@ button:hover {
 }
 
 .coffre-slot {
-  width: 140px;
-  min-height: 100px;
+  width: 68px;
+  min-height: 68px;
   border: 2px dashed;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.05);
@@ -179,8 +205,8 @@ button:hover {
   text-align: center;
 }
 .slot {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border: 2px solid rgba(255, 255, 255, 0.2); /* contour léger */
   border-radius: 8px;
   margin: 4px;
@@ -192,7 +218,7 @@ button:hover {
   color: #fff;
   transition: border-color 0.2s ease;
   cursor: grab;
-  transition: transform 0.2s;
+  position: relative;
 
 
 
@@ -200,16 +226,16 @@ button:hover {
 }
 
 .slot.filled {
-  background-color: rgba(80, 150, 200, 0.3);
+ background-color: rgba(0, 0, 0, 0.7);
   border-color: #66ccff;
 }
 
 .slot.empty {
-  background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .slot:hover {
-  border-color: #ff00ff;
+  border-color: #00ffff;
   cursor: grab;
   
 }
@@ -220,8 +246,9 @@ button:hover {
   gap: 10px;
   border: 2px solid #444;
   padding: 10px;
-  min-height: 80px;
-  background-color: #1a1a1a;
+    width: 64px;
+  height: 64px;
+   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 10px;
 }
 .slot-section {
@@ -242,7 +269,7 @@ button:hover {
   border-radius: 8px;
   padding: 15px;
    flex: 1;
-
+  border: 2px solid #ff00ff;
       border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
 
@@ -268,8 +295,8 @@ height: 50px;
 
     h1 {
         text-align: center;
-       font-size: 1.2rem;
-        color: #ff00ff; /* rose néon */
+       font-size: 1.6rem;
+        color: #fff; /* rose néon */
         
         margin-bottom: 2rem;
     }
@@ -281,6 +308,24 @@ height: 50px;
         
         margin-bottom: 2rem;
     }
+    h3 {
+        text-align: center;
+      font-size: 1.6rem;
+        color: #e41515; 
+               text-shadow: 0 0 5px #790909;
+        
+        margin-bottom: 2rem;
+    }
+    h4 {
+        text-align: center;
+      font-size: 1.6rem;
+        color: #ffffff; 
+               text-shadow: 0 0 5px #ffffff;
+        
+        margin-bottom: 2rem;
+    }
+
+
 
     .equipement-wrapper {
   display: flex;
@@ -293,105 +338,231 @@ height: 50px;
 .colonne-droite {
   flex: 1;
 }
+
+.rarity-common .item-tooltip { border-color: #00d5ff; box-shadow: 0 0 6px #00d5ff; }
+.rarity-rare .item-tooltip { border-color: #ff00ff; box-shadow: 0 0 8px #ff00ff; }
+.rarity-epic .item-tooltip { border-color: #c91962; box-shadow: 0 0 10px #c91962; }
+.rarity-legendary .item-tooltip { border-color: #ffa600; box-shadow: 0 0 12px #ffa600; }
+
+
+.item {
+  position: relative;
+  cursor: grab;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+    border: 2px solid #ff00ff;
+       border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+
+}
+
+.item-quantite {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-size: 12px;
+  background-color: rgba(0,0,0,0.7);
+  color: #00ffff;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: 'Orbitron', sans-serif;
+}
+
+.item-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: linear-gradient(145deg, #0f0f0f, #1c1c1c);
+  color: #00ffe0;
+  padding: 10px;
+  border: 2px solid #00ffe0;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'Orbitron', sans-serif;
+  box-shadow: 0 0 10px #00ffe0a0;
+  white-space: pre-wrap;
+  width: 220px;
+  transition: opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
+
+.item:hover .item-tooltip {
+  display: block;
+  animation: fadeInTooltip 0.2s ease-in-out;
+}
+
+@keyframes fadeInTooltip {
+  from { opacity: 0; transform: translateX(-50%) translateY(5px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+
+
+.slot.drag-over {
+  border: 2px dashed #aaa;
+  background-color: rgba(255,255,255,0.1);
+}
+
+.alerte-joueur {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+   background-color: rgba(0,0,0,1.0);
+  color: #00ffff;
+  padding: 12px 28px;
+  border: 2px solid #ff00ff;
+  border-radius: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 18px;
+   text-shadow: 0 0 5px #ff00ff;
+  box-shadow: 8px #00ffff; 
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.alerte-joueur.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1.05);
+}
+
   </style>
 </head>
 <body>
 
   <div class="tabs">
-    <button class="tab active" data-tab="equip">Équipé</button>
+    <button class="tab active" data-tab="equip">Équipements</button>
     <button class="tab" data-tab="base">Stock en Base</button>
     <button class="tab" data-tab="cyber">Cybernétiques</button>
     <button class="tab" data-tab="vehicule">Transport</button>
   </div>
 
-  <div id="equip" class="tab-content active">
-    <div class= "container2">
-      <h2>Équipements Actuels</h2>
-    </div>
-<div class="equipement-wrapper">
-  <!-- Colonne gauche : équipements équipés -->
-  <div class="colonne-gauche">
 
-    
-   
-    <div class= "container">
-   <h1> Armes équipées :</h1>
-      <div id="arme-equipee-container" class="coffre-generic"></div>
-      </div>
-          <div class= "container">
-    <h1>Armures équipées :</h1> 
-      <div id="armure-equipee-container" class="coffre-generic"></div>
-      </div>
-          <div class= "container">
-   <h1>Cybernétiques installées :</h1> 
-    <div id="cybernetiques-installees-container" class="coffre-generic"></div>
+
+<div id="equip" class="tab-content active">
+  <div class="container2">
+    <h2>Équipements Actuels</h2>
   </div>
-</div>
 
-  <div class="colonne-droite">
-          <div class= "container">
-     <h1> Armes :</h1>
-      <div id="coffre-armes-container" class="coffre-generic"></div>
+  <div class="equipement-wrapper">
+    <!-- Colonne gauche : équipements équipés -->
+    <div class="colonne-gauche">
+      
+   <div class="container">
+  <h1>Armes équipées :</h1>
+  <div id="arme-equipee-container" class="coffre-generic"></div> <!-- au lieu de coffre_armes_equipee -->
+</div>
+      <div class="container">
+        <h1>Armures équipées :</h1>
+        <div id="armure-equipee-container" class="coffre-generic"></div>
       </div>
-      <div class= "container">
-    <h1>Armures :</h1>
-     <div id="coffre-armures-container" class="coffre-generic"></div>
+      <div class="container">
+        <h1>Munitions équipées :</h1>
+        <div id="munitions-equipee-container" class="coffre-generic"></div>
+      </div>
+      <div class="container">
+        <h1>Cybernétiques installées :</h1>
+        <div id="cybernetiques-installees-container" class="coffre-generic"></div>
+      </div>
+      <div class="container">
+        <h1>Drones équipés :</h1>
+        <div id="drones-equipes-container" class="coffre-generic"></div>
+      </div>
     </div>
-  </div>
+
+    <!-- Colonne droite : objets dans le coffre -->
+    <div class="colonne-droite">
+<div class="container">
+  <h1>Armes :</h1>
+  <div id="coffre-armes-container" class="coffre-generic" ></div>
 </div>
-</div>
+      <div class="container">
+        <h1>Armures :</h1>
+        <div id="coffre-armures-container" class="coffre-generic"></div>
+      </div>
+      <div class="container">
+        <h1>Munitions :</h1>
+        <div id="coffre-munitions-container" class="coffre-generic"></div>
+      </div>
+      <div class="container">
+        <h1>Drones :</h1>
+        <div id="coffre-drones-container" class="coffre-generic"></div>
+      </div>
+    </div>
+  </div> <!-- Fin de equipement-wrapper -->
+
+</div> <!-- ICI fermeture manquante de #equip -->
 
 
 
-  <div id="base" class="tab-content">
-        <div class= "container2">
+<div id="base" class="tab-content">
+  <div class="container2">
     <h2>Stock en Base</h2>
+  </div>
+
+  <div class="container">
+    <div id="coffre-safe-container">
+      <h1>Coffre inventaire sécurisé</h1>
+      <div id="coffre-safe" class="inventory-grid"></div>
     </div>
-     <div class= "container">
-<div id="coffre-safe-container">
-  <h1>Coffre personnel sécurisé</h1>
-  <div id="coffre-safe" class="inventory-grid">
+  </div>
+
+  <div class="container">
+    <div id="coffre-base-container">
+      <h1>Inventaire</h1>
+      <div id="coffre-base" class="inventory-grid"></div>
     </div>
-    <!-- Objets du coffre_safe ici -->
   </div>
 </div>
 
-<div id="coffre-base-container">
-  <div class= "container">
-  <h1>Inventaire de base</h1>
-  <div id="coffre-base" class="inventory-grid">
-   </div>
-  </div>
-</div>
-</div>
 
-
-  <div id="cyber" class="tab-content">
-    <div id="base" class="tab-content">
-      <h2>Implants cybernétiques (non installés)</h2>
-      </div>
-        
-          <div class= "container2">
-   <h2>Installables uniquement via un spécialiste médical.</h2>
-   </div>
-   <div class= "container">
-    <h1>Liste des implants disponibles :</h1></div>
-    <div class= "container"> <div id="coffre-cyber-container" class="coffre-generic"></div>
+<div id="cyber" class="tab-content">
+  <div class="container2">
+    <h2>Implants cybernétiques (non installés)</h2>
      </div>
-  </div>
-</div>
+      <div class="container2">
+    <h3>Installables uniquement via un spécialiste médical.</h3>
+     </div>
+    
 
-  <div id="vehicule" class="tab-content">
-    <div class= "container2">
+  <div class="container">
+    <h1>Implants sécurisés disponibles:</h1>
+    <div id="coffre-cyber-safe-container" class="coffre-generic"></div>
+  </div>
+
+
+   <div class="container">
+    <h1>Implants disponibles :</h1>
+    <div id="coffre-cyber-container" class="coffre-generic"></div>
+ </div>
+ </div>
+
+<div id="vehicule" class="tab-content">
+  <div class="container2">
     <h2>Transport</h2>
- </div>
-   <div class= "container">
-  <h1> Véhicules en base : Moto cross modifiée, camion blindé désactivé</h1>
- </div>
-  <div class= "container">
+  </div>
+
+  <div class="container">
+    <h1>Véhicules en base</h1>
+  </div>
+
+  <div class="container">
     <div id="coffre-vehicules-container" class="coffre-generic"></div>
-    </div>
-    </div>
   </div>
 </div>
 
@@ -399,7 +570,7 @@ height: 50px;
   
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc ,updateDoc,collection, addDoc, setDoc,getDocs,deleteDoc,deleteField    } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 
@@ -416,141 +587,559 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-const mapping = {
-
-  "arme-equipee-container": "arme_equipee",
-  "armure-equipee-container": "armure_equipee",
-  "cybernetiques-installees-container": "cybernetiques_installees",
-  "coffre-safe": "coffre_safe",
-  "coffre-base": "coffre_base",
-  "coffre-armes-container": "coffre_armes",
-  "coffre-armures-container": "coffre_armures",
-  "coffre-cyber-container": "coffre_cyber",
-  "coffre-vehicules-container": "coffre_vehicules"
+const coffresConfig = {
+  coffre_armes: { max: 4 },
+  coffre_armures: { max: 4 },
+  coffre_base: { max: 7 },
+  coffre_cyber: { max: 5 },
+  coffre_drones: { max: 2 },
+  coffre_munitions: { max: 3 },
+  coffre_safe: { max: 3 },
+  coffre_safe_cyber: { max: 3 },
+  coffre_vehicules: { max: 3 },
+  coffre_arme_equipee: { max: 2 },
+  coffre_armure_equipee: { max: 4 },
+  coffre_munitions_equipee: { max: 2 },
+  coffre_drones_equipee: { max: 1 },
+  coffre_cybernetiques_installees: { max: 4 }
 };
 
-// 🔄 Charge les données du joueur et remplit l'inventaire
-auth.onAuthStateChanged(async (user) => {
+// Map coffre → ID conteneur HTML exact
+const coffreToContainerMap = {
+  coffre_armes: "coffre-armes-container",
+  coffre_armures: "coffre-armures-container",
+  coffre_base: "coffre-base",  // pas de "-container" dans HTML
+  coffre_cyber: "coffre-cyber-container",
+  coffre_drones: "coffre-drones-container",
+  coffre_munitions: "coffre-munitions-container",
+  coffre_safe: "coffre-safe",  // idem pas "-container"
+  coffre_safe_cyber: "coffre-cyber-safe-container", // inversion corrigée
+  coffre_vehicules: "coffre-vehicules-container",
+  coffre_arme_equipee: "arme-equipee-container",
+  coffre_armure_equipee: "armure-equipee-container",
+  coffre_munitions_equipee: "munitions-equipee-container",
+  coffre_drones_equipee: "drones-equipes-container",
+  coffre_cybernetiques_installees: "cybernetiques-installees-container"
+};
+
+
+// 🔐 Toujours attendre que l'utilisateur soit bien connecté :
+onAuthStateChanged(auth, async (user) => {
   if (user) {
-    const docRef = doc(db, "players", user.uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      for (const [containerId, key] of Object.entries(mapping)) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = ""; // Clear existing
-        const items = data[key] || [];
-        items.forEach((item, index) => {
-          const slot = createSlot(item, key, index);
-          container.appendChild(slot);
-        });
-      }
-    }
+    playerID = user.uid; // ✅ on l'affecte ici
+    console.log("✅ Utilisateur connecté :", playerID);
+
+    const coffres = await fetchCoffresEtItems(playerID);
+    afficherCoffres(coffres);
+  } else {
+    console.warn("❌ Aucun utilisateur connecté");
   }
 });
 
-// 🔧 Crée un slot drag & droppable
-function createSlot(item, key, index) {
-  const div = document.createElement("div");
-  div.className = "slot";
-  div.dataset.originKey = key;
-  div.dataset.index = index;
-  div.draggable = true;
+// Fonction principale pour récupérer les coffres et items
+async function fetchCoffresEtItems(playerID) {
+  const coffres = {};
 
-  if (item) {
-    div.textContent = item;
-    div.classList.add("filled");
-  } else {
-    div.classList.add("empty");
+  const playerRef = doc(db, "players", playerID);
+  const playerSnap = await getDoc(playerRef);
+
+  if (!playerSnap.exists()) {
+    console.error(`❌ Le joueur avec l'ID ${playerID} n'existe pas.`);
+    return coffres;
   }
 
-  div.addEventListener("dragstart", dragStart);
-  div.addEventListener("dragover", dragOver);
-  div.addEventListener("drop", drop);
-  return div;
+  const data = playerSnap.data();
+console.log("📄 Données brutes Firestore :", data);
+  for (const [categorie, config] of Object.entries(coffresConfig)) {
+    coffres[categorie] = [];
+
+    const slots = data[categorie] || {};
+console.log("📦 Catégories dans Firestore :", Object.keys(data));
+console.log("📚 Catégories attendues :", Object.keys(coffresConfig));
+    for (let i = 0; i < config.max; i++) {
+      const slotName = `slot${i}`;
+      const itemData = slots[slotName];
+
+      if (itemData && itemData.id) {
+        coffres[categorie].push({
+          slot: slotName,
+          ...itemData
+        });
+        
+        console.log(`✅ Item "${itemData.id}" trouvé dans ${categorie} - ${slotName}`);
+      } else if (itemData) {
+        console.warn(`⚠️ Item partiel ou sans ID dans ${categorie} - ${slotName}`, itemData);
+        coffres[categorie].push({
+          slot: slotName,
+          ...itemData,
+          vide: true
+        });
+        
+      } else {
+        coffres[categorie].push({
+          slot: slotName,
+          vide: true
+
+        });
+        
+    }  
+    }
+    console.log("🎒 Contenu final des coffres reconstitués :", coffres);
+  }
+
+  return coffres;
 }
 
-// 📥 Drag functions
-let draggedItem = null;
-function dragStart(e) {
-  draggedItem = {
-    originKey: e.target.dataset.originKey,
-    originIndex: e.target.dataset.index,
-    content: e.target.textContent
-  };
+function afficherCoffres(coffres) {
+  console.log("📦 Début de affichage des coffres", coffres);
+
+  Object.keys(coffresConfig).forEach(coffreKey => {
+    const containerId = coffreToContainerMap[coffreKey];
+    const container = document.getElementById(containerId);
+
+    if (!container) {
+      console.warn(`⚠️ Container introuvable pour ${coffreKey} → ID attendu : ${containerId}`);
+      return;
+    }
+
+    console.log(`✅ Container trouvé : #${containerId}`);
+    container.innerHTML = ''; // Reset
+
+    const maxSlots = coffresConfig[coffreKey].max;
+    const items = coffres[coffreKey] || [];
+
+    console.log(`➡️ ${coffreKey} contient ${items.length} item(s), ${maxSlots} slot(s)`);
+
+    for (let i = 0; i < maxSlots; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'slot';
+      slot.id = `slot-${coffreKey}-slot${i}`;
+
+  const item = items[i];
+
+// 🚫 Si pas d'item valide, on ne génère rien
+if (!item || !item.id || !item.image) {
+  container.appendChild(slot);
+  continue;
 }
 
-function dragOver(e) {
-  e.preventDefault();
+// ✅ Création réelle d'un item
+const itemDiv = document.createElement('div');
+itemDiv.className = 'item';
+itemDiv.id = `item-${item.id}`;
+itemDiv.setAttribute('draggable', 'true');
+itemDiv.setAttribute('ondragstart', 'drag(event)');
+
+// Ajout image
+const img = document.createElement('img');
+img.src = item.image;
+img.alt = item.nom || "Objet";
+img.className = "item-image";
+itemDiv.appendChild(img);
+
+// Rareté
+const rarity = item.rarity || "common";
+itemDiv.classList.add(`rarity-${rarity}`);
+
+// Quantité
+if (item.quantite) {
+  const quantiteDiv = document.createElement('div');
+  quantiteDiv.className = 'item-quantite'; // 🔁 un seul nom partout
+  quantiteDiv.textContent = `x${item.quantite}`;
+  itemDiv.appendChild(quantiteDiv);
 }
 
-async function drop(e) {
-  e.preventDefault();
+// Tooltip
+const tooltipDiv = document.createElement('div');
+tooltipDiv.className = 'item-tooltip';
+tooltipDiv.innerHTML = `<strong>${item.nom || "Objet"}</strong><br />${item.description || "Pas de description"}`;
+itemDiv.appendChild(tooltipDiv);
+
+// Ajout à la slot
+slot.appendChild(itemDiv);
+container.appendChild(slot);
+    }document.querySelectorAll('.slot').forEach(slot => {
+  slot.addEventListener('dragover', allowDrop);
+  slot.addEventListener('drop', drop);
+});
+    
+  });
+
+  console.log("✅ Fin de génération des slots.");
+}
+
+
+
+function renderCoffres(joueurCoffres, catalogue) {
+  Object.entries(coffresConfig).forEach(([coffreName, { max }]) => {
+    const containerId = coffreToContainerMap[coffreName];
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    container.innerHTML = ""; // reset
+
+    for (let i = 0; i < max; i++) {
+      const slotId = `slot-${coffreName}-slot${i}`;
+      const slotDiv = document.createElement("div");
+      slotDiv.classList.add("slot");
+      slotDiv.id = slotId;
+      slotDiv.ondrop = drop;
+      slotDiv.ondragover = allowDrop;
+
+      const slotData = joueurCoffres[coffreName]?.[`slot${i}`];
+      if (slotData && slotData.id && catalogue[slotData.id]) {
+        const item = catalogue[slotData.id];
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("item");
+        itemDiv.id = item.id;
+        itemDiv.setAttribute("draggable", "true");
+        itemDiv.setAttribute("ondragstart", "drag(event)");
+        itemDiv.innerHTML = `<img src="${item.image}" alt="${item.nom}" />`;
+        itemDiv.addEventListener('dragstart', drag);
+        slotDiv.appendChild(itemDiv);
+      }
+
+      container.appendChild(slotDiv);
+    }
+  });
+}
+
+let sourceCoffre = null;
+let sourceSlotIndex = null;
+
+function drag(event) {
+  const draggedItem = event.target.closest('.item');
   if (!draggedItem) return;
 
-  const destKey = e.target.dataset.originKey;
-  const destIndex = e.target.dataset.index;
+  const slotElement = draggedItem.closest('.slot');
+  if (!slotElement) return;
 
-  if (!destKey || destIndex === undefined) return;
+  // Extrait coffre et index
+  const [_, coffre, slot] = slotElement.id.split("-");
+  sourceCoffre = coffre;
+  sourceSlotIndex = parseInt(slot.replace("slot", ""), 10);
 
-  // Vérifie compatibilité : même type de tableau
-  if (!isCompatible(draggedItem.originKey, destKey)) {
-    alert("Incompatible !");
+  event.dataTransfer.setData("text/plain", draggedItem.id);
+  console.log(`🎯 dragstart: ${draggedItem.id} de ${sourceCoffre}[${sourceSlotIndex}]`);
+}
+
+let playerID = null; 
+// 🪂 Autorise le drop sur une cible
+function allowDrop(event) {
+  event.preventDefault();
+}
+// 📥 Gestion du drop
+async function drop(event) {
+  event.preventDefault();
+
+  
+
+  const itemId = event.dataTransfer.getData("text/plain");
+  const draggedElement = document.getElementById(itemId);
+  const targetSlot = event.target.closest(".slot");
+
+  if (!targetSlot || !draggedElement) return;
+
+const [_, targetCoffre, targetSlotId] = targetSlot.id.split("-");
+const targetSlotIndex = parseInt(targetSlotId.replace("slot", ""), 10);
+
+// 🛑 Empêche drop sur le même slot
+if (
+  sourceCoffre === targetCoffre &&
+  sourceSlotIndex === targetSlotIndex
+) {
+  console.log("🟡 Item dropped sur le même slot : aucune action nécessaire.");
+  return;
+}
+
+  const playerRef = doc(db, "players", playerID);
+  const playerSnap = await getDoc(playerRef);
+  const coffresData = playerSnap.data();
+
+const sourceItem = coffresData[sourceCoffre]?.[`slot${sourceSlotIndex}`];
+const targetItem = coffresData[targetCoffre]?.[`slot${targetSlotIndex}`] || null;
+
+if (!sourceItem) {
+  console.warn("❌ Aucun item à la source !");
+  return;
+}
+
+// Étape 1 : Récupération du stockage
+const stockage = sourceItem.stockage;
+
+if (stockage && typeof stockage === "object" && Object.keys(stockage).length > 0) {
+  console.log("📦 Stockage détecté avec", Object.keys(stockage).length, "entrée(s) :");
+  for (const [coffre, valeur] of Object.entries(stockage)) {
+    console.log(`   → ${coffre} : ${valeur}`);
+    console.log("🔎 Item source brut :", sourceItem);
+  }
+} else {
+  console.warn("⚠️ Aucun champ 'stockage' trouvé ou objet vide dans l'item source.");
+}
+
+  if (!sourceItem) {
+    console.warn("❌ Aucun item à la source !");
     return;
   }
 
-  const user = auth.currentUser;
-  if (!user) return;
-  const docRef = doc(db, "players", user.uid);
-  const docSnap = await getDoc(docRef);
-  if (!docSnap.exists()) return;
+const sousCategorie = sourceItem.sous_categorie;
 
-  const data = docSnap.data();
-  const sourceArray = data[draggedItem.originKey];
-  const targetArray = data[destKey];
+if (!isCompatibleWithCoffre(targetCoffre, sousCategorie)) {
+  showDropAlert("❌ Cet item ne peut pas aller dans ce coffre !");
+  return;
+}
 
-  // Échange si cible occupée, sinon transfert
-  const temp = targetArray[destIndex];
-  targetArray[destIndex] = draggedItem.content;
-  sourceArray[draggedItem.originIndex] = temp || null;
+  const isStackable = sourceItem.estStockable === true;
+const maxStack = targetItem?.stockage?.[targetCoffre] || sourceItem?.stockage?.[targetCoffre] || 1;
+console.log("✅ maxStack corrigé =", maxStack);
+  const sourceQuantite = sourceItem.quantite || 1;
 
-  await updateDoc(docRef, {
-    [draggedItem.originKey]: sourceArray,
-    [destKey]: targetArray
+  // 1. Fusion de stack
+  if (
+  isStackable &&
+  targetItem &&
+  targetItem.nom === sourceItem.nom && // ou codeItem
+  targetItem.estStockable
+) {
+  const targetQuantite = targetItem.quantite || 0;
+  const total = sourceQuantite + targetQuantite;
+  console.log("🔍 maxStack =", maxStack, "targetQuantite =", targetQuantite);
+  
+  const placeDisponible = maxStack - targetQuantite;
+
+  if (placeDisponible <= 0) {
+    showDropAlert(`❌ Ce slot est plein pour cet item !`);
+    return;
+  }
+
+  const nouvelleQuantiteTarget = Math.min(total, maxStack);
+  const nouvelleQuantiteSource = total - nouvelleQuantiteTarget;
+
+  const updatePayload = {
+    [`${targetCoffre}.slot${targetSlotIndex}.quantite`]: nouvelleQuantiteTarget
+  };
+
+  if (nouvelleQuantiteSource > 0) {
+    updatePayload[`${sourceCoffre}.slot${sourceSlotIndex}.quantite`] = nouvelleQuantiteSource;
+  } else {
+    updatePayload[`${sourceCoffre}.slot${sourceSlotIndex}`] = null;
+  }
+
+  try {
+await updateDoc(playerRef, updatePayload);
+console.log("✅ Fusion stack réussie !");
+
+// 🔄 Recharge les coffres depuis Firestore pour affichage propre
+const nouveauxCoffres = await fetchCoffresEtItems(playerID);
+afficherCoffres(nouveauxCoffres);
+
+  } catch (error) {
+    console.error("🔥 Erreur fusion Firestore :", error);
+  }
+
+  sourceCoffre = null;
+  sourceSlotIndex = null;
+  return;
+}
+  // 2. Slot vide
+const actionHandled = await handleDropInEmptySlot({
+  sourceItem,
+  targetItem,
+  isStackable,
+  sourceQuantite,
+  maxStack,
+  sourceCoffre,
+  sourceSlotIndex,
+  targetCoffre,
+  targetSlotIndex,
+  draggedElement,
+  targetSlot,
+  playerRef
+});
+
+// Slot non vide = switch d'items
+if (targetItem && (!isStackable || targetItem.nom !== sourceItem.nom || !targetItem.estStockable)) {
+  // Échange des items dans Firestore
+  const updatePayload = {
+    [`${targetCoffre}.slot${targetSlotIndex}`]: sourceItem,
+    [`${sourceCoffre}.slot${sourceSlotIndex}`]: targetItem
+  };
+
+  try {
+    await updateDoc(playerRef, updatePayload);
+    console.log("✅ Switch d'items réussi !");
+
+    // Recharge les coffres depuis Firestore pour affichage propre
+    const nouveauxCoffres = await fetchCoffresEtItems(playerID);
+    afficherCoffres(nouveauxCoffres);
+
+  } catch (error) {
+    console.error("🔥 Erreur switch Firestore :", error);
+  }
+
+  sourceCoffre = null;
+  sourceSlotIndex = null;
+
+  return;
+}
+
+}
+
+
+
+
+window.drag = drag;
+window.allowDrop = allowDrop;
+window.drop = drop;
+
+
+function showDropAlert(message) {
+  const alertBox = document.createElement("div");
+  alertBox.textContent = message;
+  alertBox.style.position = "fixed";
+  alertBox.style.top = "20px";
+  alertBox.style.left = "50%";
+  alertBox.style.transform = "translateX(-50%)";
+  alertBox.style.background = "#0f0c29";
+  alertBox.style.border = "2px solid #00ffff";
+  alertBox.style.color = "#ff00ff";
+  alertBox.style.padding = "10px 20px";
+  alertBox.style.borderRadius = "10px";
+  alertBox.style.zIndex = 9999;
+  alertBox.style.fontFamily = "Orbitron, sans-serif";
+  alertBox.style.boxShadow = "0 0 10px #00ffff";
+  alertBox.style.animation = "fadeOut 3s forwards";
+
+  document.body.appendChild(alertBox);
+  setTimeout(() => alertBox.remove(), 3000);
+}
+
+
+
+const compatibiliteCoffres = {
+  coffre_armes: ["armes_feu", "armes_lourdes", "armes_melee", "armes_lancees"],
+  coffre_munitions: ["armes_munitions", "armes_munitions_lourdes"],
+  coffre_drones: ["cyber_drones"],
+  coffre_armures: ["armures_tete", "armures_torse", "armures_bras", "armures_jambes"],
+  coffre_cyber: ["cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"],
+  coffre_safe_cyber: ["cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"],
+  coffre_base: ["ressources_energie", "ressources_bricabrac"],
+  coffre_safe: ["ressources_energie", "ressources_bricabrac"],
+  coffre_vehicules: ["transport_voitures", "transport_motos", "transport_camions", "transport_blindes", "transport_helicos"],
+  coffre_arme_equipee: ["armes_feu", "armes_lourdes", "armes_melee", "armes_lancees"],
+  coffre_munitions_equipee: ["armes_munitions", "armes_munitions_lourdes"],
+  coffre_drones_equipee: ["cyber_drones"],
+  coffre_armure_equipee: ["armures_tete", "armures_torse", "armures_bras", "armures_jambes"],
+  coffre_cybernetiques_installees: ["cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"]
+};
+
+function isCompatibleWithCoffre(targetCoffre, sousCategorie) {
+  return compatibiliteCoffres[targetCoffre]?.includes(sousCategorie);
+}
+
+
+async function handleDropInEmptySlot({
+  sourceItem,
+  targetItem,
+  isStackable,
+  sourceQuantite,
+  maxStack,
+  sourceCoffre,
+  sourceSlotIndex,
+  targetCoffre,
+  targetSlotIndex,
+  draggedElement,
+  targetSlot,
+  playerRef,
+  playerData
+}) {
+  const currentTargetItem = playerData?.[targetCoffre]?.[`slot${targetSlotIndex}`];
+  if (currentTargetItem && currentTargetItem.id !== sourceItem.id) return false;
+
+  const targetQuantite = currentTargetItem?.quantite || 0;
+  const nouvelleQuantiteTarget = sourceQuantite + targetQuantite;
+
+  const updatePayload = {};
+
+  if (isStackable && sourceQuantite > maxStack) {
+    updatePayload[`${targetCoffre}.slot${targetSlotIndex}`] = {
+      ...sourceItem,
+      quantite: maxStack
+    };
+    updatePayload[`${sourceCoffre}.slot${sourceSlotIndex}.quantite`] = sourceQuantite - maxStack;
+  } else {
+    updatePayload[`${targetCoffre}.slot${targetSlotIndex}`] = {
+      ...sourceItem,
+      quantite: nouvelleQuantiteTarget
+    };
+    updatePayload[`${sourceCoffre}.slot${sourceSlotIndex}`] = null;
+  }
+
+try {
+  await updateDoc(playerRef, updatePayload);
+  console.log("✅ Item déplacé !");
+
+  // 🔄 Recharge les coffres à jour et réaffiche proprement tout
+  const nouveauxCoffres = await fetchCoffresEtItems(playerRef.id);
+  afficherCoffres(nouveauxCoffres);
+
+} catch (error) {
+  console.error("🔥 Erreur déplacement Firestore :", error);
+}
+
+  return true;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const tabs = document.querySelectorAll('.tab');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Retire la classe active des onglets et contenus
+      tabs.forEach(t => t.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+
+      // Active l'onglet cliqué et son contenu correspondant
+      tab.classList.add('active');
+      const selectedTab = tab.dataset.tab;
+      const contentToShow = document.getElementById(selectedTab);
+      if (contentToShow) {
+        contentToShow.classList.add('active');
+      } else {
+        console.warn(`⚠️ Contenu introuvable pour l'onglet : ${selectedTab}`);
+      }
+    });
   });
 
-  // Recharge l’inventaire
-  location.reload();
-}
-
-// ✅ Définit les combinaisons compatibles
-function isCompatible(from, to) {
-  const equipables = ["arme_equipee", "coffre_armes"];
-  const armures = ["armure_equipee", "coffre_armures"];
-  const cybers = ["cybernetiques_installees", "coffre_cyber"];
-  const transports = ["coffre_vehicules"];
-  const stocks = ["coffre_base", "coffre_safe"];
-
-  const sets = [equipables, armures, cybers, transports, stocks];
-  return sets.some(set => set.includes(from) && set.includes(to));
-}
-</script>
-  <script>
-
- const buttons = document.querySelectorAll('.tab');
-    const tabs = document.querySelectorAll('.tab-content');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        buttons.forEach(b => b.classList.remove('active'));
-        tabs.forEach(tab => tab.classList.remove('active'));
-
-        btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
-      
-      })
-      });
 
      </script>
+     
+
 </body>
 </html>

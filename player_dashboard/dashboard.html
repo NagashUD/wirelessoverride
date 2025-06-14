@@ -158,6 +158,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
             background-size: cover;
+            
 
         }
 
@@ -500,12 +501,21 @@ h4 {
   text-shadow: 0 0 5px #00f0ff;
 }
 
-
+#image-personnage {
+  width: 300px;
+  height: 300px;
+  border: 2px solid #ff00cc;
+  border-radius: 8px;
+  object-fit: cover;
+  display: none; /* affichée uniquement si l'image est chargée */
+  box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
+}
 
 
     </style>
 
 </head>
+
 <body>
 
   <!-- HEADER -->
@@ -516,6 +526,7 @@ h4 {
     </div>
     <nav>
       <button data-page="base.html">Base</button>
+       <button data-page="banque.html">Banque</button>
       <button data-page="clan.html">Clan</button>
       <button data-page="missions.html">Missions</button>
       <button data-page="craft.html">Artisanat</button>
@@ -543,49 +554,14 @@ h4 {
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p>Réputation : <span id="reputation-text"></span></p>
         État du personnage : <span id="etat-text"></span> <button id="openEtatPerso" class="neon-btn">👤</button>
-
-      </div>
-
-      <section>
-  <section id="container-bank">
-  <h4>Banque</h4>
-
   <p>Solde actuel : <span id="solde-text">0</span> crédits</p>
-  <p>Épargne : <span id="epargne-text">0</span> crédits</p>
+      </div>
+<p></p>
+      <section>
 
-  <p>
-    <button class="buttongauche" id="ouvrir-popup-epargne">Ajouter épargne</button>
-  </p>
-  <p>
-    <button class="buttongauche" id="ouvrir-popup-retrait-epargne">Retirer épargne</button>
-  </p>
+ <img id="image-personnage" alt="Personnage" />
 
-  <p>Dette : <span id="dette-text">0</span> crédits</p>
-  <p>
-    <button class="buttongauche" onclick="reglerDette()">Régler la dette</button>
-  </p>
 
-  <!-- Popup d’ajout d’épargne -->
-  <div id="popup-epargne" class="popup-epargne">
-    <div class="popup-epargne-content">
-      <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
-      <h4>Ajouter de l'épargne</h4>
-      <label for="montant-epargne">Montant à ajouter :</label>
-      <input type="number" id="montant-epargne" class="input-epargne" />
-      <button class="buttonconfirm" id="confirmer-depot-epargne">Confirmer</button>
-    </div>
-  </div>
-
-  <!-- Popup de retrait d’épargne -->
-<div id="popup-retrait-epargne" class="popup-epargne">  
-    <div class="popup-epargne-content">  
-        <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>  
-        <h4>Retirer depuis l'épargne</h4>  
-        <label for="montant-retrait-epargne">Montant à retirer :</label>  
-        <input type="number" id="montant-retrait-epargne" class="input-epargne" />  
-        <button id="confirmer-retrait-epargne" class="buttonconfirm">Confirmer le retrait</button>  
-    </div>  
-</div>
 </section>
 
 
@@ -633,7 +609,7 @@ h4 {
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getFirestore, doc, getDoc, updateDoc,onSnapshot } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
 
 
   // 🔧 Configuration Firebase
@@ -655,9 +631,6 @@ h4 {
 
 
   // Fonction pour calculer l'XP nécessaire pour le niveau suivant
-  function calculXpPourNiveau(level) {
-    return Math.round(100 * Math.pow(level, 1.5));
-  }
 
   // 🔐 Authentification & Chargement des données utilisateur
  onAuthStateChanged(auth, async (user) => {
@@ -676,16 +649,22 @@ h4 {
     let xp = 0;
     let role = "non défini";
     let data = {};
+    
+    
 
  if (userSnap.exists()) {
   data = userSnap.data();
   characterName = data.characterName || characterName;
   faction = data.faction || faction;
+  role = data.role || "non défini";
   level = data.level || level;
   xp = data.xp || xp;
-  role = data.role || "non défini"; // ← AJOUTE CETTE LIGNE
+    role = data.role || "non défini"; // ← AJOUTE CETTE LIGNE
+    
   window.userData = data;
+  afficherImagePerso(); // ← ici
 
+ ecouterSoldeEnTempsReel();
       // Ajoute les données manquantes si elles n'existent pas dans Firestore
       const updates = {};
 
@@ -694,9 +673,7 @@ h4 {
       if (!("reputation" in data)) updates.reputation = 0;
       if (!("etat" in data)) updates.etat = "100%";
       if (!data.solde) updates.solde = 500;
-      if (!data.epargne) updates.epargne = 0;
-      if (!data.dette) updates.dette = 0;
-      
+        
 
       if (Object.keys(updates).length > 0) {
         await updateDoc(userRef, updates);
@@ -716,8 +693,6 @@ h4 {
     document.getElementById("welcome-message").innerText = `Bienvenue ${characterName}`;
     document.getElementById("reputation-text").innerText = data.reputation || 0;
     document.getElementById("solde-text").innerText = data.solde || 500;
-    document.getElementById("epargne-text").innerText = data.epargne || 0;
-    document.getElementById("dette-text").innerText = data.dette || 0;
     document.getElementById("openEtatPerso").addEventListener("click", loadEtatPerso);
   });
 
@@ -901,222 +876,49 @@ async function loadEtatPerso() {
 
 
 
+function ecouterSoldeEnTempsReel() {
+  const user = auth.currentUser;
+  if (!user) return;
 
+  const userRef = doc(db, "players", user.uid);
 
-
-
-
-
-
-  // 💰 Gestion de l'épargne (popup)
-  function ouvrirPopupEpargne() {
-    const popup = document.getElementById("popup-epargne");
-    popup.style.display = "block";
-    popup.classList.add("active");
-  }
-
-  function fermerPopupEpargne() {
-    const popup = document.getElementById("popup-epargne");
-    popup.classList.remove("active");
-    popup.style.display = "none";
-  }
-
-  // Fonction de confirmation pour le dépôt d'épargne
-  async function confirmerDepotEpargne() {
-    const montant = parseInt(document.getElementById("montant-epargne").value, 10);
-    if (isNaN(montant) || montant <= 0) {
-      alert("Veuillez entrer un montant valide.");
-      return;
-    }
-
-    const user = auth.currentUser;
-    if (!user) {
-      alert("Utilisateur non connecté.");
-      return;
-    }
-
-    const userRef = doc(db, "players", user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-      alert("Données utilisateur introuvables.");
-      return;
-    }
-
-    const data = userSnap.data();
-    if (data.solde < montant) {
-      alert("Crédits insuffisants pour ce dépôt.");
-      return;
-    }
-
-    // Mise à jour des valeurs en mémoire
-    data.solde -= montant;
-    data.epargne += montant;
-
-    // Sauvegarde dans Firestore
-    try {
-      await updateDoc(userRef, {
-        solde: data.solde,
-        epargne: data.epargne
-      });
-
-      // Mise à jour de l'interface utilisateur
-      document.getElementById("solde-text").textContent = data.solde;
-      document.getElementById("epargne-text").textContent = data.epargne;
-
-      fermerPopupEpargne();
-    } catch (error) {
-      console.error("Erreur lors de la mise à jour de l'épargne :", error);
-      alert("Erreur lors de l'opération. Réessayez.");
-    }
-  }
-
-  // Événements de gestion des popups et de confirmation
-  document.getElementById("ouvrir-popup-epargne").addEventListener("click", ouvrirPopupEpargne);
-  document.getElementById("fermer-popup-epargne").addEventListener("click", fermerPopupEpargne);
-  document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
-
-  // Mise à jour des données utilisateur dans Firestore
-  function updateUserData() {
-    const userRef = doc(db, "players", user.uid); // Assure-toi que `user.uid` est bien défini
-    updateDoc(userRef, {
-      solde: data.solde,
-      epargne: data.epargne
-    }).then(() => {
-      document.getElementById("solde-text").innerText = data.solde;
-      document.getElementById("epargne-text").innerText = data.epargne;
-    }).catch(error => {
-      console.error("Erreur de mise à jour des données : ", error);
-    });
-  }
-
-  // Fonction de gestion de la dette
-  function reglerDette() {
-    if (data.solde >= data.dette) {
-      data.solde -= data.dette;
-      data.dette = 0;
-      updateUserData(); // Sauvegarde dans Firestore
+  onSnapshot(userRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      document.getElementById("solde-text").innerText = data.solde || 0;
+      // Si tu veux afficher l’épargne aussi, tu peux décommenter :
+      // document.getElementById("epargne-text").innerText = data.epargne || 0;
     } else {
-      alert("Vous n'avez pas assez de crédits");
+      console.warn("Document joueur introuvable !");
     }
+  }, (error) => {
+    console.error("Erreur de synchronisation du solde :", error);
+  });
+}
+
+function afficherImagePerso() {
+  const data = window.userData;
+  if (!data || !data.faction || !data.role || !data.genre) {
+    console.warn("Informations incomplètes pour afficher le personnage.");
+    return;
   }
 
+  const role = data.role.toLowerCase();
+  const genre = data.genre.toLowerCase(); // ex: "female"
+  const faction = data.faction.toLowerCase();
 
+  // Format attendu : role_genre_faction.png
+  const imagePath = `images/functions/${role}_${genre}_${faction}.png`;
 
-
-
-  window.onload = function () {
-    // Ouvrir popup dépôt
-    document.getElementById("ouvrir-popup-epargne").addEventListener("click", function () {
-      document.getElementById("popup-epargne").style.display = "block";
-    });
-
-    document.getElementById("fermer-popup-epargne").addEventListener("click", function () {
-      document.getElementById("popup-epargne").style.display = "none";
-    });
-
-    // Ouvrir popup retrait
-    document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", function () {
-      document.getElementById("popup-retrait-epargne").style.display = "block";
-    });
-
-    document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", function () {
-      document.getElementById("popup-retrait-epargne").style.display = "none";
-    });
-
-    // Retirer depuis épargne
-
-
-
-
-
-async function confirmerRetraitEpargne() {
-    const montant = parseInt(document.getElementById("montant-retrait-epargne").value, 10);
-    
-    if (isNaN(montant) || montant <= 0) {
-        alert("Veuillez entrer un montant valide.");
-        return;
-    }
-
-    const user = auth.currentUser;
-    if (!user) {
-        alert("Utilisateur non connecté.");
-        return;
-    }
-
-    const userRef = doc(db, "players", user.uid);
-    const userSnap = await getDoc(userRef);
-
-    if (!userSnap.exists()) {
-        alert("Données utilisateur introuvables.");
-        return;
-    }
-
-    const data = userSnap.data();
-    if (data.epargne < montant) {
-        alert("Montant supérieur à l'épargne disponible.");
-        return;
-    }
-
-    // Mise à jour des valeurs en mémoire
-    data.epargne -= montant;
-    data.solde += montant;
-
-    // Sauvegarde dans Firestore
-    try {
-        await updateDoc(userRef, {
-            solde: data.solde,
-            epargne: data.epargne
-        });
-
-        // Mise à jour de l'interface utilisateur
-        document.getElementById("solde-text").textContent = data.solde;
-        document.getElementById("epargne-text").textContent = data.epargne;
-
-        fermerPopupRetraitEpargne();
-    } catch (error) {
-        console.error("Erreur lors du retrait de l'épargne :", error);
-        alert("Erreur lors de l'opération. Réessayez.");
-    }
+  const imgElement = document.getElementById("image-personnage");
+  imgElement.src = imagePath;
+  imgElement.style.display = "block";
 }
 
-// Ouvrir et fermer les popups
-function ouvrirPopupRetraitEpargne() {
-    const popup = document.getElementById("popup-retrait-epargne");
-    popup.style.display = "block";
-}
+  function calculXpPourNiveau(level) {
+    return Math.round(100 * Math.pow(level, 1.5));
+  }
 
-function fermerPopupRetraitEpargne() {
-    const popup = document.getElementById("popup-retrait-epargne");
-    popup.style.display = "none";
-}
-
-// Événements de gestion des popups et de confirmation
-document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", ouvrirPopupRetraitEpargne);
-document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", fermerPopupRetraitEpargne);
-document.getElementById("confirmer-retrait-epargne").addEventListener("click", confirmerRetraitEpargne);
-
-  window.onload = function () {
-    // Ouvrir popup dépôt
-    document.getElementById("ouvrir-popup-epargne").addEventListener("click", function () {
-      document.getElementById("popup-epargne").style.display = "block";
-    });
-
-    document.getElementById("fermer-popup-epargne").addEventListener("click", function () {
-      document.getElementById("popup-epargne").style.display = "none";
-    });
-
-    // Ouvrir popup retrait
-    document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", function () {
-      document.getElementById("popup-retrait-epargne").style.display = "block";
-    });
-
-    document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", function () {
-      document.getElementById("popup-retrait-epargne").style.display = "none";
-    });
- }
-   
-}
 </script>
   <!-- FOOTER -->
   <footer>

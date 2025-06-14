@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Magasins – Wireless Override</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body
+       {
+      background: url('images/bank.png') no-repeat center center fixed;
+    background-size: cover;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    color: #ff00ff; /* bleu néon par défaut */
+    font-family: 'Orbitron', sans-serif;
+    padding: 2rem;
+    text-shadow: 0 0 5px #ff00ff;
+
+        }
+
+
+        body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* filtre assombrissant */
+    z-index: -1;
+}
+
+
+.neon-frame {
+  border: 1px solid #00faff66;
+  box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
+}
+
+
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px #00faff,
+      0 0 12px #00faff,
+      0 0 20px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 2px #00faff,
+      0 0 4px #00faff,
+      0 0 6px #ff00ff,
+      0 0 8px #ff00ff;
+  }
+}
+
+.modal-content.neon-frame {
+  animation: neonPulse 2.5s ease-in-out infinite;
+}
+.popup-epargne {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  z-index: 1; /* Au-dessus du contenu */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Fond noir semi-transparent */
+  color: #fff;
+    border-radius: 2px;
+      justify-content: center;
+  align-items: center;
+    
+}
+
+/* Contenu du popup */
+.popup-epargne-content {
+   
+    background-color: rgba(0, 0, 20, 0.8);
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      
+          animation: neonPulse 2.5s ease-in-out infinite;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+   position: relative;
+   text-align: center;
+        border-radius: 10px;
+}
+ .buttonconfirm {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 250px;
+            height: 40px;
+            display: inline-block;
+            margin: 20px auto 0 auto;
+        }
+
+        .buttonconfirm:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttonconfirm:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttonconfirm:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+
+
+/* Bouton de fermeture */
+.close-epargne {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  float: right;
+    cursor: pointer;
+  
+}
+
+.popup-epargne.active {
+  display: flex;
+  opacity: 1;
+}
+
+.input-epargne {
+  background-color: #000;
+  color: #0ff;
+  border: 1px solid #0ff;
+  padding: 5px;
+  border-radius: 5px;
+}
+     .buttongauche {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+          
+        }
+
+        .buttongauche:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttongauche:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttongauche:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+           #container-bank {
+          background: rgba(0, 0, 0, 0.8);
+ margin: 20px;
+  border: 2px solid #ff00ff;
+           box-shadow: 0 0 20px #ff00ff88; /* glow */
+  border-radius: 10px;
+  padding: 15px;
+   flex: 1;
+height: 40px;
+      border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+  text-align: center;
+     justify-content: center; 
+       display: flex;
+  align-items: center; 
+      margin-bottom: 2rem;
+        }
+           #container-bank2 {
+
+            background-color: rgba(0, 0, 0, 0.5);
+             padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            background-size: cover; 
+    text-align: center;
+        margin-bottom: 2rem;
+
+
+        }
+
+
+
+            h1 {
+        text-align: center;
+       font-size: 1.6rem;
+        color: #fff; /* rose néon */
+          text-shadow: 2px 5px 20px #ff00ff88;
+        margin-bottom: 2rem;
+    }
+        h2 {
+        text-align: center;
+      font-size: 2.0rem;
+        color: #00ffff; 
+               text-shadow: 0 0 5px #00ffff;
+        
+        margin-bottom: 2rem;
+    }
+             h3 {
+        text-align: center;
+       font-size: 1.6rem;
+        color: #ff00ff; /* rose néon */
+        margin-bottom: 2rem;
+    }
+    </style>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+<section>
+  <section id="container-bank">
+
+  <h2>Banque</h2>
+   </section>
+ <section id="container-bank2" >
+<h1>💰Solde actuel : <span id="solde-text">0</span> crédits</h1>
+      </section>
+
+ <section id="container-bank2" >
+<h1>Épargne actuelle : <span id="epargne-text">0</span> crédits</h1>
+
+  <p>
+    <button class="buttongauche" id="ouvrir-popup-epargne">Ajouter épargne</button>
+  </p>
+  <p>
+    <button class="buttongauche" id="ouvrir-popup-retrait-epargne">Retirer épargne</button>
+  </p>
+</section>
+ <section id="container-bank2" >
+  <h1>Dette : <span id="dette-text">0</span> crédits</h1>
+  <p>
+    <button class="buttongauche" onclick="reglerDette()">Régler la dette</button>
+  </p>
+</section>
+
+
+
+  <!-- Popup d’ajout d’épargne -->
+  <div id="popup-epargne" class="popup-epargne">
+    <div class="popup-epargne-content">
+      <span id="fermer-popup-epargne" class="close-epargne">&times;</span>
+      <h4>Ajouter de l'épargne</h4>
+       <p><strong>⚠️ Frais de l'épargne : 15%</strong></p>
+      <label for="montant-epargne">Montant à ajouter :</label>
+      <input type="number" id="montant-epargne" class="input-epargne" />
+      <button class="buttonconfirm" id="confirmer-depot-epargne">Confirmer</button>
+    </div>
+  </div>
+
+  <!-- Popup de retrait d’épargne -->
+<div id="popup-retrait-epargne" class="popup-epargne">  
+    <div class="popup-epargne-content">  
+        <span id="fermer-popup-retrait-epargne" class="close-epargne">&times;</span>  
+        <h4>Retirer depuis l'épargne</h4>  
+         <p><strong>⚠️ Frais de l'épargne : 15%</strong></p>
+        <label for="montant-retrait-epargne">Montant à retirer :</label>  
+        <input type="number" id="montant-retrait-epargne" class="input-epargne" />  
+        <button id="confirmer-retrait-epargne" class="buttonconfirm">Confirmer le retrait</button>  
+    </div>  
+</div>
+</section>
+
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+  import { getFirestore, doc, getDoc ,updateDoc,collection, addDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+
+  let user = null;
+    let data = null;
+
+    onAuthStateChanged(auth, async (u) => {
+      if (u) {
+        user = u;
+        const userRef = doc(db, "players", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          data = userSnap.data();
+          document.getElementById("solde-text").textContent = data.solde;
+          document.getElementById("epargne-text").textContent = data.epargne;
+        }
+      }
+    });
+
+    // Popups
+    function ouvrirPopup(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function fermerPopup(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    // Dépôt
+    async function confirmerDepotEpargne() {
+  const montant = parseInt(document.getElementById("montant-epargne").value, 10);
+  if (isNaN(montant) || montant <= 0) {
+    alert("Veuillez entrer un montant valide.");
+    return;
+  }
+
+  if (!data) {
+    alert("Données utilisateur non chargées.");
+    return;
+  }
+
+  const frais = Math.ceil(montant * 0.15);
+  const totalDeduction = montant + frais;
+
+  if (data.solde < totalDeduction) {
+    alert(`Crédits insuffisants pour ce dépôt, il faut ${totalDeduction} crédits (montant + 15% de frais).`);
+    return;
+  }
+
+  data.solde -= totalDeduction;
+  data.epargne += montant;
+
+  await updateDoc(doc(db, "players", user.uid), {
+    solde: data.solde,
+    epargne: data.epargne
+  });
+
+  document.getElementById("solde-text").textContent = data.solde;
+  document.getElementById("epargne-text").textContent = data.epargne;
+  fermerPopup("popup-epargne");
+}
+
+    // Retrait avec frais
+    async function confirmerRetraitEpargne() {
+      const montant = parseInt(document.getElementById("montant-retrait-epargne").value, 10);
+      if (isNaN(montant) || montant <= 0) {
+        alert("Veuillez entrer un montant valide.");
+        return;
+      }
+
+      if (!data || data.epargne < montant) {
+        alert("Montant supérieur à l'épargne.");
+        return;
+      }
+
+      const frais = Math.floor(montant * 0.15);
+      const montantReel = montant - frais;
+
+      data.epargne -= montant;
+      data.solde += montantReel;
+
+      await updateDoc(doc(db, "players", user.uid), {
+        solde: data.solde,
+        epargne: data.epargne
+      });
+
+      document.getElementById("solde-text").textContent = data.solde;
+      document.getElementById("epargne-text").textContent = data.epargne;
+      fermerPopup("popup-retrait-epargne");
+    }
+
+    window.onload = () => {
+      document.getElementById("ouvrir-popup-epargne").addEventListener("click", () => ouvrirPopup("popup-epargne"));
+      document.getElementById("fermer-popup-epargne").addEventListener("click", () => fermerPopup("popup-epargne"));
+      document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
+
+      document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", () => ouvrirPopup("popup-retrait-epargne"));
+      document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", () => fermerPopup("popup-retrait-epargne"));
+      document.getElementById("confirmer-retrait-epargne").addEventListener("click", confirmerRetraitEpargne);
+    };
+  </script>
+</head>
+
+</body>
+</html>

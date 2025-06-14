@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Revente - Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #1e1e1e;
+      color: #f5f5f5;
+    }
+
+    .items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      max-width: 400px;
+      margin: auto;
+    }
+
+    .item {
+      background: #2c2c2c;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .item img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 1rem;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+    }
+
+    .popup-content {
+      background: #2c2c2c;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 300px;
+    }
+
+    .popup.show {
+      visibility: visible;
+    }
+
+    input[type=range] {
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Revendre un objet</h1>
+  <div class="items-container">
+    <div class="item" onclick="ouvrirPopup('Épée en fer', 10)">
+      <img src="https://via.placeholder.com/40" alt="épée">
+      <span>Épée en fer</span>
+    </div>
+    <div class="item" onclick="ouvrirPopup('Potion de soin', 5)">
+      <img src="https://via.placeholder.com/40" alt="potion">
+      <span>Potion de soin</span>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <h2 id="popup-nom">Objet</h2>
+      <p>Quantité à vendre : <span id="quantite-valeur">1</span></p>
+      <input type="range" min="1" max="10" value="1" id="slider" oninput="updateQuantite(this.value)">
+      <br>
+      <button onclick="validerVente()">Vendre</button>
+    </div>
+  </div>
+
+  <script>
+    let itemSelectionne = null;
+    let quantite = 1;
+
+    function ouvrirPopup(nom, max) {
+      itemSelectionne = nom;
+      document.getElementById("popup-nom").textContent = nom;
+      const slider = document.getElementById("slider");
+      slider.max = max;
+      slider.value = 1;
+      updateQuantite(1);
+      document.getElementById("popup").classList.add("show");
+    }
+
+    function updateQuantite(valeur) {
+      quantite = valeur;
+      document.getElementById("quantite-valeur").textContent = valeur;
+    }
+
+    function validerVente() {
+      alert(`Vous avez vendu ${quantite} x ${itemSelectionne}`);
+      document.getElementById("popup").classList.remove("show");
+    }
+
+    document.getElementById("popup").addEventListener("click", function(e) {
+      if (e.target === this) this.classList.remove("show");
+    });
+  </script>
+</body>
+</html>

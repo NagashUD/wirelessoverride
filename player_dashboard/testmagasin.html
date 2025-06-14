@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>🛒 Magasin Test</title>
+</head>
+<body>
+  <h1>🛒 Magasin</h1>
+  <div id="contenu"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <script>
+    // 🔧 Config Firebase à personnaliser
+  const firebaseConfig = {
+    apiKey: "AIzaSyCe7dOBqOQfEmBZYWTVv_hZrLYdmQWLi28",
+    authDomain: "wirelessoverride.firebaseapp.com",
+    projectId: "wirelessoverride",
+     databaseURL: "https://wirelessoverride-default-rtdb.europe-west1.firebasedatabase.app/",
+    storageBucket: "wirelessoverride.appspot.com",
+    messagingSenderId: "674723237901",
+    appId: "1:674723237901:web:7f9e6e0cc0b2ac21080544"
+  };
+
+    // Init Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.database();
+    const firestore = firebase.firestore();
+
+    // Connexion anonyme
+    auth.signInAnonymously()
+      .then(() => {
+        console.log("✅ Connecté anonymement");
+        chargerItemTest("armes", "item002"); // tu peux changer l'ID ici
+      })
+      .catch((error) => {
+        console.error("Erreur de connexion anonyme :", error);
+      });
+
+    // Charger un item test
+    function chargerItemTest(categorie, itemId) {
+      const refItem = db.ref(`stock-list/${categorie}/${itemId}`);
+      refItem.get().then(snapshot => {
+        if (!snapshot.exists()) {
+          document.getElementById("contenu").innerHTML = "<p>❌ Item introuvable.</p>";
+          return;
+        }
+        const item = snapshot.val();
+        item.id = itemId;
+        item.categorie = categorie;
+        afficherItem(item);
+      });
+    }
+
+    function afficherItem(item) {
+      const div = document.getElementById("contenu");
+      div.innerHTML = `
+        <h2>${item.nom}</h2>
+        <p>Prix : ${item.prix} crédits</p>
+        <button onclick="acheterItem('${item.id}', '${item.categorie}')">Acheter</button>
+      `;
+    }
+
+    // Acheter l’item
+    async function acheterItem(itemId, categorie) {
+      const user = auth.currentUser;
+      if (!user) return alert("Non connecté");
+
+      const uid = user.uid;
+      const playerDoc = firestore.collection("players").doc(uid);
+
+      try {
+        // Lecture Firestore
+        const docSnap = await playerDoc.get();
+        let data = docSnap.exists ? docSnap.data() : {};
+        let solde = data.solde ?? 9999; // 💡 solde fictif si vide
+        let coffre = data.coffre_base || {};
+
+        // Lecture item
+        const itemSnap = await db.ref(`stock-list/${categorie}/${itemId}`).get();
+        if (!itemSnap.exists()) return alert("Item introuvable");
+
+        const item = itemSnap.val();
+        if (solde < item.prix) return alert("Pas assez de crédits");
+
+        // Retirer crédits
+        solde -= item.prix;
+
+        // Placer dans coffre
+        let slotLibre = Object.keys(coffre).find(k => coffre[k] == null) ?? String(Object.keys(coffre).length);
+        coffre[slotLibre] = item;
+
+        // Sauvegarde
+        await playerDoc.set({
+          solde,
+          coffre_base: coffre
+        }, { merge: true });
+
+        // Supprimer de la DB
+        await db.ref(`stock-list/${categorie}/${itemId}`).remove();
+
+        alert(`✅ ${item.nom} acheté !`);
+      } catch (e) {
+        console.error("Erreur d'achat :", e);
+        alert("Erreur durant l'achat.");
+      }
+    }
+  </script>
+</body>
+</html>
