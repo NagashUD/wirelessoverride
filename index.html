@@ -16,7 +16,7 @@
 
     body {
       font-family: 'Orbitron', sans-serif;
-      background: url('images/background.jpg') no-repeat center center fixed;
+      background: url('images/background.jpg') no-repeat center center fixed; 
       background-size: cover;
        color: #00ffff; /* bleu néon par défaut */
        text-shadow: 0 0 5px #00ffff;
@@ -24,7 +24,7 @@
       line-height: 1.6;
     }
 
-    body::before {
+      body::before {
       content: '';
       position: fixed;
       top: 0;
@@ -341,13 +341,30 @@
             transform-origin: bottom left;
         }
 
-   
+   #bgVideo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -1; /* Pour rester en arrière-plan */
+  opacity: 1.0; /* Tu peux jouer avec ça pour l'effet visuel */
+}
+
+
+
+
 
   </style>
 </head>
 <audio id="sound-click" src="son/glass_001.ogg" preload="auto"></audio>
 
+<video autoplay muted loop id="bgVideo">
+  <source src="Project3.mp4" type="video/mp4">
 
+  Ton navigateur ne supporte pas les vidéos HTML5.
+</video>
 <body>
   
   <header>
@@ -529,7 +546,8 @@ document.addEventListener("DOMContentLoaded", () => {
 <div id="audio-player">
     <button id="toggle-music" title="Lecture / Pause">&#9658;</button>
     <audio id="background-music" loop>
-      <source src="son/ambient-background-339939.mp3" type="audio/mp3">
+      <source src="son/cyberpunk-music-277931.mp3" type="audio/mp3" >
+
       Votre navigateur ne supporte pas l'audio.
     </audio>
   </div>
