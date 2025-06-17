@@ -147,7 +147,7 @@ button:hover {
   margin-top: 20px;
   padding: 10px;
   background-color: rgba(20, 20, 20, 0.8);
-  border: 2px solid #ff00ff;
+
   border-radius: 10px;
   box-shadow: 0 0 12px #ff00ff88;
 }
@@ -269,7 +269,7 @@ button:hover {
   border-radius: 8px;
   padding: 15px;
    flex: 1;
-  border: 2px solid #ff00ff;
+
       border-radius: 8px;
         box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
 
@@ -447,9 +447,9 @@ height: 50px;
 
   <div class="tabs">
     <button class="tab active" data-tab="equip">Équipements</button>
-    <button class="tab" data-tab="base">Stock en Base</button>
+    <button class="tab" data-tab="base">Ressources</button>
     <button class="tab" data-tab="cyber">Cybernétiques</button>
-    <button class="tab" data-tab="vehicule">Transport</button>
+    <button class="tab" data-tab="vehicule">Garage</button>
   </div>
 
 
@@ -465,23 +465,20 @@ height: 50px;
       
    <div class="container">
   <h1>Armes équipées :</h1>
-  <div id="arme-equipee-container" class="coffre-generic"></div> <!-- au lieu de coffre_armes_equipee -->
+  <div id="arme-equipee-container" class="inventory-grid"></div> <!-- au lieu de coffre_armes_equipee -->
 </div>
       <div class="container">
         <h1>Armures équipées :</h1>
-        <div id="armure-equipee-container" class="coffre-generic"></div>
+        <div id="armure-equipee-container" class="inventory-grid"></div>
       </div>
       <div class="container">
         <h1>Munitions équipées :</h1>
-        <div id="munitions-equipee-container" class="coffre-generic"></div>
+        <div id="munitions-equipee-container" class="inventory-grid"></div>
       </div>
-      <div class="container">
-        <h1>Cybernétiques installées :</h1>
-        <div id="cybernetiques-installees-container" class="coffre-generic"></div>
-      </div>
+
       <div class="container">
         <h1>Drones équipés :</h1>
-        <div id="drones-equipes-container" class="coffre-generic"></div>
+        <div id="drones-equipes-container" class="inventory-grid"></div>
       </div>
     </div>
 
@@ -489,19 +486,19 @@ height: 50px;
     <div class="colonne-droite">
 <div class="container">
   <h1>Armes :</h1>
-  <div id="coffre-armes-container" class="coffre-generic" ></div>
+  <div id="coffre-armes-container" class="inventory-grid" ></div>
 </div>
       <div class="container">
         <h1>Armures :</h1>
-        <div id="coffre-armures-container" class="coffre-generic"></div>
+        <div id="coffre-armures-container" class="inventory-grid"></div>
       </div>
       <div class="container">
         <h1>Munitions :</h1>
-        <div id="coffre-munitions-container" class="coffre-generic"></div>
+        <div id="coffre-munitions-container" class="inventory-grid"></div>
       </div>
       <div class="container">
         <h1>Drones :</h1>
-        <div id="coffre-drones-container" class="coffre-generic"></div>
+        <div id="coffre-drones-container" class="inventory-grid"></div>
       </div>
     </div>
   </div> <!-- Fin de equipement-wrapper -->
@@ -512,19 +509,19 @@ height: 50px;
 
 <div id="base" class="tab-content">
   <div class="container2">
-    <h2>Stock en Base</h2>
+    <h2>Ressources</h2>
   </div>
 
   <div class="container">
     <div id="coffre-safe-container">
-      <h1>Coffre inventaire sécurisé</h1>
+      <h1>Ressources sécurisées</h1>
       <div id="coffre-safe" class="inventory-grid"></div>
     </div>
   </div>
 
   <div class="container">
     <div id="coffre-base-container">
-      <h1>Inventaire</h1>
+      <h1>Ressources</h1>
       <div id="coffre-base" class="inventory-grid"></div>
     </div>
   </div>
@@ -542,27 +539,36 @@ height: 50px;
 
   <div class="container">
     <h1>Implants sécurisés disponibles:</h1>
-    <div id="coffre-cyber-safe-container" class="coffre-generic"></div>
+    <div id="coffre-cyber-safe-container" class="inventory-grid"></div>
   </div>
 
 
    <div class="container">
     <h1>Implants disponibles :</h1>
-    <div id="coffre-cyber-container" class="coffre-generic"></div>
+    <div id="coffre-cyber-container" class="inventory-grid"></div>
  </div>
+       <div class="container">
+        <h1>Cybernétiques installées :</h1>
+        <div id="cybernetiques-installees-container" class="inventory-grid"></div>
+      </div>
  </div>
 
 <div id="vehicule" class="tab-content">
   <div class="container2">
-    <h2>Transport</h2>
+    <h2>Vos véhicules</h2>
   </div>
 
   <div class="container">
-    <h1>Véhicules en base</h1>
-  </div>
+    <div id="coffre-vehicules-container" class="inventory-grid"></div>
+      </div>
 
-  <div class="container">
-    <div id="coffre-vehicules-container" class="coffre-generic"></div>
+        <div class="container">
+          <h1>Matériel disponible :</h1>
+    <div id="garages-items" class="inventory-grid"></div>
+  </div>
+          <div class="container">
+        <h1>Atelier :</h1>
+    <div id="inside-garage" class="inventory-grid"></div>
   </div>
 </div>
 
@@ -601,7 +607,9 @@ const coffresConfig = {
   coffre_armure_equipee: { max: 4 },
   coffre_munitions_equipee: { max: 2 },
   coffre_drones_equipee: { max: 1 },
-  coffre_cybernetiques_installees: { max: 4 }
+  coffre_cybernetiques_installees: { max: 4 },
+  coffre_garage_items: {max : 4},
+  coffre_garage: {max : 1}
 };
 
 // Map coffre → ID conteneur HTML exact
@@ -619,7 +627,10 @@ const coffreToContainerMap = {
   coffre_armure_equipee: "armure-equipee-container",
   coffre_munitions_equipee: "munitions-equipee-container",
   coffre_drones_equipee: "drones-equipes-container",
-  coffre_cybernetiques_installees: "cybernetiques-installees-container"
+  coffre_cybernetiques_installees: "cybernetiques-installees-container",
+  coffre_garage_items: "garages-items",
+  coffre_garage: "inside-garage"
+  
 };
 
 
@@ -1030,7 +1041,10 @@ const compatibiliteCoffres = {
   coffre_munitions_equipee: ["armes_munitions", "armes_munitions_lourdes"],
   coffre_drones_equipee: ["cyber_drones"],
   coffre_armure_equipee: ["armures_tete", "armures_torse", "armures_bras", "armures_jambes"],
-  coffre_cybernetiques_installees: ["cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"]
+  coffre_cybernetiques_installees: ["cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"],
+  coffre_garage_items: ["essence"],
+  coffre_garage: ["transport_voitures", "transport_motos", "transport_camions", "transport_blindes"]
+ 
 };
 
 function isCompatibleWithCoffre(targetCoffre, sousCategorie) {

@@ -444,20 +444,113 @@ body::before {
     const roleSelected = document.getElementById("role").value;
     const genre = document.getElementById("genre").value;
     const characterName = document.getElementById("character-name").value.trim();
-    const coffre_safe = [null, null, null]; // pour équipement sécurisé
-    const coffre_base = [null, null, null, null, null, null, null]; // équipement généra
-    const coffre_safe_cyber = [null, null, null]; 
-    const coffre_cyber = [null, null, null, null, null];
-const coffre_armures = [null, null, null, null, null];
-const coffre_armes = [null, null, null, null];
-const coffre_arme_equipee = [null, null];
-const coffre_armure_equipee = [null, null, null, null];
-const coffre_cybernetiques_installees = [null, null, null, null];
-const coffre_vehicules = [null, null, null];
-const coffre_munitions = [null, null, null, null];
-const coffre_munitions_equipee = [null, null];
-const coffre_drones = [null, null, null];
-const coffre_drones_equipee = [null];
+    
+    
+    
+    
+    
+   const coffre_safe = {
+  slot0: null,
+  slot1: null,
+  slot2: null
+};
+const coffre_base ={
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null,
+  slot4: null,
+  slot5: null,
+  slot6: null
+};
+  const coffre_safe_cyber ={
+  slot0: null,
+  slot1: null,
+  slot2: null
+ 
+};
+
+   const coffre_cyber ={
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+ 
+const coffre_armures = {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+
+const coffre_armes = {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+   
+const coffre_arme_equipee =  {
+  slot0: null,
+  slot1: null
+   };
+   
+const coffre_armure_equipee =  {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+   
+const coffre_cybernetiques_installees =  {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+   
+const coffre_vehicules = {
+  slot0: null,
+  slot1: null,
+  slot2: null  
+   };
+   
+const coffre_munitions =  {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null
+   };
+   
+const coffre_munitions_equipee = {
+  slot0: null,
+  slot1: null
+
+   };
+   
+const coffre_drones =  {
+  slot0: null,
+  slot1: null,
+  slot2: null
+   };
+   
+const coffre_drones_equipee =  {
+  slot0: null
+   };
+   
+const coffre_garage_items =  {
+  slot0: null,
+  slot1: null,
+  slot2: null,
+  slot3: null,
+   slot4: null
+   };
+   
+const coffre_garage =  {
+  slot0: null
+
+   };
 
     if (characterName === "") {
       alert("Le nom de votre personnage ne peut pas être vide.");
@@ -511,7 +604,10 @@ if (currentUser) {
     coffre_munitions,
     coffre_drones,
     coffre_munitions_equipee,
-    coffre_drones_equipee
+    coffre_drones_equipee,
+    coffre_garage,
+    coffre_garage_items
+
   }, { merge: true });
 
   window.location.href = "dashboard.html";

@@ -1,9 +1,8 @@
 {
-    "stockReset": {
+  "stockReset": {
     "lastReset": 1748704550141,
     "status": true
-    },
-
+  },
   "stock-list": {
     "armes": {
       "item001": {
@@ -17,13 +16,12 @@
         "estStockable": false,
         "stock": 7,
         "stockMax": 10,
-        "maxusure" : 100,
+        "maxusure": 100,
         "ammotype": "item011",
         "stats": {
-          "attaque": 2          
+          "attaque": 2
         }
-       },
-
+      },
       "item002": {
         "description": "Fusil d’assaut polyvalent, modulaire, adopté dans les zones de guerre urbaine. Balles de 7,62mm requis.",
         "id": "item002",
@@ -33,15 +31,14 @@
         "rarete": "commun",
         "sous_categorie": "armes_feu",
         "estStockable": false,
-        "maxusure" : 100,
+        "maxusure": 100,
         "ammotype": "item013",
         "stock": 4,
         "stockMax": 8,
-        "stats": {          
+        "stats": {
           "attaque": 6
-          }
-        },
-
+        }
+      },
       "item003": {
         "description": "Arme compacte adorée des hackers pour les fuites rapides. Balles de 5,56mm requis.",
         "id": "item003",
@@ -51,18 +48,17 @@
         "rarete": "commun",
         "sous_categorie": "armes_feu",
         "estStockable": false,
-         "maxusure" : 100,
+        "maxusure": 100,
         "ammotype": "item012",
         "stock": 6,
         "stockMax": 7,
-        "stats": {          
+        "stats": {
           "attaque": 3
-                }
-            },
-
+        }
+      },
       "item004": {
         "description": "Grenade à fragmentation, utile contre un groupe d'ennemis à couvert.",
-       "id": "item004",
+        "id": "item004",
         "image": "images/assets/grenade.png",
         "nom": "Grenade",
         "prix": 90,
@@ -73,194 +69,13 @@
         "stockMax": 12,
         "stats": {
           "attaque": 18
-                 },
+        },
         "stockage": {
           "coffre_arme_equipee": 3,
           "coffre_armes": 20
         }
-      },
-
-      "item005": {
-        "description": "Tir chirurgical à travers les murs légers. Balles de .50bgm requis.",
-        "id": "item005",
-        "image": "images/assets/snipe1.png",
-        "nom": "Archangel XR Sniper",
-        "prix": 3000,
-        "rarete": "rare",
-        "sous_categorie": "armes_lourdes",
-        "estStockable": false,
-        "maxusure" : 100,
-        "stock": 1,
-        "stockMax": 2,
-        "ammotype": "item014",
-            "stats": {
-            "attaque": 18
-            }
-        },
-
-      "item011": {
-        "description": "Balles de 9mm pour arme compatible.",
-        "id": "item011",
-        "image": "images/assets/9mm.png",
-        "nom": "Munitions de 9mm",
-        "prix": 5,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions",
-        "estStockable": true,
-        "type": "ammo",
-         "stock": 300,
-        "stockMax": 300,
-        "stockage": {
-          "coffre_munitions": 300,
-          "coffre_munitions_equipee": 30
-        }
-      },
-
-      "item012": {
-        "description": "Balles de 5,56mm pour arme compatible.",
-         "id": "item012",
-        "image": "images/assets/556mm.png",
-        "nom": "Munitions de 5,56mm",
-        "prix": 12,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions",
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 43,
-        "stockMax": 100,
-        "stockage": {
-          "coffre_munitions": 300,
-          "coffre_munitions_equipee": 30
-        }
-      },
-
-      "item013": {
-        "description": "Balles de 7,62 × 39 mm M43 pour arme compatible.",
-        "id": "item013",
-        "image": "images/assets/762mm.png",
-        "nom": "Munitions de 7,62 × 39 mm",
-        "prix": 18,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions",
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 50,
-        "stockMax": 100,
-        "stockage": {
-          "coffre_munitions": 200,
-          "coffre_munitions_equipee": 30
-        }
-      },
-
-      "item014": {
-        "description": "Balles de .50bgm pour arme compatible.",
-        "id": "item014",
-        "image": "images/assets/50bgm.png",
-        "nom": "Munitions de .50bgm",
-        "prix": 25,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions_lourdes",
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 25,
-        "stockMax": 50,
-        "stockage": {
-          "coffre_munitions": 50,
-          "coffre_munitions_equipee": 10
-        }
-      },
-      "item015": {
-        "description": "Module blaster pour arme compatible.",
-        "id": "item015",
-        "image": "images/assets/modblast.png",
-        "nom": "Module blaster",
-        "prix": 55,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions_lourdes",
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 8,
-        "stockMax": 20,
-        "stockage": {
-          "coffre_munitions": 10,
-          "coffre_munitions_equipee": 5
-        }
-      },
-
-      "item016": {
-        "description": "Liquide plasma pour arme compatible.",
-        "id": "item016",
-        "image": "images/assets/liquidplasma.png",
-        "nom": "Liquide plasma",
-        "prix": 70,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions_lourdes", 
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 2,
-        "stockMax": 8,
-        "stockage": {
-          "coffre_munitions": 10,
-          "coffre_munitions_equipee": 5
-        }
-      },
-
-      "item017": {
-        "description": "Arme lourde à haute cadence de tir, extrêmement puissante mais très encombrante et lourde.",
-        "id": "item017",
-        "image": "images/assets/minigun.png",
-        "nom": "Minigun Vulcan X9",
-        "prix": 15500,
-        "rarete": "épique",
-        "sous_categorie": "armes_lourdes",
-        "estStockable": false,
-        "maxusure" : 100,
-        "ammotype": "item018",
-          "stock": 1,
-        "stockMax": 1,
-        "stats": {
-          "attaque": 30,
-          "malus_deplacement": 2.5
-        }
-      
-      },
-
-      "item018": {
-        "description": "Munitions de 7,62 × 51 mm pour arme compatible.",
-        "id": "item018",
-        "image": "images/assets/76251.png",
-        "nom": "Munitions de 7,62 × 51 mm",
-        "prix": 22,
-        "rarete": "commun",
-        "sous_categorie": "armes_munitions_lourdes",
-        "estStockable": true,
-        "type": "ammo",
-        "stock": 200,
-        "stockMax": 800,
-        "stockage": {
-          "coffre_munitions": 100,
-          "coffre_munitions_equipee": 50
-        }
-      },
-
-      "item020": {
-        "description": "Couteau de combat qui inflige des dégâts au corps à corps.",
-        "id": "item020",
-        "image": "images/assets/couteaucombat.png",
-        "nom": "Couteau de combat",
-        "prix": 60,
-        "rarete": "commun",
-        "sous_categorie": "armes_melee",
-        "estStockable": false,
-        "stock": 7,
-        "stockMax": 12,
-        "stats": {
-          "attaque": 1
-          }
-        }
-
+      }
     },
-
     "armures": {
       "item006": {
         "description": "Résistance au froid extrême.",
@@ -271,15 +86,14 @@
         "rarete": "rare",
         "sous_categorie": "armures_torse",
         "estStockable": false,
-          "stock": 5,
+        "stock": 5,
         "stockMax": 10,
         "stats": {
           "defense": 40,
           "mobilite": -2
         }
-        }
-       },
-  
+      }
+    },
     "cyber": {
       "item007": {
         "description": "Vision nocturne intégrée.",
@@ -296,9 +110,9 @@
           "precision": 5,
           "vision": "nocturne"
         }
-       },
-
-  "drones": {
+      }
+    },
+    "drones": {
       "item019": {
         "description": "Drone d'attaque peu cher et efficace",
         "id": "item019",
@@ -313,15 +127,13 @@
         "stats": {
           "precision": 5,
           "vision": "nocturne"
-        }  ,   
+        },
         "stockage": {
           "coffre_drone": 5,
           "coffre_drones_equipees": 10
         }
-     }
-  }
+      }
     },
-
     "ressources": {
       "item008": {
         "description": "Fournit 500 mAh.",
@@ -336,13 +148,12 @@
         "stockMax": 10,
         "stats": {
           "energie": 50
-        } ,      
+        },
         "stockage": {
           "coffre_base": 40,
           "coffre_safe": 40
         }
       },
-
       "item009": {
         "description": "Un bidon de 20L d'essence raffiné, utilisé pour alimenter divers véhicules ou générateurs.",
         "id": "item009",
@@ -356,7 +167,7 @@
         "stockMax": 10,
         "stats": {
           "energie": 500
-        }    , 
+        },
         "stockage": {
           "coffre_base": 60,
           "coffre_safe": 60
@@ -377,17 +188,9 @@
         "stockMax": 2,
         "stats": {
           "autonomie": 300,
-          "vitesse": 120           
+          "vitesse": 120
+        }
       }
-
-     }
-   
+    }
   }
- }
- 
 }
-
-
-
-
-
