@@ -740,6 +740,7 @@ height: 20px;
     <select id="sous-categorie-ressources" class="sous-categorie-select" data-categorie="ressources">
       <option value="">Toutes</option>
       <option value="ressources_energie">Énergie</option>
+       <option value="essence">Essence</option>
       <option value="ressources_bricabrac">Bric-à-brac</option>
     </select>
   </form>
@@ -800,6 +801,7 @@ height: 20px;
        <option value="coffre_drones">Drones</option>
      <option value="coffre_base">Ressources</option>
     <option value="coffre_vehicules">Véhicules</option>
+     <option value="coffre_garage_items">Essence</option>
   </select>
 
   <div id="items-container" class="items-container"></div>
@@ -864,7 +866,8 @@ const mappingCategorieToCoffre = {
   ressources: "coffre_base",
   transport: "coffre_vehicules",
   munitions: "coffre_munitions",
-   drones: "coffre_drones"
+   drones: "coffre_drones",
+ garage_items: "coffre_garage_items"
 };
 
 const sousCategories = {
@@ -873,6 +876,7 @@ const sousCategories = {
   cyber: ["cyber_drones", "cyber_optique", "cyber_neurals", "cyber_colonne", "cyber_bras", "cyber_jambes"],
   ressources: ["ressources_energie", "ressources_bricabrac"],
   transport: ["transport_voitures", "transport_motos", "transport_camions", "transport_blindes", "transport_helicos"],
+  garage_items: ["essence"]
 };
 
 const labels = {
@@ -899,6 +903,8 @@ const labels = {
   transport_camions: "Camions",
   transport_blindes: "Blindés",
   transport_helicos: "Hélicoptères",
+  garage_items:"Essence"
+
 };
 
 
@@ -1205,7 +1211,8 @@ async function acheterItem(itemId, categorie, quantite = 1) {
     cyber: { nom: "coffre_cyber", max: 7 },
     transport: { nom: "coffre_vehicules", max: 3 },
     munitions: { nom: "coffre_munitions", max: 3 },
-    drones: { nom: "coffre_drones", max: 2 }
+    drones: { nom: "coffre_drones", max: 2 },
+     garage_items: { nom: "coffre_garage_items", max: 5 }
   };
 
   const coffreInfo = coffres[categorie];
@@ -1242,6 +1249,15 @@ async function acheterItem(itemId, categorie, quantite = 1) {
       coffreMax = coffres.drones.max;
     }
 
+    if (["essence"].includes(sousCategorie)) {
+      coffreNom = "coffre_garage_items";
+      coffreMax = coffres.garage_items.max;
+    } else if (sousCategorie === "cyber_drones") {
+      coffreNom = "coffre_drones";
+      coffreMax = coffres.drones.max;
+    }
+
+
     let coffre = data[coffreNom] ?? {};
 
     if ((fetchedItem.stock ?? 0) < quantite) {
@@ -1257,9 +1273,8 @@ async function acheterItem(itemId, categorie, quantite = 1) {
     const stockageLimites = fetchedItem.stockage ?? {};
     const limiteDansCeCoffre = stockageLimites[coffreNom] ?? null;
 
-    // Base item pour ajout dans coffre
-    const baseItem = {
-    id: itemId,
+const baseItem = {
+  id: itemId,
   nom: fetchedItem.nom ?? "Objet inconnu",
   image: fetchedItem.image ?? null,
   prix: fetchedItem.prix ?? 0,
@@ -1269,9 +1284,17 @@ async function acheterItem(itemId, categorie, quantite = 1) {
   estStockable: estStockable,
   stockage: stockageLimites,
   sous_categorie: fetchedItem.sous_categorie ?? null,
+  ammotype: fetchedItem.ammotype ?? null,
   stats: fetchedItem.stats ?? null,
-  quantite: 1 // à ajuster selon le contexte
-    };
+  quantite: 1,
+  ...(fetchedItem.maxusure !== undefined ? { maxusure: fetchedItem.maxusure } : {})
+};
+
+// Et ensuite, uniquement là où tu insères dans Firestore (ex: coffre_arme_equipee)
+if (fetchedItem.maxusure !== undefined) {
+  baseItem.usure = fetchedItem.maxusure; // 💡 Juste avant l'insertion, si besoin
+}
+
 
     let slotTrouve = null;
     let dejaLa = false;
@@ -1507,7 +1530,8 @@ const coffres = {
   cyber: { nom: "coffre_cyber", max: 7 },
   transport: { nom: "coffre_vehicules", max: 3 },
   munitions: { nom:"coffre_munitions", max: 3}  ,
-  drones: { nom:"coffre_drones", max: 2}
+  drones: { nom:"coffre_drones", max: 2},
+   garage_items: { nom:"coffre_garage_items", max: 5}
 };
 
 
@@ -1623,7 +1647,8 @@ const coffres = {
   base: { nom: "coffre_base" },
   safe: { nom: "coffre_safe" },
    munitions: { nom:"coffre_munitions"},
-   drones: { nom:"coffre_drones"}
+   drones: { nom:"coffre_drones"},
+      garage_items: { nom:"coffre_garage_items"}
 };
 
 async function validerVente() {

@@ -45,85 +45,543 @@
       margin-top: 0;
     }
 
-    .container {
-      display: grid;
-      grid-template-areas: 
-        "logs banque"
-        "amelio amelio";
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+     .tab {
+            background-color: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    border: 2px solid #ff00ff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    margin-right: 10px;
+        }
 
-    .logs, .banque, .ameliorations {
-      background: var(--panel);
-      padding: 15px;
+        .tab:hover {
+            background-color: #ff00ff;
+    color: #000;
+        }
+
+        .tab.active {
+            background-color: #ff00ff;
+        }
+
+        nav .tab:after {
+             content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background-color: #00fff7;
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+        }
+
+        nav .tab:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border-top: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+    .mission-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+     background-color: rgba(10, 10, 10, 0.9);
+     border: 2px solid #ff00ff;
       border-radius: 10px;
-      box-shadow: 0 0 20px var(--shadow);
-      border: 2px solid var(--pink);
-      backdrop-filter: blur(6px);
-    }
+      text-align: center;
+    box-shadow: 0 0 12px #ff00ff88;
+       transition: all 0.3s;
+       
+    
+}
+ .mission-card:hover {
+            background-color: #ff00ff;
+            
+        }
 
-    ul {
-      padding-left: 20px;
-    }
 
-    li::marker {
-      color: var(--pink);
-    }
 
-    em {
-      color: var(--subtle);
-      font-style: italic;
-    }
+.mission-card img {
+ width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
 
-    strong {
-      color: var(--accent);
-    }
+}
 
-    p, li {
-      color: var(--text);
+.mission-card h3 {
+   display: flex;
+  flex-direction: row;
+  margin: 0;
+  font-size: 1.2rem;
+   text-align: center;
+  
+  align-items: center;
+  justify-content: center; /* optionnel */
+  text-align: center;
+}
+
+.mission-details {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  
+  }
+
+        .mission-card button {
+            background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 1px 2px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            height: 25%;
+            width: 50%;
+        }
+
+        .mission-card button:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+
+       .mission-card button:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+       
+       .mission-card button:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+.mission-card.forbidden {
+  opacity: 0.6;
+  pointer-events: auto;
+  border-color: darkred;
+}
+
+.mission-card.forbidden button {
+  background-color: darkred;
+}
+    .missions-container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap; /* permet le retour à la ligne */
+  gap: 2rem;
+  justify-content: center; /* centre les cards horizontalement */
+  align-items: flex-start;
     }
+.popup-epargne {
+  display: none; /* Caché par défaut */
+  position: fixed;
+  z-index: 1; /* Au-dessus du contenu */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4); /* Fond noir semi-transparent */
+  color: #fff;
+    border-radius: 2px;
+      justify-content: center;
+  align-items: center;
+    
+}
+
+/* Contenu du popup */
+.popup-epargne-content {
+   
+    background-color: rgba(0, 0, 20, 0.8);
+        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+      
+          animation: neonPulse 2.5s ease-in-out infinite;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+   position: relative;
+   text-align: center;
+        border-radius: 10px;
+}
+@keyframes neonPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 8px #00faff,
+      0 0 12px #00faff,
+      0 0 20px #ff00ff,
+      0 0 30px #ff00ff;
+  }
+  50% {
+    box-shadow:
+      0 0 2px #00faff,
+      0 0 4px #00faff,
+      0 0 6px #ff00ff,
+      0 0 8px #ff00ff;
+  }
+}
+ .buttonconfirm {
+        background-color: rgba(51, 51, 51, 0.8);
+            color: #fff;
+            border: 2px solid #ff00ff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 250px;
+            height: 40px;
+            display: inline-block;
+            margin: 20px auto 0 auto;
+        }
+
+        .buttonconfirm:hover {
+            background-color: #ff00ff;
+            color: #000;
+        }
+        
+            .buttonconfirm:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #00fff7;
+            bottom: -5px;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+       
+          .buttonconfirm:hover:after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .audio-btn {
+  background: transparent;
+  border: none;
+  color: #ff00ff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.audio-btn:hover {
+  color: #00ffff;
+}
+
+.audio-btn::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-size: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.audio-btn:hover::after {
+  opacity: 1;
+}
+
   </style>
 </head>
 <body>
-  <h1 data-key="title">Base</h1>
-  <div class="container">
-    <div class="logs">
-      <h2 data-key="history_title">Historique des actions</h2>
-      <ul>
-        <li>[2025-05-06] <span data-key="upgrade_bed">Amélioration : Lit High-Tech installé</span></li>
-        <li>[2025-05-05] <span data-key="rent_payment">Paiement de 100 crédits pour le loyer</span></li>
-        <li>[2025-05-04] <span data-key="resource_gain">Collecte de ressources : +250 crédits</span></li>
-      </ul>
-    </div>
+    <div class="tabs">
+      <button class="tab active" data-onglet="base">Base</button>
+    <button class="tab" data-onglet="logs">Logs</button>
+  
+    <button class="tab" data-onglet="ameliorations">Améliorations</button>
+       <button class="tab" data-onglet="defenses">Défenses</button>
+    <button class="tab" data-onglet="Reseau">Réseau</button>
+    <button class="tab" data-onglet="Environnement">Environnement</button>
 
-
-    <div class="ameliorations">
-      <h2 data-key="upgrade_title">Améliorer la base</h2>
-      <ul>
-        <li data-key="upgrade_bed_desc">Lit High-Tech – Accélère la récupération d’endurance</li>
-        <li data-key="upgrade_med_desc">Station de soins – Soins passifs +10%</li>
-        <li data-key="upgrade_net_desc">Réseau sécurisé – Réduit les risques de piratage</li>
-      </ul>
-      <p><em data-key="upgrade_soon">D'autres options d'amélioration seront disponibles prochainement.</em></p>
-    </div>
   </div>
 
-  <script>
-    const userLang = "fr"; // à rendre dynamique plus tard
 
-    fetch("langues.json")
-      .then(res => res.json())
-      .then(data => {
-        document.querySelectorAll("[data-key]").forEach(el => {
-          const key = el.getAttribute("data-key");
-          if (data[userLang] && data[userLang][key]) {
-            el.textContent = data[userLang][key];
-          }
-        });
+
+<div id="base" class="tab-content active">
+  <div class="missions-container">
+  <div class="mission-card">
+    <img src="images/assets/bed01.png" alt="Se reposer">
+    <h3>🛏️ Se reposer</h3>
+    <ul class="mission-details">
+      <li>+ Énergie</li>
+      <li>+ Moral</li>
+    </ul>
+
+  </div>
+  
+  <div class="mission-card">
+    <img src="images/assets/med_bed_hight.png" alt="Se soigner">
+    <h3>💉 Se soigner</h3>
+    <ul class="mission-details">
+      <li>Soigne blessures</li>
+      <li>Neutralise poison</li>
+    </ul>
+
+  </div>
+  
+  <div class="mission-card">
+    <img src="images/assets/coffee_food.jpg" alt="Pause café / repas">
+    <h3>☕ Pause café / repas</h3>
+    <ul class="mission-details">
+      <li>Bonus temporaire</li>
+      <li>Améliore la concentration</li>
+    </ul>
+
+  </div>
+  
+  <div class="mission-card">
+    <img src="images/assets/base_maintenance.jpg" alt="Maintenance base">
+    <h3>🧴 Maintenance de la base</h3>
+    <ul class="mission-details">
+      <li>Améliore l'efficacité des systèmes</li>
+      <li>Stabilise les installations</li>
+    </ul>
+  </div>
+  
+<div class="mission-card" data-action="music">
+  <img src="images/assets/audioplayer.png" alt="Musique d'ambiance">
+  <h3>🎼 Mettre de la musique</h3>
+  <ul class="mission-details">
+    <li>Requiert un ampli installé</li>
+    <li>+ Moral, + Style</li>
+  </ul>
+</div>
+</div>
+   </div>
+    </div>
+<div id="popup-action" class="popup-epargne">
+  <div class="popup-epargne-content">
+    <h3 id="popup-titre">Action</h3>
+    <p id="popup-description">Détails de l'action à effectuer.</p>
+    <div style="margin-top: 15px;">
+      <button onclick="confirmerAction()" class="buttonconfirm";>Confirmer</button>
+      <button onclick="fermerPopup()" class="buttonconfirm";>Annuler</button>
+    </div>
+  </div>
+</div>
+
+
+  <script>
+  
+
+      document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    const onglet = tab.dataset.onglet;
+
+    // Retirer active sur tous les onglets et contenus
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+
+    // Ajouter active sur l'onglet cliqué
+    tab.classList.add("active");
+    document.getElementById(onglet).classList.add("active");
+  });
+});
+
+function clearActiveTabs() {
+  buttons.forEach(b => b.classList.remove('active'));
+  tabs   .forEach(t => t.classList.remove('active'));
+}
+  const popup = document.getElementById('popup-action');
+  const titre = document.getElementById('popup-titre');
+  const description = document.getElementById('popup-description');
+
+  function ouvrirPopup(nomAction, texteDescription) {
+    titre.textContent = nomAction;
+    description.textContent = texteDescription;
+    popup.style.display = 'flex'; // utilise flex pour centrer
+  }
+
+  function fermerPopup() {
+    popup.style.display = 'none';
+  }
+
+function confirmerAction() {
+  if (currentAction === 'music') {
+    afficherLecteurAudio();
+  } else {
+    alert("Action confirmée !");
+  }
+  fermerPopup();
+}
+
+  // Écouteurs de clic sur les cartes
+let currentAction = null; // Variable globale pour stocker l'action
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const player = document.getElementById('audioPlayer');
+    const audioTitle = document.getElementById('audio-title');
+
+    const playlist = [
+      { title: "Alone", src: "music/alone-188615.mp3" },
+      { title: "Codebreaker", src: "music/codebreaker-cyberpunk-music-234078.mp3" },
+      { title: "Cyber-noir", src: "music/cyber-noir-cyberpunk-music-234062.mp3" },
+       { title: "Cyberpunk-2099", src: "music/cyberpunk-2099-10701.mp3" },
+   { title: "Cyberpunk", src: "music/cyberpunk-128818.mp3" }
+       
+    ];
+
+    let currentTrack = 0;
+    const widget = document.getElementById('widget-audio');
+    const audio = document.getElementById('audioPlayer');
+    let pendingAction = null;
+
+    function afficherLecteurAudio() {
+      widget.style.display = 'block';
+      playTrack(currentTrack);
+    }
+
+    function playTrack(index) {
+      currentTrack = (index + playlist.length) % playlist.length;
+      audio.src = playlist[currentTrack].src;
+      audioTitle.textContent = `♪ Lecture : ${playlist[currentTrack].title}`;
+      audio.play();
+    }
+
+    function trackSuivante() {
+      playTrack(currentTrack + 1);
+    }
+
+    function trackPrecedente() {
+      playTrack(currentTrack - 1);
+    }
+
+    function fermerLecteurAudio() {
+      widget.style.display = 'none';
+      audio.pause();
+      audio.currentTime = 0;
+    }
+
+    player.addEventListener('ended', () => {
+      playTrack(currentTrack + 1);
+    });
+
+    window.trackSuivante = trackSuivante;
+    window.trackPrecedente = trackPrecedente;
+    window.fermerLecteurAudio = fermerLecteurAudio;
+
+    // Gestion des onglets
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        const onglet = tab.dataset.onglet;
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(tc => tc.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(onglet).classList.add("active");
       });
-  </script>
+    });
+
+    // Popup actions
+    const popup = document.getElementById('popup-action');
+    const titre = document.getElementById('popup-titre');
+    const description = document.getElementById('popup-description');
+
+    function ouvrirPopup(nomAction, texteDescription, actionType = null) {
+      titre.textContent = nomAction;
+      description.textContent = texteDescription;
+      pendingAction = actionType;
+      popup.style.display = 'flex';
+    }
+
+    function fermerPopup() {
+      popup.style.display = 'none';
+      pendingAction = null;
+    }
+
+    function confirmerAction() {
+      if (pendingAction === 'music') {
+        afficherLecteurAudio();
+      } else {
+        alert("Action confirmée !");
+        // Tu peux mettre ici les autres types d'action plus tard
+      }
+      fermerPopup();
+    }
+
+    // Clics sur les cartes
+    document.querySelectorAll('.mission-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const action = card.getAttribute('data-action');
+        const nom = card.querySelector('h3')?.textContent || "Action";
+        const descList = card.querySelectorAll('li');
+        let texteDescription = "";
+        descList.forEach(li => texteDescription += `• ${li.textContent}\n`);
+        ouvrirPopup(nom, texteDescription, action);
+      });
+    });
+
+    // Rendre global
+    window.confirmerAction = confirmerAction;
+  });
+
+
+
+
+
+</script>
+
+
+<div id="widget-audio" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background-color: rgba(0,0,0,0.7); padding: 10px; border-radius: 10px; box-shadow: 0 0 10px #00ffff; display: none; animation: neonPulse 2.5s ease-in-out infinite;">
+  <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+    <button onclick="trackPrecedente()" class="audio-btn" title="Piste précédente">⏮</button>
+    <span id="audio-title" style="color: #00ffff; font-family: Orbitron, sans-serif; font-size: 14px; flex-grow: 1;">Lecture : ...</span>
+    <button onclick="trackSuivante()" class="audio-btn" title="Piste suivante">⏭</button>
+    <button onclick="fermerLecteurAudio()" class="audio-btn" title="Fermer">✖</button>
+  </div>
+  <audio id="audioPlayer" controls style="width: 100%; margin-top: 8px;">
+    <source src="music/alone-188615.mp3" type="audio/mpeg">
+    Ton navigateur ne supporte pas l'audio HTML5.
+  </audio>
+</div>
+
+
+
 </body>
 </html>

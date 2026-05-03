@@ -22,6 +22,23 @@
           "attaque": 2
         }
       },
+    "item023": {
+        "description": "Fusil à pompe, provoque de gros dommages à courte distance.",
+        "id": "item001",
+        "image": "images/assets/shotgun.png",
+        "nom": "Fusil à pompe XM1",
+        "prix": 900,
+        "rarete": "rare",
+        "sous_categorie": "armes_feu",
+        "estStockable": false,
+        "stock": 3,
+        "stockMax": 6,
+        "maxusure": 100,
+        "ammotype": "item022",
+        "stats": {
+          "attaque": 5
+        }
+      },
       "item002": {
         "description": "Fusil d’assaut polyvalent, modulaire, adopté dans les zones de guerre urbaine. Balles de 7,62mm requis.",
         "id": "item002",
@@ -74,6 +91,125 @@
           "coffre_arme_equipee": 3,
           "coffre_armes": 20
         }
+      },
+          "item020": {
+          "id": "item020",
+        "sous_categorie": "armes_melee",
+        "nom": "Couteau de combat",
+        "description": "Couteau de combat qui inflige des dégâts au corps à corps.",
+        "prix": 60,
+        "rarete": "commun",
+        "image": "images/assets/couteaucombat.png",
+        "maxusure": 100,
+        "stock": 7,
+        "stockMax": 12,
+        "stats": {
+          "attaque": 1
+      
+        }
+      },
+      "item011": {
+        "id": "item011",
+        "sous_categorie": "armes_munitions",
+        "nom": "Munitions de 9mm",
+        "description": "Balles de 9mm pour arme compatible.",
+        "prix": 5,
+        "rarete": "commun",
+        "image": "images/assets/9mm.png",
+        "stock": 50,
+        "stockMax": 300,
+        "estStockable": true,
+        "stats": {
+         "type": "ammo",
+         "conso_mission_min": 15
+        },
+        "stockage": {
+          "coffre_munitions": 500,
+          "coffre_munitions_equipee": 30
+        }
+      },
+
+      "item012": {
+        "id": "item012",
+        "sous_categorie": "armes_munitions",
+        "nom": "Munitions de 5,56mm",
+        "description": "Balles de 5,56mm pour arme compatible.",
+        "prix": 12,
+        "rarete": "commun",
+        "image": "images/assets/556mm.png",
+        "stock": 50,
+        "stockMax": 100,
+        "estStockable": true,
+        "stats": {
+          "type": "ammo",
+          "conso_mission_min": 30
+        },
+        "stockage": {
+          "coffre_munitions": 300,
+          "coffre_munitions_equipee": 80
+        }
+      },
+
+      "item022": {
+        "id": "item022",
+        "sous_categorie": "armes_munitions",
+        "nom": "Munitions de fusil à pompe",
+        "description": "Munitions de fusil à pompe pour arme compatible.",
+        "prix": 45,
+        "rarete": "commun",
+        "image": "images/assets/shotgunshell.png",
+        "stock": 30,
+        "stockMax": 700,
+        "estStockable": true,
+        "stats": {
+          "type": "ammo",
+          "conso_mission_min": 8
+        },
+        "stockage": {
+          "coffre_munitions": 50,
+          "coffre_munitions_equipee": 20
+        }
+      },
+
+      "item013": {
+        "id": "item013",
+        "sous_categorie": "armes_munitions",
+        "nom": "Munitions de 7,62 × 39 mm",
+        "description": "Balles de 7,62 × 39 mm M43 pour arme compatible.",
+        "prix": 18,
+        "rarete": "commun",
+        "image": "images/assets/762mm.png",
+        "stock": 50,
+        "stockMax": 100,
+        "estStockable": true,
+        "stats": {
+            "type": "ammo",
+            "conso_mission_min": 15
+        },
+        "stockage": {
+          "coffre_munitions": 200,
+          "coffre_munitions_equipee": 60
+        }
+      },
+      "item014": {
+        "id": "item014",
+        "sous_categorie": "armes_munitions_lourdes",
+        "nom": "Munitions de .50bgm",
+        "description": "Balles de .50bgm pour arme compatible.",
+        "prix": 25,
+        "rarete": "commun",
+        "image": "images/assets/50bgm.png",
+        "stock": 25,
+        "stockMax": 50,
+        "estStockable": true,
+        "stats": {
+          "type": "ammo",
+          "conso_mission_min": 5
+        },
+        "stockage": {
+          "coffre_munitions": 50,
+          "coffre_munitions_equipee": 20
+        }
       }
     },
     "armures": {
@@ -87,9 +223,11 @@
         "sous_categorie": "armures_torse",
         "estStockable": false,
         "stock": 5,
+         "maxusure": 100,
         "stockMax": 10,
         "stats": {
           "defense": 40,
+          
           "mobilite": -2
         }
       }
@@ -104,15 +242,15 @@
         "rarete": "peu commun",
         "sous_categorie": "cyber_optique",
         "estStockable": false,
+       "maxusure": 100,
         "stock": 2,
         "stockMax": 4,
         "stats": {
           "precision": 5,
+         
           "vision": "nocturne"
         }
-      }
-    },
-    "drones": {
+      },
       "item019": {
         "description": "Drone d'attaque peu cher et efficace",
         "id": "item019",
@@ -122,9 +260,11 @@
         "rarete": "commun",
         "sous_categorie": "cyber_drones",
         "estStockable": true,
+       "maxusure": 100,
         "stock": 5,
         "stockMax": 12,
         "stats": {
+        
           "precision": 5,
           "vision": "nocturne"
         },
@@ -154,25 +294,24 @@
           "coffre_safe": 40
         }
       },
-      "item009": {
-        "description": "Un bidon de 20L d'essence raffiné, utilisé pour alimenter divers véhicules ou générateurs.",
-        "id": "item009",
-        "image": "images/assets/essence.png",
-        "nom": "Bidon d'essence",
-        "prix": 30,
-        "rarete": "commun",
-        "sous_categorie": "ressources_energie",
-        "estStockable": true,
-        "stock": 5,
-        "stockMax": 10,
-        "stats": {
-          "energie": 500
-        },
-        "stockage": {
-          "coffre_base": 60,
-          "coffre_safe": 60
-        }
-      }
+   "item009": {
+  "description": "Un bidon de 20L d'essence raffiné, utilisé pour alimenter divers véhicules ou générateurs.",
+  "id": "item009",
+  "image": "images/assets/essence.png",
+  "nom": "Bidon d'essence",
+  "prix": 30,
+  "rarete": "commun",
+  "sous_categorie": "essence",
+  "estStockable": true,
+  "stock": 5,
+  "stockMax": 10,
+  "stats": {
+    "energie": 500
+  },
+  "stockage": {
+    "coffre_garage_items": 10
+  }
+}
     },
     "transport": {
       "item010": {
@@ -184,13 +323,44 @@
         "rarete": "épique",
         "sous_categorie": "transport_motos",
         "estStockable": false,
+         "maxusure": 100,
         "stock": 1,
         "stockMax": 2,
-        "stats": {
-          "autonomie": 300,
+          "stats": {
+
+         "carburant_max": 30,
+          "carburant": 5,
           "vitesse": 120
-        }
-      }
-    }
+          
+        },
+"stockage": {
+  "coffre_garage": 1
+             }
+           },
+
+
+"item021": {
+  "description": "Van blindé, offre une bonne résistance et protection.",
+  "id": "item021",
+  "image": "images/assets/vanblinde.png",
+  "nom": "Van blindé",
+  "prix": 75000,
+  "rarete": "épique",
+  "sous_categorie": "transport_blindes",
+  "estStockable": false,
+     "maxusure": 100,
+  "stock": 1,
+  "stockMax": 2,
+    "stats": {
+ 
+    "carburant_max": 80,
+    "carburant": 20,
+     "vitesse": 60
+  },
+  "stockage": {
+    "coffre_garage": 1
   }
+}
+}
+}
 }

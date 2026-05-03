@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Magasins – Wireless Override</title>
+  <title>Banque – Wireless Override</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body
@@ -37,7 +37,6 @@
   border: 1px solid #00faff66;
   box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
 }
-
 
 @keyframes neonPulse {
   0%, 100% {
@@ -277,9 +276,14 @@ height: 40px;
 </section>
  <section id="container-bank2" >
   <h1>Dette : <span id="dette-text">0</span> crédits</h1>
+      
   <p>
-    <button class="buttongauche" onclick="reglerDette()">Régler la dette</button>
-  </p>
+    <p>
+  <button class="buttongauche" id="ouvrir-popup-emprunt">Demander un emprunt</button>
+</p>
+<p>
+  <button class="buttongauche" id="ouvrir-popup-remboursement">Rembourser la dette</button>
+<h1>⏳ Prochain intérêt de 5% dans : <span id="interet-timer">calcul en cours...</span></h1>
 </section>
 
 
@@ -306,6 +310,33 @@ height: 40px;
         <input type="number" id="montant-retrait-epargne" class="input-epargne" />  
         <button id="confirmer-retrait-epargne" class="buttonconfirm">Confirmer le retrait</button>  
     </div>  
+</div>
+<!-- Popup d’emprunt -->
+<div id="popup-emprunt" class="popup-epargne">
+  <div class="popup-epargne-content">
+    <span id="fermer-popup-emprunt" class="close-epargne">&times;</span>
+    <h4>Demander un emprunt</h4>
+    <p><strong>⚠️ Intérêt sur l’emprunt : 12%</strong></p>
+    <label for="montant-emprunt">Montant à emprunter :</label>
+    <input type="number" id="montant-emprunt" class="input-epargne" />
+    <button id="confirmer-emprunt" class="buttonconfirm">Confirmer l’emprunt</button>
+  </div>
+</div>
+
+<!-- Popup de remboursement -->
+<div id="popup-remboursement" class="popup-epargne">
+  <div class="popup-epargne-content">
+    <span id="fermer-popup-remboursement" class="close-epargne">&times;</span>
+    <h4>Rembourser la dette</h4>
+    <label for="montant-remboursement">Montant à rembourser :</label>
+    <input type="number" id="montant-remboursement" class="input-epargne" />
+    <button id="confirmer-remboursement" class="buttonconfirm">Rembourser</button>
+    <section id="container-bank2">
+
+</section>
+
+  </div>
+
 </div>
 </section>
 
@@ -334,18 +365,76 @@ const db = getFirestore(app);
   let user = null;
     let data = null;
 
-    onAuthStateChanged(auth, async (u) => {
-      if (u) {
-        user = u;
-        const userRef = doc(db, "players", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          data = userSnap.data();
-          document.getElementById("solde-text").textContent = data.solde;
-          document.getElementById("epargne-text").textContent = data.epargne;
-        }
+onAuthStateChanged(auth, async (u) => {
+  if (!u) return; // Aucun utilisateur connecté
+
+  user = u;
+  const userRef = doc(db, "players", user.uid);
+
+  try {
+    const userSnap = await getDoc(userRef);
+
+    if (!userSnap.exists()) {
+      console.warn("Le document utilisateur n'existe pas.");
+      return;
+    }
+
+    const snapData = userSnap.data();
+    if (!snapData) {
+      console.warn("Données utilisateur vides.");
+      return;
+    }
+
+    // Initialisation des données
+    data = {
+      solde: snapData.solde || 0,
+      epargne: snapData.epargne || 0,
+      dette: snapData.dette || 0,
+      derniereMajInterets: snapData.derniereMajInterets || Date.now()
+    };
+     if (!data.derniereMajInterets) {
+        data.derniereMajInterets = Date.now();
+        await updateDoc(userRef, {
+          derniereMajInterets: data.derniereMajInterets
+        });
       }
-    });
+      // Met à jour la dette si une semaine est passée
+const now = Date.now();
+const uneSemaine = 7 * 24 * 60 * 60 * 1000;
+const derniereMaj = snapData.dette_lastUpdate || now;
+
+if (data.dette > 0 && now - derniereMaj > uneSemaine) {
+  const semainesPassees = Math.floor((now - derniereMaj) / uneSemaine);
+
+  for (let i = 0; i < semainesPassees; i++) {
+    data.dette = Math.ceil(data.dette * 1.05); // +5% par semaine
+  }
+
+  await updateDoc(doc(db, "players", user.uid), {
+    dette: data.dette,
+    dette_lastUpdate: now
+  });
+
+  document.getElementById("dette-text").textContent = data.dette;
+}
+    // MAJ affichage
+    document.getElementById("solde-text").textContent = data.solde;
+    document.getElementById("epargne-text").textContent = data.epargne;
+    document.getElementById("dette-text").textContent = data.dette;
+
+    // Lancer le timer d’intérêts
+// Calcul du prochain timer (7 jours après la dernière maj)
+const prochaineMaj = data.derniereMajInterets + 7 * 24 * 60 * 60 * 1000;
+afficherTimerInterets(prochaineMaj);
+
+  } catch (err) {
+    console.error("❌ Erreur pendant le chargement du joueur :", err);
+  }
+});
+
+
+
+
 
     // Popups
     function ouvrirPopup(id) {
@@ -418,8 +507,106 @@ const db = getFirestore(app);
       document.getElementById("epargne-text").textContent = data.epargne;
       fermerPopup("popup-retrait-epargne");
     }
+async function confirmerEmprunt() {
+  const montant = parseInt(document.getElementById("montant-emprunt").value, 10);
+  if (isNaN(montant) || montant <= 0) {
+    alert("Veuillez entrer un montant valide.");
+    return;
+  }
+if (data.dette + montant > 100000) {
+  alert("Limite de dette atteinte. Vous ne pouvez pas emprunter plus de 100000 crédits.");
+  return;
+}
+  if (!data) {
+    alert("Données utilisateur non chargées.");
+    return;
+  }
 
-    window.onload = () => {
+  const interet = Math.ceil(montant * 0.12);
+  const total = montant + interet;
+
+  data.solde += montant;
+  data.dette = (data.dette || 0) + total;
+
+  await updateDoc(doc(db, "players", user.uid), {
+    solde: data.solde,
+    dette: data.dette
+  });
+
+  document.getElementById("solde-text").textContent = data.solde;
+  document.getElementById("dette-text").textContent = data.dette;
+  fermerPopup("popup-emprunt");
+}
+
+
+async function confirmerRemboursement() {
+  const montant = parseInt(document.getElementById("montant-remboursement").value, 10);
+  if (isNaN(montant) || montant <= 0) {
+    alert("Veuillez entrer un montant valide.");
+    return;
+  }
+
+  if (!data || data.dette < montant) {
+    alert("Montant supérieur à la dette.");
+    return;
+  }
+
+  if (data.solde < montant) {
+    alert("Crédits insuffisants.");
+    return;
+  }
+
+  data.solde -= montant;
+  data.dette -= montant;
+
+  await updateDoc(doc(db, "players", user.uid), {
+    solde: data.solde,
+    dette: data.dette
+  });
+
+  document.getElementById("solde-text").textContent = data.solde;
+  document.getElementById("dette-text").textContent = data.dette;
+  fermerPopup("popup-remboursement");
+}
+// Fonction pour obtenir le prochain lundi à minuit
+function getNextInterestDate() {
+  const now = new Date();
+  const next = new Date(now);
+
+  // Se place au prochain lundi
+  const daysUntilMonday = (8 - now.getDay()) % 7 || 7;
+  next.setDate(now.getDate() + daysUntilMonday);
+  next.setHours(0, 0, 0, 0);
+  return next;
+}
+
+// Met à jour le timer toutes les secondes
+// Timer pour prochain intérêt
+function afficherTimerInterets(prochaineMaj) {
+  const timerElem = document.getElementById("interet-timer");
+
+  function updateTimer() {
+    const now = Date.now();
+    const diff = Math.max(prochaineMaj - now, 0);
+
+    const jours = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const heures = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secondes = Math.floor((diff % (1000 * 60)) / 1000);
+
+    timerElem.textContent = `${jours}j ${heures}h ${minutes}m ${secondes}s`;
+
+    if (diff <= 0) {
+      timerElem.textContent = "intérêts en cours...";
+      clearInterval(interval);
+    }
+  }
+
+  updateTimer();
+  const interval = setInterval(updateTimer, 1000);
+}
+
+  window.onload = () => {
       document.getElementById("ouvrir-popup-epargne").addEventListener("click", () => ouvrirPopup("popup-epargne"));
       document.getElementById("fermer-popup-epargne").addEventListener("click", () => fermerPopup("popup-epargne"));
       document.getElementById("confirmer-depot-epargne").addEventListener("click", confirmerDepotEpargne);
@@ -427,7 +614,17 @@ const db = getFirestore(app);
       document.getElementById("ouvrir-popup-retrait-epargne").addEventListener("click", () => ouvrirPopup("popup-retrait-epargne"));
       document.getElementById("fermer-popup-retrait-epargne").addEventListener("click", () => fermerPopup("popup-retrait-epargne"));
       document.getElementById("confirmer-retrait-epargne").addEventListener("click", confirmerRetraitEpargne);
+      document.getElementById("ouvrir-popup-emprunt").addEventListener("click", () => ouvrirPopup("popup-emprunt"));
+document.getElementById("fermer-popup-emprunt").addEventListener("click", () => fermerPopup("popup-emprunt"));
+document.getElementById("confirmer-emprunt").addEventListener("click", confirmerEmprunt);
+
+document.getElementById("ouvrir-popup-remboursement").addEventListener("click", () => ouvrirPopup("popup-remboursement"));
+document.getElementById("fermer-popup-remboursement").addEventListener("click", () => fermerPopup("popup-remboursement"));
+document.getElementById("confirmer-remboursement").addEventListener("click", confirmerRemboursement);
     };
+
+
+    
   </script>
 </head>
 

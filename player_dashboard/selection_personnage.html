@@ -551,7 +551,11 @@ const coffre_garage =  {
   slot0: null
 
    };
+const coffre_essence =  {
+  slot0: null
 
+   };
+   
     if (characterName === "") {
       alert("Le nom de votre personnage ne peut pas être vide.");
       return;
@@ -589,6 +593,10 @@ if (currentUser) {
     characterName,
     level: 1,
     xp: 0,
+     solde: 0,
+  epargne: 0,
+  dette: 0,
+  derniereMajInterets: Date.now(),
     etat: etatInitial,
     autravail: false,
      coffre_safe,
@@ -606,8 +614,8 @@ if (currentUser) {
     coffre_munitions_equipee,
     coffre_drones_equipee,
     coffre_garage,
-    coffre_garage_items
-
+    coffre_garage_items,
+ coffre_essence
   }, { merge: true });
 
   window.location.href = "dashboard.html";

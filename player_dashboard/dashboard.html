@@ -524,18 +524,18 @@ h4 {
     <div class="logo">
     <h2 id="welcome-message">Bienvenue ...</h2>
     </div>
-    <nav>
-      <button data-page="base.html">Base</button>
-       <button data-page="banque.html">Banque</button>
-      <button data-page="clan.html">Clan</button>
-      <button data-page="missions.html">Missions</button>
-      <button data-page="craft.html">Artisanat</button>
-      <button data-page="equipement.html">Équipement</button>
-      <button data-page="magasins.html">Magasins</button>
-      <button data-page="messages.html">Messages</button>
-      <button data-page="map.html" id="open-map">Carte</button>
-      <button id="logout">Se déconnecter</button>
-    </nav>
+<nav>
+  <button data-page="base.html">Base</button>
+  <button data-page="banque.html">Banque</button>
+  <button data-page="clan.html">Clan</button>
+  <button data-page="missions.html">Missions</button>
+  <button data-page="craft.html">Artisanat</button>
+  <button data-page="equipement.html">Équipement</button>
+  <button data-page="magasins.html">Magasins</button>
+  <button data-page="messages.html">Messages</button>
+  <button data-page="map.html" id="open-map">Carte</button>
+  <button id="logout">Se déconnecter</button>
+</nav>
   </header>
 
   <!-- TABLEAU DE BORD -->
@@ -866,15 +866,19 @@ async function loadEtatPerso() {
 
 
   // 🔄 Navigation dans l'interface
-  document.querySelectorAll("nav button[data-page]").forEach(button => {
-    button.addEventListener("click", () => {
-      const page = button.getAttribute("data-page");
-      const iframe = document.querySelector("#iframe-container iframe");
-      if (iframe) iframe.src = page;
-    });
+document.querySelectorAll("nav button[data-page]").forEach(button => {
+  button.addEventListener("click", () => {
+    const page = button.getAttribute("data-page");
+    const iframe = document.querySelector("#iframe-container iframe");
+    if (iframe) iframe.src = page;
   });
+});
 
 
+function clearActiveTabs() {
+  buttons.forEach(b => b.classList.remove('active'));
+  tabs   .forEach(t => t.classList.remove('active'));
+}
 
 function ecouterSoldeEnTempsReel() {
   const user = auth.currentUser;

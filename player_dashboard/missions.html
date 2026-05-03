@@ -490,6 +490,8 @@
   <div id="vehicle-select-container" class="vehicle-box left">
     <label for="vehicle-select"><strong>Choisissez votre véhicule :</strong></label>
     <select id="vehicle-select"></select>
+    <div id="vehicle-stats-info" style="margin-top: 8px; font-size: 0.9em; color: #ccc;"></div>
+
   </div>
 
   <!-- Bloc droit : Informations véhicule -->
@@ -527,12 +529,13 @@
     <div id="popup-equipements" class="popup-equipements" style="margin-top: 1rem;"></div>
        <div class="popup-buttons-container">
       <button id="cancel-mission" class="close-btn">Annuler</button>
+     
       <button id="confirm-mission" class="popup-buttons">Accepter</button>
     </div>
   </div>
 </div>
 
-
+ <button onclick="runMissionTest('routine-001')">Tester mission</button>
 <script type="module">
  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth,  onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -567,7 +570,11 @@ const missions = [
     recompense: 150,
     roles: ["soldier", "engineer", "medic", "scout", "hacker"], // accessible à tous
     special: false,
+      malus_arme_si_aucune: 10,
+  malus_si_pas_assez: 5,
+  
     image: "imgages/missions/livraison.png",
+
      type: "missions-standard"
   },
     {
@@ -631,6 +638,8 @@ onAuthStateChanged(auth, async (user) => {
   try {
     const playerDocRef = doc(firestore, "players", playerId);
     const playerDocSnap = await getDoc(playerDocRef);
+    const data = playerDocSnap.data();
+window.carburantParVehicule = data.carburant_par_vehicule || {};
 console.log("🪪 UID Firebase Auth :", auth.currentUser?.uid);
 console.log("🆔 PlayerID utilisé :", playerId);
     if (playerDocSnap.exists()) {
@@ -639,6 +648,24 @@ console.log("🆔 PlayerID utilisé :", playerId);
 console.log("🚧 Tentative de rendu avec playerId =", playerId);
       // ✅ Lancer le rendu ICI (quand playerId et playerRole sont prêts)
       displayMissions(playerId, playerRole); // Ou displayMissions(currentSelectedVehicle);
+      const coffreVehicules = playerDocSnap.data().coffre_vehicules || {};
+      playerVehicles = [];
+console.log("🚗 Véhicules chargés :", playerVehicles);
+      for (let i = 0; i < 3; i++) {
+        const slot = `slot${i}`;
+        const vehicule = coffreVehicules[slot];
+        if (vehicule && vehicule.id) {
+          playerVehicles.push({
+            id: vehicule.id,
+            nom: vehicule.nom || `Véhicule ${i + 1}`,
+            ...vehicule
+            
+          });
+        }
+      }
+
+      initVehicleSelector(); // Remplit le <select> avec les véhicules
+
     } else {
       console.warn("⚠️ Document joueur introuvable");
     }
@@ -779,6 +806,7 @@ function displayMissions(vehicle) {
           <li><strong>⚠️ Risque :</strong> ${stats.risque} %</li>
           <li><strong>💰 Récompense :</strong> ${m.recompense} crédits</li>
           <li><strong>🔧 Usure :</strong> ${stats.usure} %</li>
+          
         </ul>
       </div>
     `;
@@ -884,10 +912,20 @@ const renderItemList = (items) => {
 
   // 🎮 Boutons
   document.getElementById('cancel-mission').onclick = closeMissionPopup;
-  document.getElementById('confirm-mission').onclick = () => {
-    alert(`Mission acceptée : ${mission.titre}`);
-    closeMissionPopup();
-  };
+document.getElementById('confirm-mission').onclick = async () => {
+  const playerId = localStorage.getItem("playerId");
+  const equippedItems = await getEquippedInventory(playerId);
+  const result = await executeMissionTest(mission, equippedItems);
+
+  if (result.success) {
+    alert(`✅ Mission réussie ! Récompense : ${mission.recompense + result.bonus} crédits`);
+  } else {
+    alert("❌ Mission échouée. Mieux vaut être mieux préparé la prochaine fois !");
+  }
+
+  closeMissionPopup();
+};
+
 }
 
 
@@ -904,13 +942,16 @@ function closeMissionPopup() {
   popup.removeEventListener("click", closeOnOverlayClick);
 }
 
-  function calcMissionStats(mission, vehicle) {
-    return {
-    //  duree: Math.round(mission.baseDuree * vehicle.modDuree),
-    //  risque: Math.round(mission.baseRisque * vehicle.modRisque),
-    //  usure: mission.usure
-    };
-  }
+function calcMissionStats(mission, vehicle) {
+  const aPied = !vehicle || vehicle.id === "none";
+
+  return {
+    duree: aPied ? mission.baseDuree * 1.8 : mission.baseDuree, // durée augmentée à pied
+    risque: aPied ? mission.baseRisque + 15 : mission.baseRisque, // risque augmenté à pied
+    usure: aPied ? 0 : mission.usure || 10 // pas d’usure si à pied
+  };
+}
+
 
   function updateTimer() {
     if (rotationTimer > 0) {
@@ -947,34 +988,315 @@ function setupTabs() {
     return playerVehicles.find(v => v.id === selectedId) || null;
   }
 
-  function displayVehicleStats(vehicle) {
-    // Ton code ici pour afficher les stats du véhicule
-  }
 
-  function initVehicleSelector() {
-    const select = document.getElementById("vehicle-select");
-    select.innerHTML = "";
 
+function initVehicleSelector() {
+  const select = document.getElementById("vehicle-select");
+  select.innerHTML = "";
+
+  // Option par défaut
+  const optionDefault = document.createElement("option");
+  optionDefault.value = "none";
+  optionDefault.textContent = "À pied (aucun véhicule)";
+  select.appendChild(optionDefault);
+
+  // Ajout des véhicules
+  if (Array.isArray(playerVehicles)) {
     playerVehicles.forEach(vehicle => {
       const option = document.createElement("option");
       option.value = vehicle.id;
-      option.textContent = vehicle.nom;
+      option.textContent = vehicle.nom || vehicle.id;
       select.appendChild(option);
     });
-
-    select.addEventListener("change", () => {
-      const vehicle = getSelectedVehicle();
-      displayVehicleStats(vehicle);
-      renderMissions(vehicle); // Rafraîchit les missions avec le nouveau véhicule
-    });
+  } else {
+    console.warn("🚨 playerVehicles n'est pas un tableau :", playerVehicles);
   }
 
-  vehicleSelect.addEventListener("change", () => {
-    const vehicle = getSelectedVehicle();
-    displayVehicleStats(vehicle);
-    displayMissions(vehicle);
-    displaySpecialMissions(vehicle);
+  // Événement de sélection
+  select.addEventListener("change", () => {
+    const selectedId = select.value;
+
+    if (selectedId === "none") {
+      console.log("🚶 Aucun véhicule sélectionné");
+      document.getElementById("fuel").textContent = "--";
+      document.getElementById("wear").textContent = "--";
+      return;
+    }
+
+    const selectedVehicle = playerVehicles.find(v => v.id === selectedId);
+
+    if (selectedVehicle) {
+      console.log("🚗 Véhicule sélectionné :", selectedVehicle);
+      displayVehicleStats(selectedVehicle);
+    } else {
+      console.warn("⚠️ Aucun véhicule trouvé avec l'ID :", selectedId);
+      document.getElementById("fuel").textContent = "--";
+      document.getElementById("wear").textContent = "--";
+    }
   });
+
+
+
+
+
+  // Affiche la première mission par défaut avec l'option "à pied"
+  if (missions.length > 0) {
+
+      displayVehicleStats(getSelectedVehicle());
+  }
+}
+
+function updateVehicleStatsInfo(vehicleId) {
+  const infoDiv = document.getElementById("vehicle-stats-info");
+    console.log("🔍 Véhicule sélectionné :", selectedVehicle);
+
+  if (vehicleId === "none") {
+    infoDiv.textContent = "⚠️ Mission à pied : durée augmentée de 80%, risque +15%.";
+  } else {
+    infoDiv.textContent = "✅ Mission motorisée : durée et risque standards.";
+  }
+}
+
+function displayVehicleStats(vehicle) {
+  if (!vehicle) {
+    console.warn("⚠️ Aucun véhicule sélectionné pour afficher les stats.");
+    return;
+  }
+
+  const fuelSpan = document.getElementById("fuel");
+  const wearSpan = document.getElementById("wear");
+
+  // Récupère la map mise à jour depuis Firestore (déjà stockée côté client)
+  const carburantMap = window.carburantParVehicule || {}; // À mettre à jour dans onAuthStateChanged si pas déjà fait
+
+  const currentFuel = carburantMap[vehicle.id] ?? vehicle.stats?.carburant ?? 0;
+  const maxFuel = vehicle.stats?.carburant_max ?? 100;
+
+  fuelSpan.textContent = `${currentFuel} / ${maxFuel}`;
+  wearSpan.textContent = vehicle.stats?.usure ? `${vehicle.stats.usure}%` : "100%";
+}
+
+const attributesData = {
+  soldier: {
+    force: 8,
+    endurance: 6,
+    agilite: 4,
+    intelligence: 3,
+    tech_affinite: 2,
+    perception: 5,
+    chance: 2
+  },
+  scout: {
+    force: 4,
+    endurance: 5,
+    agilite: 8,
+    intelligence: 5,
+    tech_affinite: 4,
+    perception: 7,
+    chance: 3
+  },
+  hacker: {
+    force: 2,
+    endurance: 3,
+    agilite: 5,
+    intelligence: 9,
+    tech_affinite: 9,
+    perception: 6,
+    chance: 4
+  },
+  engineer: {
+    force: 5,
+    endurance: 5,
+    agilite: 5,
+    intelligence: 7,
+    tech_affinite: 8,
+    perception: 6,
+    chance: 3
+  },
+  medic: {
+    force: 3,
+    endurance: 6,
+    agilite: 5,
+    intelligence: 7,
+    tech_affinite: 6,
+    perception: 6,
+    chance: 3
+  }
+};
+async function runMissionTest(missionId) {
+  const playerId = auth.currentUser?.uid;
+  if (!playerId) return alert("Aucun joueur connecté");
+
+  const playerSnap = await getDoc(doc(firestore, "players", playerId));
+  if (!playerSnap.exists()) return alert("Données joueur introuvables");
+  const playerData = playerSnap.data();
+
+  const role = playerData.role;
+  const attributs = attributesData[role] || {};
+  const coffres = playerData;
+
+  const mission = missions.find(m => m.id === missionId);
+  if (!mission) return alert("Mission introuvable");
+
+  let totalScore = 0;
+  const statsPrincipales = ["force", "endurance", "agilite", "intelligence", "tech_affinite", "perception"];
+  statsPrincipales.forEach(stat => {
+    totalScore += parseInt(attributs[stat] || 0);
+  });
+  totalScore += 1; // bonus de chance
+
+const armesEquipees = Object.values(coffres.coffre_arme_equipee || {}).filter(a =>
+  a && Object.keys(a).length > 0 && a.stats && a.stats.attaque
+);
+  let attaqueTotale = 0;
+  let nomsArmes = [];
+
+  let malusMunitions = 0;
+  let malusArmes = 0;
+
+  // ✅ Appliquer les malus immédiatement si aucune arme n'est équipée
+if (armesEquipees.length === 0) {
+  malusArmes = (typeof mission.malus_arme_si_aucune === "number") ? mission.malus_arme_si_aucune : 10;
+  malusMunitions = (typeof mission.malus_si_pas_assez === "number") ? mission.malus_si_pas_assez : 5;
+  console.warn("❌ Aucune arme équipée, malus armes et munitions appliqués");
+}
+for (const [slotKey, arme] of Object.entries(coffres.coffre_arme_equipee)) {
+  if (arme?.maxusure !== undefined) {
+    const usure = Math.floor(Math.random() * 5) + 3; // 3 à 7
+    const ancienneUsure = arme.usure ?? arme.maxusure;
+    const nouvelleUsure = Math.max(0, ancienneUsure - usure);
+    arme.usure = nouvelleUsure;
+
+    console.log(`🔧 Usure appliquée à ${arme.nom} : -${usure}, reste ${nouvelleUsure}`);
+
+    // 🔁 Mise à jour dans Firestore
+    try {
+   await updateDoc(doc(firestore, "players", playerId), {
+ [`coffre_arme_equipee.${slotKey}.usure`]: nouvelleUsure
+});
+    } catch (error) {
+      console.error(`Erreur de mise à jour de l'usure pour ${arme.nom}`, error);
+    }
+    
+  }
+}
+const armeHS = armesEquipees.find(a => a.usure !== undefined && a.usure <= 0);
+if (armeHS) {
+  alert(`⚠️ L'arme ${armeHS.nom} est trop endommagée pour être utilisée !`);
+  return; // ou désactiver ses effets pendant la mission
+}
+
+  // 🧠 Si des armes sont équipées, on fait la vérification
+for (const arme of armesEquipees) {
+  if (arme?.stats?.attaque) {
+    attaqueTotale += parseInt(arme.stats.attaque);
+  }
+  if (arme?.nom) {
+    nomsArmes.push(arme.nom);
+  }
+console.log("🧪 Munitions équipées :", coffres.coffre_munitions_equipee);
+console.log("🔎 Recherche munition avec ID :", arme.ammotype);
+
+  if (arme?.ammotype) {
+    
+  const munitionsEquipees = Array.isArray(coffres.coffre_munitions_equipee)
+  ? coffres.coffre_munitions_equipee
+  : Object.values(coffres.coffre_munitions_equipee || {});
+
+const munition = munitionsEquipees.find(m => m?.id === arme.ammotype);
+if (!munition) {
+  console.warn(`⚠️ Aucune munition avec id ${arme.ammotype} trouvée dans le coffre !`);
+} else {
+  console.log(`✅ Munition trouvée :`, munition);
+}
+   if (munition) {
+  const stockDispo = parseInt(munition.quantite ?? 0);
+  const consoMin = munition.stats?.conso_mission_min || 15;
+
+  if (stockDispo < consoMin) {
+    malusMunitions += mission.malus_si_pas_assez || 5;
+    console.warn(`❌ Pas assez de munitions pour ${arme.nom}, malus appliqué`);
+  } else {
+    console.log(`✅ Suffisamment de munitions : ${stockDispo}`);
+
+    // 💥 On retire entre consoMin et (consoMin + 5) munitions
+    const aRetirer = Math.floor(Math.random() * 6) + consoMin;
+    const nouvelleQuantite = Math.max(0, stockDispo - aRetirer);
+    console.log(`🔫 Munitions utilisées : -${aRetirer}, reste ${nouvelleQuantite}`);
+
+    // ✅ Trouve la bonne *clé de slot* (slot0, slot1, etc.)
+    const coffreEntries = Object.entries(coffres.coffre_munitions_equipee || {});
+    const foundEntry = coffreEntries.find(([slotKey, obj]) => obj?.id === munition.id);
+
+    if (foundEntry) {
+      const [slotKey] = foundEntry;
+
+      // Mise à jour directe dans l'objet
+      munition.quantite = nouvelleQuantite;
+
+      try {
+        await updateDoc(doc(firestore, "players", playerId), {
+          [`coffre_munitions_equipee.${slotKey}.quantite`]: nouvelleQuantite
+        });
+        console.log(`✅ Mise à jour Firestore pour ${munition.nom} dans ${slotKey}`);
+      } catch (e) {
+        console.error("❌ Erreur mise à jour munitions :", e);
+      }
+    } else {
+      console.warn("❌ Clé de slot introuvable pour la munition !");
+    }
+  }
+
+    }
+  }
+}
+
+
+  totalScore += attaqueTotale;
+  totalScore -= malusArmes;
+  totalScore -= malusMunitions;
+
+  const d20 = Math.floor(Math.random() * 20) + 1;
+  const finalScore = totalScore + d20;
+
+  // 📝 Rapport textuel
+  let rapport = "";
+  if (malusArmes > 0 && malusMunitions > 0) {
+    rapport = "⚠️ Le joueur était sous-équipé (aucune arme, peu de munitions), mais a tout de même tenté sa chance.";
+  } else if (malusArmes > 0) {
+    rapport = "⚠️ Le joueur est parti sans armes, utilisant probablement ses poings.";
+  } else if (malusMunitions > 0) {
+    rapport = "⚠️ Munitions insuffisantes : le joueur a improvisé.";
+  } else {
+    rapport = "✅ Équipement et munitions optimaux.";
+  }
+
+  // Résultat
+  let result;
+  if (finalScore >= 30) result = "🎯 Succès critique";
+  else if (finalScore >= 25) result = "✅ Succès";
+  else result = "❌ Échec";
+
+  // DEBUG
+  console.log("DEBUG totalScore avant dé :", totalScore);
+  console.log("malusArmes :", malusArmes);
+  console.log("malusMunitions :", malusMunitions);
+  console.log("d20 :", d20);
+
+  alert(`🧪 Mission ${missionId}
+🪪 Rôle : ${role}
+🗡 Armes équipées : ${nomsArmes.length > 0 ? nomsArmes.join(", ") : "Aucune"}
+🔫 Malus munitions : ${malusMunitions > 0 ? `-${malusMunitions}` : "0"}
+🗡 Malus armes : ${malusArmes > 0 ? `-${malusArmes}` : "0"}
+🎲 Dé 20 : ${d20}
+💥 Attaque totale : ${attaqueTotale}
+💪 Score Total : ${finalScore}
+📊 Résultat : ${result}
+📝 Rapport : ${rapport}`);
+}
+
+
+window.runMissionTest = runMissionTest;
 
 
 
