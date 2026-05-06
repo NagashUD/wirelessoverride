@@ -859,15 +859,15 @@ const realtimeDB = getDatabase();
   let itemPrix = 0;
 
 
-const mappingCategorieToCoffre = {
-  armes: "coffre_armes",
-  armures: "coffre_armures",
-  cyber: "coffre_cyber",
-  ressources: "coffre_base",
-  transport: "coffre_vehicules",
-  munitions: "coffre_munitions",
-   drones: "coffre_drones",
- garage_items: "coffre_garage_items"
+const mappingCoffreToCategorie = {
+  coffre_vehicules: "transport",
+  coffre_armes: "armes",
+  coffre_armures: "armures",
+  coffre_cyber: "cyber",
+  coffre_base: "ressources",
+  coffre_munitions: "munitions",
+  coffre_drones: "drones",
+  coffre_garage_items: "garage_items"
 };
 
 const sousCategories = {
@@ -1589,7 +1589,20 @@ async function chargerItems() {
       `;
 
       itemDiv.addEventListener("click", () => {
-        ouvrirPopupRevente(item.nom, item.id, slot, item.prix, item.quantite, coffreNom.replace("coffre_", ""));
+     const categorie = mappingCoffreToCategorie[coffreNom];
+
+if (!categorie) {
+  console.error("Mapping introuvable pour :", coffreNom);
+  return;
+}
+
+currentCategorie = categorie.toLowerCase();
+  itemSelectionne = item;
+
+// FIX 🔥
+if (categorie === "vehicules") categorie = "transport";
+
+ouvrirPopupRevente(item.nom, item.id, slot, item.prix, item.quantite, categorie);
       });
 
       container.appendChild(itemDiv);
@@ -1615,14 +1628,37 @@ function ouvrirPopupRevente(nom, id, slot, prix, max, categorie) {
   currentPrixUnitaire = prix;
   itemMax = max;
   quantite = 1;
+const slider = document.getElementById("slider-revente");
+
+if (itemMax <= 1) {
+  slider.style.display = "none";
+} else {
+  slider.style.display = "block";
+}
 
   document.getElementById("popup-nom-revente").textContent = nom;
   document.getElementById("quantite-valeur-revente").textContent = quantite;
   document.getElementById("slider-revente").max = itemMax;
   document.getElementById("slider-revente").value = quantite;
 
-  const gain = Math.floor(quantite * currentPrixUnitaire * 0.7);
-  document.getElementById("gain-valeur-revente").textContent = gain;
+const prixDynamique = itemSelectionne
+  ? calculerPrixDynamique(itemSelectionne, currentPrixUnitaire)
+  : currentPrixUnitaire;
+
+const gain = Math.floor(quantite * prixDynamique * 0.7);
+
+// 🔥 ICI on calcule l'état AU BON MOMENT
+const usure = itemSelectionne?.usure ?? itemSelectionne?.stats?.usure;
+const maxusure = itemSelectionne?.maxusure ?? itemSelectionne?.stats?.maxusure;
+
+let bonusText = "";
+
+if (usure !== undefined && maxusure !== undefined) {
+  const pourcentage = Math.round((usure / maxusure) * 100);
+  bonusText = `<br>État : <strong>${pourcentage}%</strong>`;
+}
+
+
 
   document.querySelector(".popup-vente").style.display = "block";
 }
@@ -1643,7 +1679,7 @@ const coffres = {
   armures: { nom: "coffre_armures" },
   cyber: { nom: "coffre_cyber" },
   ressources: { nom: "coffre_ressources" },
-  transports: { nom: "coffre_vehicules" },
+  transport: { nom: "coffre_vehicules" },
   base: { nom: "coffre_base" },
   safe: { nom: "coffre_safe" },
    munitions: { nom:"coffre_munitions"},
@@ -1678,10 +1714,13 @@ async function validerVente() {
     console.log("📦 Données joueur :", data);
 
     // 2. 🔐 Vérifie la catégorie
-    if (!coffres[currentCategorie]) {
-      alert("Catégorie inconnue : " + currentCategorie);
-      return;
-    }
+ const categorie = currentCategorie.toLowerCase();
+
+if (!coffres[categorie]) {
+  console.error("❌ Catégorie inconnue :", categorie);
+  console.log("Catégories dispo :", Object.keys(coffres));
+  return;
+}
 
     const coffreNom = coffres[currentCategorie].nom;
     const coffre = data[coffreNom];
@@ -1752,14 +1791,44 @@ await update(itemRef, {
 function updateQuantiteRevente(valeur) {
   quantite = parseInt(valeur);
   document.getElementById("quantite-valeur-revente").textContent = quantite;
+  // 💥 Prix dynamique
+  const prix = calculerPrixDynamique(itemSelectionne, currentPrixUnitaire);
+  const gain = Math.floor(quantite * prix * 0.7);
 
-  const gain = Math.floor(quantite * currentPrixUnitaire * 0.7);
-  document.getElementById("gain-valeur-revente").textContent = gain;
+  // 💥 Etat (usure)
+  const usure = itemSelectionne?.usure ?? itemSelectionne?.stats?.usure;
+  const maxusure = itemSelectionne?.maxusure ?? itemSelectionne?.stats?.maxusure;
+
+  let bonusText = "";
+
+  if (usure !== undefined && maxusure !== undefined) {
+    const pourcentage = Math.round((usure / maxusure) * 100);
+    bonusText = `<br>État : <strong>${pourcentage}%</strong>`;
+  }
+
+  // ✅ UNE SEULE écriture
+  document.getElementById("gain-valeur-revente").innerHTML =
+    gain + " crédits " + bonusText;
 }
 
 window.updateQuantiteRevente = updateQuantiteRevente;
 
+function calculerPrixDynamique(item, prixBase) {
+  const usure = item.usure ?? item.stats?.usure;
+  const maxusure = item.maxusure ?? item.stats?.maxusure;
 
+  // si pas d'usure → prix normal
+  if (usure === undefined || maxusure === undefined) {
+    return prixBase;
+  }
+
+  const coefUsure = usure / maxusure;
+
+  // minimum 20%
+  const coefFinal = Math.max(0.2, coefUsure);
+
+  return Math.round(prixBase * coefFinal);
+}
 
 
 function fermerPopupRevente() {
@@ -1788,6 +1857,8 @@ document.addEventListener("click", function (event) {
     fermerPopupRevente();
   }
 });
+
+
 
 })(); // ← C'était cette parenthèse + accolade finale qui manquait
 

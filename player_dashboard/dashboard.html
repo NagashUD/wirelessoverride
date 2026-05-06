@@ -364,7 +364,7 @@ th {
 .xp-bar-container {
   background-color: #333;
   height: 16px;
-  width: 100%;
+  width: 50%;
   border-radius: 10px;
   overflow: hidden;
   margin: 5px 0 15px;
@@ -549,7 +549,9 @@ h4 {
           <p><strong>Niveau :</strong> <span id="level-text"></span></p>
           <p><strong>XP :</strong> <span id="xp-text"></span></p>
 
-  <div id="xp-bar-fill"></div>
+<div class="xp-bar-container">
+  <div id="xp-bar-fill" class="xp-bar-fill"></div>
+</div>
 
         <p><strong>Compétences</strong> <button id="openSkills" class="neon-btn">🧠</button></p>
         <p>Réputation : <span id="reputation-text"></span></p>
@@ -890,6 +892,16 @@ function ecouterSoldeEnTempsReel() {
     if (docSnap.exists()) {
       const data = docSnap.data();
       document.getElementById("solde-text").innerText = data.solde || 0;
+
+const xp = data.xp || 0;
+const level = data.level || 1;
+
+const xpNext = calculXpPourNiveau(level);
+const progress = Math.min((xp / xpNext) * 100, 100);
+
+document.getElementById("xp-text").innerText = `${xp} / ${xpNext}`;
+
+document.getElementById("xp-bar-fill").style.width = `${progress}%`;
       // Si tu veux afficher l’épargne aussi, tu peux décommenter :
       // document.getElementById("epargne-text").innerText = data.epargne || 0;
     } else {
