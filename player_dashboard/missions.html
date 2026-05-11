@@ -468,7 +468,71 @@
   color: #ccc;
 }
 
+@media screen and (max-width: 768px) {
 
+  body {
+    padding: 0.5rem;
+    overflow-x: hidden;
+  }
+
+  .missions-list-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 0;
+    width: 100%;
+  }
+
+  .mission-card {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .mission-card img {
+    width: 100%;
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;
+  }
+
+  .mission-info {
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .mission-card h3 {
+    font-size: 1.4rem;
+  }
+
+  .mission-card p,
+  .mission-details {
+    font-size: 0.9rem;
+  }
+
+  .vehicle-container {
+    flex-direction: column;
+  }
+
+  .vehicle-box {
+    min-width: unset;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .popup-overlay {
+    width: 95%;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .popup-content {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+}
   </style>
 </head>
 <body>
