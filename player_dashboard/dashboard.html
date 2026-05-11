@@ -511,7 +511,58 @@ h4 {
   box-shadow: 0 0 15px #00faffaa, 0 0 5px #ff00ff88 inset;
 }
 
+@media screen and (max-width: 900px) {
 
+  #dashboard {
+    flex-direction: column;
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .dashboard-left {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #iframe-container {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  iframe {
+    width: 100%;
+    height: 80vh;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav button {
+    width: 45%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #image-personnage {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+  }
+
+  .xp-bar-container {
+    width: 100%;
+  }
+
+}
     </style>
 
 </head>
