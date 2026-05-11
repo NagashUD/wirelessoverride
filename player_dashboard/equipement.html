@@ -560,6 +560,115 @@ height: 50px;
   }
   
 }
+
+@media screen and (max-width: 768px) {
+
+  body {
+    padding: 10px;
+    overflow-x: hidden;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .tab {
+    width: 45%;
+    margin-right: 0;
+    padding: 8px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .equipement-wrapper {
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px;
+  }
+
+  .colonne-gauche,
+  .colonne-droite {
+    width: 100%;
+  }
+
+  .container,
+  .container2 {
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .container2 {
+    height: auto;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3,
+  h4 {
+    font-size: 1rem;
+  }
+
+  .inventory-grid,
+  .coffre-generic {
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .slot,
+  .item-card,
+  .item-coffre-icon {
+    width: 58px;
+    height: 58px;
+    min-height: 58px;
+    padding: 5px;
+  }
+
+  .slot-container {
+    width: 58px;
+    height: 58px;
+  }
+
+  .item-tooltip {
+    width: 180px;
+    font-size: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .garage-modal {
+    width: 95%;
+    min-width: unset;
+    min-height: unset;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .vehicule-img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .jauge-essence {
+    margin: 0 auto;
+  }
+
+}
   </style>
 </head>
 <body>
