@@ -626,6 +626,115 @@ height: 20px;
 .achat-feedback.visible {
   opacity: 1;
 }
+
+@media screen and (max-width: 768px) {
+
+  body {
+    padding: 10px;
+    overflow-x: hidden;
+  }
+
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .tab {
+    width: 45%;
+    margin-right: 0;
+    font-size: 12px;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+
+  .container,
+  .container2,
+  .container3 {
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .container2,
+  .container3 {
+    height: auto;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  h3,
+  h4 {
+    font-size: 1rem;
+  }
+
+  .stock-list,
+  .items-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .item,
+  .item-card {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+    box-sizing: border-box;
+  }
+
+  .item img,
+  .item-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  #popup-item,
+  .popup-vente {
+    width: 95%;
+    max-width: 95%;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  #popup-item img,
+  .popup-vente img {
+    max-width: 90px;
+    max-height: 90px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+  }
+
+  button,
+  #btn-acheter,
+  #btn-annuler,
+  .validerventebtn {
+    font-size: 13px;
+    padding: 10px;
+    height: auto;
+  }
+
+  .stock-timer {
+    font-size: 14px;
+  }
+
+  .stock-timer .countdown {
+    font-size: 1.4rem;
+  }
+
+}
   </style>
 </head>
 <body>
